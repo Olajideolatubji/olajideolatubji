@@ -1,27 +1,27 @@
 ---
 name: produce-short
-description: Produce one finished Guilty Paws Short end-to-end from a backlog concept — video, audio, assembly, QC, and full upload package. Use when the user wants a video made or the ready-buffer falls below 3.
+description: Produce one Guilty Paws episode package end-to-end from a backlog concept — three-shot beat sheet, full Kling 3.0 generation prompts, and the complete upload metadata. Use when the user wants a new video or the ready-buffer falls below 3.
 ---
 
-Run the full production line for one Short. Argument (optional): a backlog
-concept ID (e.g. `K2`) or a fresh premise; default is the highest-scored 🟢
-concept in the pillar due next.
+Run the production line for one episode. Argument (optional): a backlog
+concept ID (e.g. `E2`) or a fresh premise; default is the highest-scored 🟢
+concept, impossible-environments lane first.
 
-1. **Produce:** delegate to the **producer** subagent with the chosen concept.
-   It returns the video URL, beat sheet, duration, section-A checklist, and
-   virality-predictor notes. Generation is async — poll jobs to completion
-   within this session; do not hand back half-finished work.
-2. **Package:** delegate to the **seo-publisher** subagent with the finished
-   video and beat sheet. It returns the scored title, description, tags,
-   pinned comment, schedule slot, and the B/C/D checklist.
-3. **Gate:** confirm every section of `channel/publishing-checklist.md` passed.
-   Any failure → send it back to the responsible subagent to fix; if unfixable,
-   kill the video and say why rather than shipping a compromise.
-4. **Deliver** in one message: video link, the complete copy-pasteable metadata
-   block, schedule slot, the full ticked checklist, and the reminder to tick
-   **"Altered content"** in YouTube Studio. Confirm the backlog row moved to
-   🔵/produced and the upload-log row exists.
+1. **Produce:** delegate to the **producer** subagent. It returns the
+   three-shot beat sheet, the three copy-pasteable **Kling 3.0 prompts**
+   (pro mode, sound on), sound cues, and a regenerate-if list. The user does
+   the actual rendering in Kling.
+2. **Package:** delegate to the **seo-publisher** subagent. It returns the
+   title (canon rules: plain text, no quotes, no trailing period, one emoji,
+   ends with `#shorts #funnydog #chihuahua`), description, pinned comment,
+   and schedule slot (next free 07:00/17:00 UTC).
+3. **Gate:** run `channel/publishing-checklist.md`. Section A items that
+   depend on the actual render become the user's post-render check — list
+   them explicitly. Any promptable failure → fix before delivering.
+4. **Deliver** one message: beat sheet, the three Kling prompts, metadata
+   block, schedule slot, post-render checklist, and the reminder to tick
+   **Altered content** in Studio. Update the backlog (🔵) and pre-fill the
+   upload-log row.
 
-Budget note: generation happens on the harry/Higgsfield side; vidIQ credits go
-to compose/edit/scoring (~5–10 per video). Check `vidiq_balance` first and
-state what was spent.
+If the user shares the rendered video back, review it against section A and
+give a ship / regenerate verdict per shot.

@@ -6,9 +6,13 @@ description: Run the Guilty Paws weekly performance review — fresh stats, winn
 Delegate to the **analytics-coach** subagent and deliver its report.
 
 Requirements on the result before presenting it:
-- The upload log's 24h/7d columns were actually updated (batch
-  `vidiq_get_videos_by_ids`, one call), and the report was saved to
-  `channel/logs/weekly-reviews/YYYY-MM-DD.md`.
+- Real numbers were used: **ask the user for their YouTube Studio stats
+  first** (user rule); fall back to one batched `vidiq_get_videos_by_ids`
+  call if they're unavailable. The upload log's 24h/7d columns were actually
+  updated and the report saved to `channel/logs/weekly-reviews/YYYY-MM-DD.md`.
+- The patience protocol was applied: under 15 uploads → patience, no format
+  changes; after 15 uploads with nothing over 50 views → the format-change
+  proposal (e.g. second recurring pet character) is raised.
 - It states absolute numbers honestly (a 12-view week is reported as a 12-view
   week) and separates *signal* from *noise* given the sample size.
 - It ends with 1–2 decisions and exactly one named experiment for next week —

@@ -30,16 +30,18 @@ balance/jobs/polling are free.
 | Study a specific competitor video | `vidiq_video_stats`, `vidiq_video_transcript`, `vidiq_video_watch` |
 
 ### Production (producer)
+
+**Canon: videos are rendered by the user in Kling 3.0 (pro mode, sound on).**
+Ellis's production deliverable is the three-shot beat sheet + Kling prompts
+(guide in `brand-bible.md`) — normally zero credits.
+
+Supporting tools when useful:
 | Need | Tool |
 |---|---|
-| Generate the AI video scenes | `mcp__harry__generate_video` (pick model via `models_explore(action:'recommend')` for animal realism + comedy timing) |
-| Script/beat sheet | `vidiq_generate_script` (then rewrite in brand voice — never ship raw output) |
-| Narrator VO | `vidiq_voiceover_generate` (pick a deadpan documentary voice from `vidiq_voiceover_list_voices`) |
-| Music bed | `vidiq_generate_music` (quirky/comedic, license-safe) |
-| Assemble scenes + VO + music + captions | `vidiq_compose` (9:16 `vertical`; music `duckTo` under VO) |
-| Trim / normalize loudness / probe | `vidiq_edit_media` |
-| Pre-publish virality/hook check | `mcp__harry__virality_predictor` |
-| Async jobs | submit → `vidiq_job_poll` until done; list with `vidiq_jobs_list` |
+| Review a rendered file the user shares (duration/dimensions) | `vidiq_edit_media` op `probe_media` (1 credit) |
+| Trim or grab a frame from a rendered file | `vidiq_edit_media` (1 credit) |
+| Second opinion on hook/retention of a render | `mcp__harry__virality_predictor` |
+| Async jobs | submit → `vidiq_job_poll` (free) |
 
 ### Optimization & publishing (seo-publisher)
 | Need | Tool |
@@ -49,6 +51,11 @@ balance/jobs/polling are free.
 | Thumbnail (long-form only; Shorts use a chosen frame) | `vidiq_generate_thumbnail`, `vidiq_score_thumbnail` |
 
 ### Analytics (analytics-coach)
+
+**First choice is free: ask the user for their YouTube Studio numbers**
+(user rule). Paid public-data tools are the fallback when the user isn't
+available or per-video freshness is needed.
+
 | Need | Tool |
 |---|---|
 | Owned-channel analytics (retention, traffic, subs) | `vidiq_channel_analytics` — **blocked until the user authorizes Guilty Paws in vidIQ** |

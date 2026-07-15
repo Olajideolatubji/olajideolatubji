@@ -1,115 +1,127 @@
 # Guilty Paws — Brand Bible
 
 The single source of truth for what a Guilty Paws video *is*. Every concept,
-prompt, title, and reply must be consistent with this document. When we
-deliberately evolve the brand, update this file in the same session.
+prompt, title, and reply must be consistent with this document. Facts marked
+**canon** were set by the user on 2026-07-15 and are not up for reinterpretation.
 
 ## The premise (one sentence)
 
-**A small dog commits spectacular household crimes and feels absolutely no
-shame.** The comedy is the gap between the scale of the disaster and the dog's
-total innocence.
+**A tiny tan chihuahua causes absurd disasters at home and acts innocent.**
+The comedy is the gap between the scale of the disaster and the dog's total
+calm.
 
-## The star
+## The cast (canon)
 
-- **Species/breed:** Chihuahua (established across all 5 launch videos — keep it.
-  One recurring star beats random dogs; recurring characters are how Shorts
-  channels convert casual viewers into subscribers).
-- **Personality:** Chaotic mastermind energy in the act; wide-eyed "who, me?"
-  innocence when caught. Never sad, never scared, never in real danger.
-- **Name:** ⚠️ UNDECIDED — needs a user decision. A named character enables
-  series titles ("Peanut's Crimes, Ep. 12"), pinned-comment lore, and fan
-  attachment. Candidates that fit the brand: **Peanut, Bandit, Nacho, Biscuit,
-  Diablo**. Once chosen, the name goes into titles, descriptions, pinned
-  comments, and the channel description below.
+- **The star:** a **tiny tan chihuahua**. Same dog in every video — identical
+  coat, size, and look. Personality: serene in the middle of catastrophe;
+  guilty side-eye only when observed.
+- **The owner:** a **man in casual clothes**. His entire role is walking in and
+  freezing. He is the audience's stand-in; he never yells, never punishes —
+  the freeze is the reaction.
+- **Name:** ⚠️ the dog is still unnamed — user decision pending. Candidates:
+  Peanut, Bandit, Nacho, Biscuit, Diablo. A name unlocks series titles and lore.
 
-## Format spec
+## Format spec (canon — every video, no exceptions)
 
 | Element | Spec |
 |---|---|
-| Length | **12–25 seconds.** Long enough to build the gag, short enough to loop. Avoid ≤5s (the 2026-07-14 bubbles video was 5s — too short to register the story or count strong watch-time). |
-| Aspect | 9:16 vertical, 1080×1920 |
-| Structure | **Beat 1 (0–1s):** chaos already visible or clearly imminent — never a slow establishing shot. **Beat 2:** escalation (the disaster gets absurdly worse). **Beat 3:** the guilty/innocent look, held ~1.5s. **Loop:** final frame should flow back into the first frame so rewatches feel seamless. |
-| Audio | Comedic sound design (crashes, squeaks, timpani) or trending-safe upbeat track. Optional deadpan narrator line (see "Voice" below). No copyrighted music. |
-| Text on screen | 0–1 short caption max, top-third of frame (bottom is covered by UI). Never subtitle the whole video. |
-| Visual quality bar | Consistent chihuahua appearance across the whole video (same coat color, size, collar). No warped anatomy, no melted objects in hero frames. If the AI generation has visible artifacts in the first 2 seconds or the final guilty-look shot, regenerate — those are the two frames everyone sees. |
+| Length | **15 seconds exactly** |
+| Aspect | 9:16 vertical |
+| Structure | **Three shots:** ① disaster reveal — the absurd scene in full view, dog sitting calm in the middle; ② the owner walks in and freezes; ③ slow push-in on the dog's guilty side-eye as it turns its head away |
+| Production | **Kling 3.0, pro mode, sound on.** Ellis delivers full generation prompts; the user renders |
+| Audio | Kling's generated sound (sound on). No copyrighted music |
+| Text on screen | None by default — the three shots carry the story |
 
-## Voice & tone
+### Shot timing guide (within 15s)
 
-- **Narrator (optional but recommended):** deadpan, mock-serious documentary or
-  news-report tone. One or two lines max ("Day 3. The kitchen has stopped
-  negotiating."). This adds originality on top of raw AI footage — which
-  matters for YouTube monetization review (see growth playbook, compliance).
-- **Written voice (titles, descriptions, replies):** dry, understated, treats
-  the dog like a legally liable adult. We describe crimes, incidents, and
-  insurance claims. We never write "cute puppy 🥺" energy — the humor is
-  deadpan, not saccharine.
+- Shot 1: ~0–6s. The disaster must be legible in the **first second** — no
+  build-up, we open mid-catastrophe.
+- Shot 2: ~6–10s. Door/doorway entrance, freeze, hold the stunned stillness.
+- Shot 3: ~10–15s. Slow push-in; the head-turn away is the punchline and the
+  final frame. It should loop tolerably back into shot 1.
 
-## Title grammar
+### Kling 3.0 prompt guide
 
-The launch videos established a strong pattern. Codified and cleaned up:
+Write one prompt per shot. Every prompt must contain, verbatim, the same
+character block so the dog and owner stay on-model across shots and videos:
+
+> a tiny tan chihuahua with big ears and dark round eyes, smooth short coat
+
+> a man in casual clothes (t-shirt, jeans)
+
+Prompt skeleton per shot:
+1. **Scene:** the room + the impossible disaster, described physically
+   (what covers what, scale, lighting). Interior always.
+2. **Subject & action:** shot ① dog sitting calm and still amid it; shot ②
+   owner enters through doorway, stops dead, frozen posture; shot ③ camera
+   slowly pushes in on the dog, dog turns head away slowly, side-eye.
+3. **Camera:** ① static wide reveal; ② medium from inside the room toward the
+   doorway; ③ slow push-in to close-up.
+4. **Style tags:** realistic home interior, natural light, comedic timing,
+   high detail fur.
+5. **Sound cue** (pro mode, sound on): ① ambient disaster sound (falling snow
+   hush / rain / waves); ② door + abrupt silence; ③ subtle comedic sting.
+
+Regenerate any shot where the dog goes off-model, the anatomy warps, or the
+dog reads as distressed — the dog is always calm/delighted, never scared.
+
+## Title rules (canon — every title, no exceptions)
 
 ```
-[Dog/NAME] [absurd act in active voice]. [Deadpan consequence] 😂
+[Setup sentence]. [Deadpan consequence/punchline] {one emoji} #shorts #funnydog #chihuahua
 ```
 
-Examples in-grammar:
-- `Dog Orders 10,000 Ball Pit Balls While Owner Was Out 😂`
-- `Dog Attempts Italian Cooking. Kitchen Files For Divorce 😂`
-- `He Discovered Bubbles. The Bathroom Didn't Survive 😂`
+1. Plain text. **No quotation marks anywhere.**
+2. **No trailing period.**
+3. **Exactly one emoji** (😂 is the house default, any fitting one allowed).
+4. Always ends with `#shorts #funnydog #chihuahua`.
+5. One or two sentences before the emoji; punchline personifies the victim
+   (the kitchen, the bathroom) or states an absurd administrative consequence
+   (files for divorce, demands compensation).
+6. ≤70 characters before the hashtags so nothing truncates on mobile.
+7. Score candidates with `vidiq_score_title` when credits allow; otherwise
+   pick by hook clarity.
 
-**Rules:**
-1. Two sentences max: setup, punchline. The punchline personifies the victim
-   (the kitchen, the bathroom, the vacuum) or states a legal/administrative
-   consequence (files for divorce, presses charges, demands compensation).
-2. Exactly one 😂 at the end. No other emoji in titles.
-3. **No trailing period after hashtags, and no stray quotes** — three of the
-   five launch titles end in `.` after the hashtags and one contains a stray
-   `"`. This looks broken in search results. Corrected titles are logged in
-   `channel/logs/upload-log.md`.
-4. Hashtags: at most 2–3, and prefer putting them in the **description**, not
-   the title. If kept in the title: `#shorts #funnydog #chihuahua` and nothing
-   else. Once the dog is named, add a branded hashtag (e.g. `#peanutthechi`).
-5. Target ≤ 70 characters before hashtags so nothing truncates on mobile.
-6. Always score candidate titles with `vidiq_score_title` and keep the winner.
+In-grammar examples:
+- `Dog Turns Living Room Into An Aquarium And Acts Innocent 😂 #shorts #funnydog #chihuahua`
+- `It Is Snowing In The Kitchen And He Is Not Sorry ❄️ #shorts #funnydog #chihuahua`
 
 ## Description template
 
 ```
 {One deadpan sentence extending the joke — new information, not a title repeat.}
 
-New crimes daily. Subscribe to follow the investigation. 🐾
+New disasters daily. Subscribe to follow the investigation. 🐾
 
-#shorts #funnydog #chihuahua
-{This video contains AI-generated content.}
+This video contains AI-generated content.
 ```
 
 ## Channel description (DRAFT — paste into YouTube Studio; currently empty)
 
-> Daily reports on one small dog's very large crimes. 🐾
-> AI-generated comedy shorts about a chihuahua who destroys everything and
-> regrets nothing. New crimes posted daily at 7:00 & 17:00 UTC.
+> Daily reports on one small dog's very large disasters. 🐾
+> AI-generated comedy shorts about a tiny chihuahua who wrecks the house and
+> regrets nothing. Two new episodes every day.
 > Subscribe to follow the investigation.
 
-Also in Studio: set the channel **country**, add channel keywords
-(`funny dog, chihuahua, dog shorts, ai animation, pet comedy`), and create a
-"All Crimes" playlist once there are 10+ videos.
+Also in Studio: set the channel country and add channel keywords
+(`funny dog, chihuahua, dog shorts, ai animation, pet comedy`).
 
 ## Do / Don't
 
 **Do**
-- Keep one consistent chihuahua "actor" across every video.
-- Escalate absurdity: the disaster should be *bigger than physically possible*.
-- Household settings (kitchen, bathroom, living room, garden) — relatable rooms
-  make the destruction funnier.
-- End on the guilty face. It is the brand. It is in the name.
-- Vary the crime category between consecutive uploads (see content pillars).
+- Keep the exact same tan chihuahua and the same owner in every video.
+- Open shot 1 mid-disaster — legible within one second.
+- Prioritize the impossible-environments-indoors lane (snow, rain, beach
+  inside the house) — it's the proven lane.
+- End on the guilty side-eye. It is the brand. It is in the name.
+- Vary the disaster category between consecutive uploads.
 
 **Don't**
-- No real harm, injury, or distress — dog is always delighted, victims are
-  always objects/rooms.
-- No shock/gross-out content, no other pets being victimized.
-- No engagement-bait text ("wait for it", "99% will miss this").
-- No claiming footage is real; no hiding that it's AI.
-- Never post a video where the dog looks *different* from the last video
-  without a story reason.
+- No real harm, injury, or distress — the dog is always calm, the owner only
+  freezes, victims are always rooms/objects.
+- No shock or gross-out content.
+- No engagement-bait text ("wait for it").
+- Never claim the footage is real; every upload gets the **Altered content**
+  disclosure ticked.
+- **Never reuse the same video across channels.**
+- Never change the dog's look without a story reason and user sign-off.

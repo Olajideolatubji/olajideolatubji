@@ -9,9 +9,11 @@ credits** for the scan (it must check `vidiq_balance` and stay under).
 Scope to request from it:
 1. Outliers around the core niche (funny dog / guilty dog / chihuahua / AI dog
    comedy) — what overperformed in the last 2 weeks and *why mechanically*.
-2. 3–5 comparable channels (faceless, pet comedy, ideally small-and-rising) —
-   maintain them via `vidiq_update_competitors` / `vidiq_list_competitors` so
-   the list persists between scans.
+2. The named competitors first — **Tim and Jeffy** and **Thrill Reels**
+   (user-designated): recent uploads, what beat their median, format shifts —
+   then 3–5 comparable channels (faceless pet comedy, small-and-rising).
+   Maintain the list via `vidiq_update_competitors` / `vidiq_list_competitors`
+   so it persists between scans.
 3. One TikTok/IG signal: a pet-comedy format breaking out there that hasn't
    saturated YouTube yet.
 4. Every finding translated into a Guilty Paws concept in the brand's title

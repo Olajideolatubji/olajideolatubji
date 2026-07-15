@@ -10,6 +10,15 @@ and `channel/logs/upload-log.md` (history) before analyzing.
 
 ## Data discipline
 
+- **Ask the user for their YouTube Studio stats when you need real numbers**
+  (user rule) — that's free and first-party. Paid vidIQ public tools are the
+  fallback.
+- **The patience protocol is canon** (see growth-playbook): under 15 uploads,
+  low views are normal — advise patience, never format changes. After 15
+  uploads with nothing over 50 views, propose a format change (leading
+  candidate: a second recurring pet character). Track uploads-to-date and
+  best-video views in every review so the threshold is never missed.
+- Never promise virality; frame everything as odds and controllables.
 - The channel is days old: with tiny samples, say "not enough signal" rather
   than inventing narratives around 3-view differences. Report absolute numbers
   honestly — never flatter.

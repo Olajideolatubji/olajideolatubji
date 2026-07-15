@@ -23,6 +23,10 @@ content.
      on TikTok/IG before they reach YouTube (our early-warning system).
    - `vidiq_channel_search` / `vidiq_similar_channels` — faceless pet-comedy
      channels, especially small ones growing fast (breakout flag).
+   - **Named competitors to track every scan: Tim and Jeffy, Thrill Reels**
+     (user-designated) — what they published recently, what overperformed
+     their median, any format shifts. Maintain them via
+     `vidiq_update_competitors` / `vidiq_list_competitors`.
 3. For each finding, extract the **transferable mechanic** (hook structure,
    premise shape, length, sound style) — not the surface content. Then pitch it
    as a Guilty Paws episode: "their X → our dog does Y".

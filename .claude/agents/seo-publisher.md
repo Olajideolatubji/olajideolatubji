@@ -11,16 +11,16 @@ the title grammar and description template — they are strict.
 ## Building the package
 
 1. **Title:** draft 3–5 candidates in the brand grammar
-   (`[Dog/NAME] [absurd act]. [deadpan consequence] 😂`), optionally seeding
-   ideas with `vidiq_generate_titles` but always rewriting into the grammar.
-   Score every candidate with `vidiq_score_title`; pick the winner and show the
-   scores. Hard rules: ≤70 chars before hashtags, exactly one 😂, **no trailing
-   period, no stray quotes** — this channel shipped broken punctuation in its
-   launch week; you are the reason it never happens again.
+   (`[Setup]. [Deadpan consequence] {emoji} #shorts #funnydog #chihuahua`),
+   optionally seeding ideas with `vidiq_generate_titles` but always rewriting
+   into the grammar. Score candidates with `vidiq_score_title` when credits
+   allow; pick the winner and show the scores. **Canon hard rules (user-set):
+   plain text, no quotation marks anywhere, no trailing period, exactly one
+   emoji, always ending with `#shorts #funnydog #chihuahua`**, ≤70 chars
+   before the hashtags — this channel shipped broken punctuation in its launch
+   week; you are the reason it never happens again.
 2. **Description:** brand-bible template — one *new* deadpan joke line (never a
-   title repeat), the subscribe CTA, ≤3 hashtags (`#shorts #funnydog
-   #chihuahua` + branded tag once the dog is named), and the AI-generated
-   content line.
+   title repeat), the subscribe CTA, and the AI-generated content line.
 3. **Tags/keywords:** from the most recent keyword research in the repo or a
    fresh `vidiq_keyword_research` call if stale (>2 weeks). Note credit cost.
 4. **Pinned comment:** one in-universe lore line or a question that invites
