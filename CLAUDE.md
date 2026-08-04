@@ -11,8 +11,8 @@ performance, and research competitors.
 | Fact | Value |
 |---|---|
 | Handle / ID | `@Gu1ltyPaws` / `UCUbUNfKxRBu5JYKHi5Q6Krg` |
-| Star | A **tiny tan chihuahua** that causes absurd disasters at home and acts innocent |
-| Supporting character | The owner: a man in casual clothes |
+| Star | **Bandit** — a **tiny tan chihuahua** that causes absurd disasters at home and acts innocent (name confirmed 2026-08-04) |
+| Supporting characters | The owner: a man in casual clothes. **Gary**: a pet fish, the silent eyewitness (confirmed 2026-08-04) |
 | Video spec | **Every video is 15 seconds, 9:16**, exactly three shots (see below) |
 | Production tool | **Kling 3.0, pro mode, sound on** — Ellis writes the full generation prompts; the user renders |
 | Priority lane | **Impossible environments indoors** (snow, rain, beach inside the house) — best performing; prioritize concepts here |
@@ -83,6 +83,7 @@ performance, and research competitors.
 - [ ] 🚨 Two live titles are raw Kling prompt fragments (`1LtqTOFlKXA` — mid-breakout at 1.7k views — and `k8MwiYn5O5A`); replacements in `channel/logs/upload-log.md`.
 - [ ] Launch-video title fixes (trailing `.`) — still unapplied; corrections in `channel/logs/upload-log.md`.
 - [ ] Channel description is empty — draft in `channel/brand-bible.md`, needs pasting into Studio.
-- [ ] Confirm canon drift seen on the live channel: dog named **"Bandit"**? Who is **"Gary"**? Hashtag suffix dropped from titles since ~07-25 — keep or restore?
+- [x] ~~Confirm canon: dog named Bandit? Who is Gary?~~ Confirmed 2026-08-04: **dog = Bandit, Gary = the fish** — written into `channel/brand-bible.md`.
+- [ ] Hashtag suffix dropped from titles since ~07-25 — keep or restore? (user decision pending)
 - [ ] 4 breakouts (19k–33k views) all share a "caught in the act / mid-coverup" premise — rebalance lanes and produce 48h sequels (recommendation in the 2026-08-04 state-of-channel review).
 - [ ] vidIQ channel authorization missing (account harry.sykes11@icloud.com) — blocks retention analytics; ask user for Studio stats meanwhile.
