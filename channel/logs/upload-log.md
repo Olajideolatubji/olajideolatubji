@@ -59,20 +59,15 @@ to happen), `aftermath` (reveal of the damage), `case-file` (Investigation frami
 | 7Iba3oZdtYs | 2026-08-03 12:00 | He Joined The Family Photos | 3 | 0 | ⚠️ no emoji, no hashtags |
 | qXti5qVGdfc | 2026-08-04 00:00 | He Became Knitwear 😂 | 3 | 0 | ⚠️ no hashtags |
 
-## Title fixes to apply in YouTube Studio (priority order)
+## Title fixes in YouTube Studio
 
-1. 🚨 `1LtqTOFlKXA` (1,771 views and climbing) — replace prompt-fragment title
-   with e.g.: `Bandit Built A Fort From The Couch's Insides 😂 #shorts #funnydog #chihuahua`
-2. 🚨 `k8MwiYn5O5A` — replace prompt-fragment title with e.g.:
-   `Every Sock In The House Reports To Bandit Now 😂 #shorts #funnydog #chihuahua`
-3. Launch-set trailing `.` fixes (still unapplied as of 2026-08-04):
-   - `Dog Turns Living Room Into An Aquarium And Acts Innocent 😂 #shorts #funnydog #chihuahua`
-   - `Dog Fills Entire Kitchen With Popcorn And Feels No Shame 😂 #shorts #funnydog #chihuahua`
-   - `He Discovered Bubbles. The Bathroom Didn't Survive 😂 #shorts #funnydog #chihuahua`
-   - `Dog Orders 10,000 Ball Pit Balls While Owner Was Out 😂 #shorts #funnydog #chihuahua`
-   - `Dog Attempts Italian Cooking. Kitchen Files For Divorce 😂 #shorts #funnydog #chihuahua`
-4. Two-emoji titles (`GaTYv3w36-U`, `AXZtxVTFGcg`) and missing-emoji titles
-   (`g4bl4Os3pKE`, `7Iba3oZdtYs`) — bring in line with the one-emoji rule.
+✅ **Fixed by the user 2026-08-04** (per user report; verify live titles at the
+next `/weekly-review` and update the table above): the two prompt-fragment
+titles (`1LtqTOFlKXA`, `k8MwiYn5O5A`) and the launch-set punctuation fixes.
+
+Remaining nice-to-haves (low priority, confirm status at next review):
+- Two-emoji titles (`GaTYv3w36-U`, `AXZtxVTFGcg`) and missing-emoji titles
+  (`g4bl4Os3pKE`, `7Iba3oZdtYs`) — one-emoji rule.
 
 Note on the missing `#shorts #funnydog #chihuahua` suffix: it disappeared from
 most titles after 2026-07-25. Evidence is mixed — one breakout has the suffix

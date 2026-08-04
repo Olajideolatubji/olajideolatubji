@@ -80,8 +80,7 @@ performance, and research competitors.
 
 ## Open action items (refreshed 2026-08-04 — see `channel/logs/weekly-reviews/2026-08-04-state-of-channel.md`)
 
-- [ ] 🚨 Two live titles are raw Kling prompt fragments (`1LtqTOFlKXA` — mid-breakout at 1.7k views — and `k8MwiYn5O5A`); replacements in `channel/logs/upload-log.md`.
-- [ ] Launch-video title fixes (trailing `.`) — still unapplied; corrections in `channel/logs/upload-log.md`.
+- [x] ~~Prompt-fragment titles + launch-video title fixes~~ — user applied them in Studio 2026-08-04; verify live at next `/weekly-review`.
 - [ ] Channel description is empty — draft in `channel/brand-bible.md`, needs pasting into Studio.
 - [x] ~~Confirm canon: dog named Bandit? Who is Gary?~~ Confirmed 2026-08-04: **dog = Bandit, Gary = the fish** — written into `channel/brand-bible.md`.
 - [ ] Hashtag suffix dropped from titles since ~07-25 — keep or restore? (user decision pending)
