@@ -78,9 +78,11 @@ performance, and research competitors.
 - `/weekly-review` — stats (ask user if not provided), diagnosis, decisions.
 - `/competitor-scan` — refresh niche landscape incl. the named competitors.
 
-## Open action items
+## Open action items (refreshed 2026-08-04 — see `channel/logs/weekly-reviews/2026-08-04-state-of-channel.md`)
 
+- [ ] 🚨 Two live titles are raw Kling prompt fragments (`1LtqTOFlKXA` — mid-breakout at 1.7k views — and `k8MwiYn5O5A`); replacements in `channel/logs/upload-log.md`.
+- [ ] Launch-video title fixes (trailing `.`) — still unapplied; corrections in `channel/logs/upload-log.md`.
 - [ ] Channel description is empty — draft in `channel/brand-bible.md`, needs pasting into Studio.
-- [ ] Launch-video title fixes (stray `."` / quote) — corrections in `channel/logs/upload-log.md`.
+- [ ] Confirm canon drift seen on the live channel: dog named **"Bandit"**? Who is **"Gary"**? Hashtag suffix dropped from titles since ~07-25 — keep or restore?
+- [ ] 4 breakouts (19k–33k views) all share a "caught in the act / mid-coverup" premise — rebalance lanes and produce 48h sequels (recommendation in the 2026-08-04 state-of-channel review).
 - [ ] vidIQ channel authorization missing (account harry.sykes11@icloud.com) — blocks retention analytics; ask user for Studio stats meanwhile.
-- [ ] The chihuahua has no name — options in `channel/brand-bible.md`, user decision pending.
