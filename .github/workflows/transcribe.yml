@@ -1,0 +1,33 @@
+name: Transcribe voiceover
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: Branch with public/voiceover.mp3
+        required: true
+        default: claude/red-ledger-remotion-video-9kow5i
+
+jobs:
+  transcribe:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install faster-whisper
+        run: pip install faster-whisper
+      - name: Transcribe
+        run: python scripts/transcribe.py
+      - name: Commit words.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add scripts/words.json
+          git commit -m "Add word-level transcription of voiceover"
+          git push origin "${{ inputs.branch }}"
