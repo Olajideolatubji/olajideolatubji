@@ -1,0 +1,39 @@
+name: Fetch narration audio
+
+on:
+  workflow_dispatch:
+    inputs:
+      url_a:
+        description: Signed URL for narration part A
+        required: true
+      url_b:
+        description: Signed URL for narration part B
+        required: true
+      branch:
+        description: Branch to commit the audio to
+        required: true
+        default: claude/red-ledger-remotion-video-9kow5i
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+      - name: Download narration parts
+        run: |
+          mkdir -p assets/narration
+          curl -sSL -o assets/narration/narr_a.wav "${{ inputs.url_a }}"
+          curl -sSL -o assets/narration/narr_b.wav "${{ inputs.url_b }}"
+          ls -la assets/narration
+          file assets/narration/*.wav
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/narration
+          git commit -m "Add narration audio parts (fetched by workflow)"
+          git push origin "${{ inputs.branch }}"
