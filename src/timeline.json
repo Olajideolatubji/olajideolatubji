@@ -1,0 +1,1034 @@
+{
+ "fps": 30,
+ "durationSec": 812.1,
+ "voiceoverSec": 806.1,
+ "scenes": [
+  {
+   "id": "cold-flight",
+   "type": "night-flight",
+   "start": 0,
+   "end": 17.28,
+   "props": {}
+  },
+  {
+   "id": "cold-fbi",
+   "type": "missing-file",
+   "start": 17.28,
+   "end": 30.6,
+   "props": {}
+  },
+  {
+   "id": "cold-ledger",
+   "type": "ledger-intro",
+   "start": 30.6,
+   "end": 48.52,
+   "props": {
+    "titleAtSec": 47.1
+   }
+  },
+  {
+   "id": "ftx-9q",
+   "type": "nine-days-question",
+   "start": 51.32,
+   "end": 60.6,
+   "props": {
+    "nineAtSec": 55.58
+   }
+  },
+  {
+   "id": "ftx-good",
+   "type": "good-billionaire",
+   "start": 60.6,
+   "end": 79.22,
+   "props": {}
+  },
+  {
+   "id": "ftx-door",
+   "type": "back-door",
+   "start": 79.22,
+   "end": 98.04,
+   "props": {}
+  },
+  {
+   "id": "ftx-door2",
+   "type": "back-door",
+   "start": 101.44,
+   "end": 106.12,
+   "props": {}
+  },
+  {
+   "id": "ftx-9days",
+   "type": "nine-days-timeline",
+   "start": 106.12,
+   "end": 125.24,
+   "props": {
+    "dayTimes": [
+     {
+      "day": 1,
+      "t": 106.12,
+      "label": "a leaked balance sheet"
+     },
+     {
+      "day": 2,
+      "t": 109.94,
+      "label": "a rival CEO is selling"
+     },
+     {
+      "day": 3,
+      "t": 109.94,
+      "label": "$6B out in 72 hours"
+     },
+     {
+      "day": 6,
+      "t": 118.88,
+      "label": "withdrawals freeze"
+     },
+     {
+      "day": 9,
+      "t": 118.88,
+      "label": "bankruptcy \u2014 worth nothing"
+     }
+    ]
+   }
+  },
+  {
+   "id": "ftx-wipe",
+   "type": "wealth-wipe",
+   "start": 125.24,
+   "end": 157.4,
+   "props": {
+    "quoteAtSec": 152.52
+   }
+  },
+  {
+   "id": "ftx-verdict",
+   "type": "verdict",
+   "start": 157.4,
+   "end": 165.4,
+   "props": {
+    "years": "25 YEARS",
+    "counts": "seven counts of fraud",
+    "epithet": "an ordinary thief with world-class PR"
+   }
+  },
+  {
+   "id": "ftx-bridge",
+   "type": "bridge",
+   "start": 165.4,
+   "end": 174.7,
+   "props": {
+    "line": "FTX had a product that actually worked.",
+    "emphasis": "The next company's technology\u2026 was theatre."
+   }
+  },
+  {
+   "id": "ther-trick",
+   "type": "magic-trick",
+   "start": 177.5,
+   "end": 178.18,
+   "props": {}
+  },
+  {
+   "id": "ther-edison",
+   "type": "edison-box",
+   "start": 178.18,
+   "end": 202.16,
+   "props": {}
+  },
+  {
+   "id": "ther-turn",
+   "type": "the-turn",
+   "start": 205.16,
+   "end": 217.94,
+   "props": {
+    "questionAtSec": 216.26
+   }
+  },
+  {
+   "id": "ther-neck",
+   "type": "turtleneck",
+   "start": 217.94,
+   "end": 237.98,
+   "props": {}
+  },
+  {
+   "id": "ther-swap",
+   "type": "box-swap",
+   "start": 237.98,
+   "end": 274.36,
+   "props": {
+    "voidAtSec": 270.06
+   }
+  },
+  {
+   "id": "ther-thread",
+   "type": "thread-pull",
+   "start": 274.36,
+   "end": 294.82,
+   "props": {
+    "yearsAtSec": 290.48
+   }
+  },
+  {
+   "id": "ther-bridge",
+   "type": "bridge",
+   "start": 294.82,
+   "end": 306.46,
+   "props": {
+    "line": "Theranos only faked a machine.",
+    "emphasis": "The next company faked the money itself."
+   }
+  },
+  {
+   "id": "wc-flip",
+   "type": "journalists-flip",
+   "start": 309.26,
+   "end": 313.56,
+   "props": {}
+  },
+  {
+   "id": "wc-dax",
+   "type": "dax-miracle",
+   "start": 313.56,
+   "end": 338.88,
+   "props": {}
+  },
+  {
+   "id": "wc-ft",
+   "type": "ft-stack",
+   "start": 338.88,
+   "end": 355.54,
+   "props": {}
+  },
+  {
+   "id": "wc-state",
+   "type": "state-enforced",
+   "start": 355.54,
+   "end": 378.2,
+   "props": {}
+  },
+  {
+   "id": "wc-call",
+   "type": "phone-call",
+   "start": 378.2,
+   "end": 389.42,
+   "props": {
+    "replyAtSec": 387.72
+   }
+  },
+  {
+   "id": "wc-escape",
+   "type": "marsalek-escape",
+   "start": 392.82,
+   "end": 433.42,
+   "props": {
+    "routeAtSec": 417.42
+   }
+  },
+  {
+   "id": "wc-bridge",
+   "type": "bridge",
+   "start": 433.42,
+   "end": 444.52,
+   "props": {
+    "line": "Wirecard lied about one number in one account.",
+    "emphasis": "The next company built an industrial machine for manufacturing lies."
+   }
+  },
+  {
+   "id": "en-trophy",
+   "type": "trophies",
+   "start": 447.32,
+   "end": 458.82,
+   "props": {}
+  },
+  {
+   "id": "en-m1",
+   "type": "machine-one",
+   "start": 458.82,
+   "end": 479.54,
+   "props": {}
+  },
+  {
+   "id": "en-m2",
+   "type": "machine-two",
+   "start": 479.54,
+   "end": 498.28,
+   "props": {}
+  },
+  {
+   "id": "en-black",
+   "type": "blackout",
+   "start": 498.28,
+   "end": 523.74,
+   "props": {}
+  },
+  {
+   "id": "en-crash",
+   "type": "crash-chart",
+   "start": 523.74,
+   "end": 541.5,
+   "props": {
+    "points": [
+     {
+      "t": 524.14,
+      "v": 90,
+      "label": ""
+     },
+     {
+      "t": 536.6,
+      "v": 90,
+      "label": "$90"
+     },
+     {
+      "t": 537.92,
+      "v": 80,
+      "label": ""
+     },
+     {
+      "t": 538.76,
+      "v": 40,
+      "label": ""
+     },
+     {
+      "t": 539.66,
+      "v": 10,
+      "label": ""
+     },
+     {
+      "t": 541.4,
+      "v": 0.26,
+      "label": "26\u00a2"
+     }
+    ]
+   }
+  },
+  {
+   "id": "en-shred",
+   "type": "shredder",
+   "start": 544.5,
+   "end": 559.14,
+   "props": {}
+  },
+  {
+   "id": "en-bridge",
+   "type": "imaginary-bridge",
+   "start": 559.14,
+   "end": 572.92,
+   "props": {}
+  },
+  {
+   "id": "oc-stage",
+   "type": "stage-queen",
+   "start": 575.72,
+   "end": 587.46,
+   "props": {}
+  },
+  {
+   "id": "oc-wembley",
+   "type": "wembley",
+   "start": 587.46,
+   "end": 602.78,
+   "props": {}
+  },
+  {
+   "id": "oc-chain",
+   "type": "blockchain-vs-db",
+   "start": 602.78,
+   "end": 626.36,
+   "props": {
+    "typeAtSec": 620.04
+   }
+  },
+  {
+   "id": "oc-pyramid",
+   "type": "pyramid",
+   "start": 626.36,
+   "end": 658.78,
+   "props": {}
+  },
+  {
+   "id": "oc-airport",
+   "type": "airport-vanish",
+   "start": 661.98,
+   "end": 684.16,
+   "props": {
+    "vanishAtSec": 682.16
+   }
+  },
+  {
+   "id": "oc-hunt",
+   "type": "manhunt",
+   "start": 684.16,
+   "end": 720.8,
+   "props": {}
+  },
+  {
+   "id": "oc-sight",
+   "type": "sightings",
+   "start": 720.8,
+   "end": 741.6,
+   "props": {}
+  },
+  {
+   "id": "oc-grave",
+   "type": "grave-or-ghost",
+   "start": 741.6,
+   "end": 754.2,
+   "props": {}
+  },
+  {
+   "id": "close-recap",
+   "type": "ledger-recap",
+   "start": 754.2,
+   "end": 781.1,
+   "props": {
+    "trustAtSec": 779.66
+   }
+  },
+  {
+   "id": "close-next",
+   "type": "next-one",
+   "start": 781.1,
+   "end": 795.76,
+   "props": {}
+  },
+  {
+   "id": "close-logo",
+   "type": "tease-logo",
+   "start": 795.76,
+   "end": 812.1,
+   "props": {
+    "logoAtSec": 806.7
+   }
+  }
+ ],
+ "ledgers": [
+  {
+   "at": 48.52,
+   "entry": 1,
+   "title": "FTX",
+   "amount": "$32,000,000,000",
+   "sub": "nine days to zero"
+  },
+  {
+   "at": 174.7,
+   "entry": 2,
+   "title": "THERANOS",
+   "amount": "$9,000,000,000",
+   "sub": "the magic box"
+  },
+  {
+   "at": 306.46,
+   "entry": 3,
+   "title": "WIRECARD",
+   "amount": "\u20ac24,000,000,000",
+   "sub": "the phantom billions"
+  },
+  {
+   "at": 444.52,
+   "entry": 4,
+   "title": "ENRON",
+   "amount": "$90 \u2192 $0.26",
+   "sub": "the lie factory"
+  },
+  {
+   "at": 572.92,
+   "entry": 5,
+   "title": "ONECOIN",
+   "amount": "$4,000,000,000+",
+   "sub": "the coin that never was"
+  }
+ ],
+ "slams": [
+  {
+   "at": 165.4,
+   "prevTotal": "$0B",
+   "total": "$32B",
+   "retease": "she's still missing"
+  },
+  {
+   "at": 294.82,
+   "prevTotal": "$32B",
+   "total": "$41B",
+   "retease": "she's still missing"
+  },
+  {
+   "at": 433.42,
+   "prevTotal": "$41B",
+   "total": "$67B",
+   "retease": "he's still missing too"
+  },
+  {
+   "at": 559.14,
+   "prevTotal": "$67B",
+   "total": "$168B",
+   "retease": "she's still missing"
+  },
+  {
+   "at": 754.2,
+   "prevTotal": "$168B",
+   "total": "$172B",
+   "retease": "she was never found"
+  }
+ ],
+ "stats": [
+  {
+   "at": 22.28,
+   "hold": 3.0,
+   "number": "$5,000,000",
+   "caption": "FBI reward \u2014 still unclaimed"
+  },
+  {
+   "at": 98.04,
+   "hold": 3.4,
+   "number": "$8,000,000,000",
+   "caption": "of other people's money"
+  },
+  {
+   "at": 202.16,
+   "hold": 3.0,
+   "number": "$700,000,000",
+   "caption": "handed over \u2014 no working product"
+  },
+  {
+   "at": 389.42,
+   "hold": 3.4,
+   "number": "\u20ac1,900,000,000",
+   "caption": "it never existed"
+  },
+  {
+   "at": 541.5,
+   "hold": 3.0,
+   "number": "20,000",
+   "caption": "jobs gone overnight"
+  },
+  {
+   "at": 658.78,
+   "hold": 3.2,
+   "number": "$4,000,000,000",
+   "caption": "for rows in a spreadsheet"
+  }
+ ],
+ "enronChart": {
+  "start": 523.74,
+  "end": 541.5,
+  "points": []
+ },
+ "chapters": [
+  {
+   "title": "Cold Open",
+   "at": 0.0
+  },
+  {
+   "title": "Entry One: FTX",
+   "at": 48.52
+  },
+  {
+   "title": "Entry Two: Theranos",
+   "at": 174.7
+  },
+  {
+   "title": "Entry Three: Wirecard",
+   "at": 306.46
+  },
+  {
+   "title": "Entry Four: Enron",
+   "at": 444.52
+  },
+  {
+   "title": "Entry Five: OneCoin",
+   "at": 572.92
+  },
+  {
+   "title": "The Close",
+   "at": 754.2
+  }
+ ],
+ "speech": [
+  [
+   0.0,
+   1.28
+  ],
+  [
+   1.74,
+   10.9
+  ],
+  [
+   11.3,
+   15.06
+  ],
+  [
+   15.42,
+   15.74
+  ],
+  [
+   16.18,
+   17.86
+  ],
+  [
+   18.42,
+   20.84
+  ],
+  [
+   21.2,
+   30.32
+  ],
+  [
+   30.72,
+   36.82
+  ],
+  [
+   37.66,
+   38.94
+  ],
+  [
+   39.44,
+   56.8
+  ],
+  [
+   57.18,
+   60.36
+  ],
+  [
+   60.72,
+   71.66
+  ],
+  [
+   72.08,
+   73.24
+  ],
+  [
+   73.6,
+   88.2
+  ],
+  [
+   88.62,
+   104.02
+  ],
+  [
+   104.6,
+   105.84
+  ],
+  [
+   106.24,
+   118.62
+  ],
+  [
+   119.0,
+   120.68
+  ],
+  [
+   121.12,
+   122.4
+  ],
+  [
+   122.84,
+   132.68
+  ],
+  [
+   133.28,
+   149.06
+  ],
+  [
+   149.46,
+   165.12
+  ],
+  [
+   165.52,
+   178.78
+  ],
+  [
+   179.18,
+   184.06
+  ],
+  [
+   184.42,
+   190.7
+  ],
+  [
+   191.1,
+   192.54
+  ],
+  [
+   193.06,
+   203.42
+  ],
+  [
+   204.16,
+   237.56
+  ],
+  [
+   238.1,
+   239.18
+  ],
+  [
+   239.6,
+   240.58
+  ],
+  [
+   240.98,
+   242.78
+  ],
+  [
+   243.16,
+   271.54
+  ],
+  [
+   271.94,
+   273.94
+  ],
+  [
+   274.48,
+   279.1
+  ],
+  [
+   279.46,
+   288.7
+  ],
+  [
+   289.22,
+   291.54
+  ],
+  [
+   291.98,
+   295.42
+  ],
+  [
+   295.8,
+   305.9
+  ],
+  [
+   306.58,
+   316.8
+  ],
+  [
+   317.2,
+   325.52
+  ],
+  [
+   325.92,
+   338.58
+  ],
+  [
+   339.0,
+   347.86
+  ],
+  [
+   348.26,
+   355.3
+  ],
+  [
+   355.66,
+   357.6
+  ],
+  [
+   357.96,
+   359.2
+  ],
+  [
+   359.56,
+   392.44
+  ],
+  [
+   392.8,
+   398.54
+  ],
+  [
+   398.98,
+   407.72
+  ],
+  [
+   408.12,
+   426.06
+  ],
+  [
+   426.44,
+   428.48
+  ],
+  [
+   428.88,
+   443.78
+  ],
+  [
+   444.64,
+   464.36
+  ],
+  [
+   464.74,
+   490.62
+  ],
+  [
+   490.98,
+   492.5
+  ],
+  [
+   493.18,
+   527.3
+  ],
+  [
+   527.68,
+   528.3
+  ],
+  [
+   528.7,
+   538.76
+  ],
+  [
+   539.12,
+   563.84
+  ],
+  [
+   564.32,
+   565.46
+  ],
+  [
+   565.88,
+   571.64
+  ],
+  [
+   572.1,
+   572.66
+  ],
+  [
+   573.04,
+   579.5
+  ],
+  [
+   579.92,
+   580.54
+  ],
+  [
+   580.94,
+   588.82
+  ],
+  [
+   589.18,
+   592.62
+  ],
+  [
+   593.08,
+   596.78
+  ],
+  [
+   597.18,
+   600.76
+  ],
+  [
+   601.54,
+   606.32
+  ],
+  [
+   606.74,
+   621.48
+  ],
+  [
+   621.84,
+   630.54
+  ],
+  [
+   631.02,
+   632.4
+  ],
+  [
+   633.08,
+   646.26
+  ],
+  [
+   646.8,
+   647.58
+  ],
+  [
+   647.98,
+   648.6
+  ],
+  [
+   649.0,
+   649.74
+  ],
+  [
+   650.16,
+   654.12
+  ],
+  [
+   654.5,
+   657.58
+  ],
+  [
+   658.9,
+   661.2
+  ],
+  [
+   662.34,
+   664.84
+  ],
+  [
+   665.5,
+   666.82
+  ],
+  [
+   667.3,
+   670.66
+  ],
+  [
+   671.12,
+   671.4
+  ],
+  [
+   671.84,
+   672.3
+  ],
+  [
+   672.8,
+   675.36
+  ],
+  [
+   675.72,
+   677.78
+  ],
+  [
+   678.26,
+   683.56
+  ],
+  [
+   684.28,
+   686.22
+  ],
+  [
+   686.68,
+   687.36
+  ],
+  [
+   687.84,
+   689.78
+  ],
+  [
+   690.28,
+   692.82
+  ],
+  [
+   693.28,
+   699.02
+  ],
+  [
+   699.58,
+   710.08
+  ],
+  [
+   710.8,
+   717.98
+  ],
+  [
+   718.84,
+   720.2
+  ],
+  [
+   720.92,
+   724.18
+  ],
+  [
+   724.66,
+   725.9
+  ],
+  [
+   726.48,
+   727.78
+  ],
+  [
+   728.38,
+   729.7
+  ],
+  [
+   730.34,
+   731.42
+  ],
+  [
+   732.06,
+   737.64
+  ],
+  [
+   738.12,
+   739.56
+  ],
+  [
+   739.94,
+   741.2
+  ],
+  [
+   741.72,
+   744.28
+  ],
+  [
+   745.38,
+   753.64
+  ],
+  [
+   754.32,
+   755.42
+  ],
+  [
+   756.06,
+   760.46
+  ],
+  [
+   761.02,
+   761.9
+  ],
+  [
+   762.32,
+   769.38
+  ],
+  [
+   770.02,
+   770.78
+  ],
+  [
+   771.26,
+   772.06
+  ],
+  [
+   772.5,
+   778.98
+  ],
+  [
+   779.78,
+   780.52
+  ],
+  [
+   781.22,
+   782.88
+  ],
+  [
+   783.24,
+   785.74
+  ],
+  [
+   786.42,
+   788.3
+  ],
+  [
+   788.72,
+   790.06
+  ],
+  [
+   790.44,
+   795.32
+  ],
+  [
+   795.88,
+   796.5
+  ],
+  [
+   796.86,
+   801.86
+  ],
+  [
+   802.42,
+   803.12
+  ],
+  [
+   803.82,
+   806.1
+  ]
+ ]
+}

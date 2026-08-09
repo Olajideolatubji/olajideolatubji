@@ -27,7 +27,7 @@ export const ensureFonts = () => {
     face
       .load()
       .then((f) => {
-        document.fonts.add(f);
+        (document.fonts as unknown as {add: (f: FontFace) => void}).add(f);
         continueRender(handle);
       })
       .catch(() => continueRender(handle));

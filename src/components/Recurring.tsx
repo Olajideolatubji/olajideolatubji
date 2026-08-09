@@ -8,7 +8,6 @@ import {
 } from 'remotion';
 import {BG, INK, RED, SERIF, STAT_FONT} from '../theme';
 import type {SlamSpec} from '../timelineTypes';
-import {FilmGrain, Vignette} from './Atmosphere';
 import {BigNumber, Label} from './Text';
 
 const SLAM_ANIM = 12; // frames of counter roll-up on a slam
@@ -322,8 +321,6 @@ export const LedgerOpen: React.FC<{
           </div>
         </div>
       </div>
-      <FilmGrain />
-      <Vignette />
     </AbsoluteFill>
   );
 };
@@ -362,8 +359,6 @@ export const StatCard: React.FC<{
           {caption}
         </Label>
       </div>
-      <FilmGrain />
-      <Vignette strength={0.65} />
     </AbsoluteFill>
   );
 };
