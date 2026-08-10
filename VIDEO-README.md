@@ -32,3 +32,11 @@ with Remotion at 1920×1080, 30fps.
   counter with chapter-close slams, full-bleed stat cards, word-synced charts.
 
 `chapters.txt` carries the YouTube chapter timestamps.
+
+## Files
+
+- `final.mp4` — the deliverable (72MB, CRF 26 web encode, identical content).
+- `assets/master/final_master.mp4.part-*` — the full-quality CRF 19 master
+  (179MB), split to fit GitHub's 100MB file limit. Rejoin with:
+  `cat assets/master/final_master.mp4.part-* > final_master.mp4`
+- `chapters.txt` — YouTube chapter timestamps.
