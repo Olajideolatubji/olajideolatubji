@@ -134,7 +134,12 @@ which no amount of markup substitutes for.
 
 ## Publishing it on GitHub Pages instead
 
-`.github/workflows/pages.yml` is an alternative that needs no Google account. It stays
-inert until two deliberate steps: merging to `main`, and setting **Settings → Pages →
-Source** to **GitHub Actions**. This repository is the profile repository, so enabling
-Pages publishes the app at `https://olajideolatubji.github.io/`.
+`.github/workflows/pages.yml` is an alternative that needs no Google account. It runs on
+pushes to `main` that touch `video-lab/`, and `actions/configure-pages` is set to
+`enablement: true`, so the workflow switches Pages on itself rather than waiting for
+anyone to change repository settings.
+
+This repository is the profile repository, so it publishes the app at the root:
+`https://olajideolatubji.github.io/`. To take the site down again, turn Pages off under
+**Settings → Pages**, and remove or disable this workflow so the next push does not
+switch it back on.

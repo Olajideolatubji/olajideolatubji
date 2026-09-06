@@ -35,7 +35,11 @@ jobs:
         env:
           SITE_URL: https://${{ github.repository_owner }}.github.io
         run: node video-lab/build-site.js
+      # enablement turns Pages on via the API using this job's token, so the
+      # first run on main publishes without anyone visiting repository settings.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: video-lab/_site
