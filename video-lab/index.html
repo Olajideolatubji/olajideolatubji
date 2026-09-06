@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Video Lab — score any video and rebuild it</title>
+<title>Video Lab</title>
 <meta name="description" content="Drop in a video, get a measured score, see exactly what is holding it back, and export the fixed cut.">
 <link rel="stylesheet" href="css/app.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
@@ -216,7 +216,7 @@
           <div class="bar" id="export-bar-wrap" hidden><div id="export-bar" class="bar-fill"></div></div>
           <p class="muted small" id="export-note">Export records in real time, so a 30s clip takes about 30s. Output is WebM.</p>
           <div id="export-result" hidden>
-            <a id="download-link" class="primary block" download>Download the new cut</a>
+            <button id="download-link" class="primary block" type="button">Download the new cut</button>
             <button id="rescore" class="ghost small block">Score this new version</button>
           </div>
         </div>

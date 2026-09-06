@@ -780,10 +780,8 @@
       app.lastBlob = result.blob;
       var name = app.analysis.base.meta.name.replace(/\.[^.]+$/, '') + '-videolab.webm';
       var link = $('#download-link');
-      if (link.href && link.href.indexOf('blob:') === 0) URL.revokeObjectURL(link.href);
-      link.href = URL.createObjectURL(result.blob);
-      link.download = name;
       link.textContent = 'Download the new cut (' + U.fmtBytes(result.blob.size) + ')';
+      link.onclick = function () { U.download(result.blob, name); };
       $('#export-result').hidden = false;
       $('#export-note').textContent = 'Exported at ' + result.width + '×' + result.height + '. WebM plays on every ' +
         'platform upload form; convert to MP4 if you need it for offline editing.';

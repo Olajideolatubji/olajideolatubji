@@ -101,7 +101,7 @@ VL.util = (function () {
     return node;
   }
 
-  function download(blob, filename) {
+  function anchorDownload(blob, filename) {
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
     a.href = url;
@@ -110,6 +110,24 @@ VL.util = (function () {
     a.click();
     document.body.removeChild(a);
     setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+
+  /* Anchor downloads are inert inside the Artifact sandbox, where the host's
+     save dialog is the only route to the viewer's disk. */
+  function download(blob, filename) {
+    if (!window.claude || typeof window.claude.use !== 'function') {
+      return Promise.resolve(anchorDownload(blob, filename));
+    }
+    return window.claude.use('downloads').then(function (downloads) {
+      if (!downloads) return anchorDownload(blob, filename);
+      return downloads.save({ filename: filename, data: blob }).catch(function (err) {
+        // The viewer said no — never re-offer the same file.
+        if (err && err.code === 'declined') return;
+        return anchorDownload(blob, filename);
+      });
+    }).catch(function () {
+      return anchorDownload(blob, filename);
+    });
   }
 
   function once(target, event) {

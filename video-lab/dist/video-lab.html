@@ -1,0 +1,3318 @@
+<title>Video Lab</title>
+<style>
+:root {
+  --bg: #0b0d12;
+  --panel: #12151d;
+  --panel-2: #171b25;
+  --line: #232837;
+  --text: #e7eaf2;
+  --muted: #99a1b5;
+  --accent: #5cf2b0;
+  --accent-2: #7aa2ff;
+  --warn: #ffc861;
+  --bad: #ff7a7a;
+  --radius: 14px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: radial-gradient(1200px 600px at 20% -10%, #182033 0%, var(--bg) 60%);
+  color: var(--text);
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+}
+
+main { max-width: 1080px; margin: 0 auto; padding: 0 20px 80px; }
+
+.topbar {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 20px 18px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand { display: flex; gap: 14px; align-items: center; }
+.brand-mark {
+  width: 42px; height: 42px; flex: none;
+  display: grid; place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(140deg, var(--accent), var(--accent-2));
+  color: #06110c; font-size: 18px; font-weight: 800;
+}
+.brand h1 { margin: 0; font-size: 20px; letter-spacing: -0.01em; }
+.brand p { margin: 2px 0 0; color: var(--muted); font-size: 13.5px; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px;
+  margin-bottom: 18px;
+}
+.panel h2 { margin: 0 0 6px; font-size: 17px; letter-spacing: -0.01em; }
+.panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12.5px; }
+
+/* Upload ------------------------------------------------------------ */
+.dropzone {
+  border: 1.5px dashed #2e3547;
+  border-radius: var(--radius);
+  padding: 46px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  background: var(--panel-2);
+}
+.dropzone:hover, .dropzone:focus, .dropzone.over {
+  border-color: var(--accent);
+  background: #141b1c;
+  outline: none;
+}
+.dropzone h2 { margin: 10px 0 4px; font-size: 19px; }
+.dropzone p { margin: 0; color: var(--muted); font-size: 13.5px; }
+.drop-icon { font-size: 30px; color: var(--accent); line-height: 1; }
+
+.preset-row { display: flex; align-items: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+.preset-row label { color: var(--muted); font-size: 14px; }
+select, input[type="text"] {
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 9px 11px;
+  font: inherit;
+  font-size: 14px;
+}
+input[type="text"] { width: 100%; }
+
+.claims { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 10px; }
+.claims li {
+  color: var(--muted);
+  font-size: 13.5px;
+  padding-left: 16px;
+  position: relative;
+}
+.claims li::before { content: "—"; position: absolute; left: 0; color: var(--accent); }
+.claims strong { color: var(--text); }
+
+/* Progress ---------------------------------------------------------- */
+.bar { height: 7px; background: #1d2231; border-radius: 99px; overflow: hidden; margin: 12px 0 8px; }
+.bar-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width .2s; }
+
+/* Hero -------------------------------------------------------------- */
+.hero { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
+.ring-wrap { position: relative; width: 168px; height: 168px; flex: none; }
+.ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring circle { fill: none; stroke-width: 14; stroke-linecap: round; }
+.ring-track { stroke: #1e2432; }
+.ring-value { stroke: var(--accent); stroke-dasharray: 540; stroke-dashoffset: 540; transition: stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1), stroke .4s; }
+.ring-label {
+  position: absolute; inset: 0; display: grid; place-content: center; text-align: center;
+}
+.ring-label span { font-size: 44px; font-weight: 800; letter-spacing: -0.03em; }
+.ring-label small { color: var(--muted); font-size: 13px; }
+.hero-body { flex: 1 1 320px; min-width: 280px; }
+.hero-body h2 { font-size: 22px; margin-bottom: 4px; }
+
+.ceiling { margin: 16px 0 12px; }
+.ceiling-bar { height: 10px; border-radius: 99px; background: #1d2231; display: flex; overflow: hidden; }
+.ceiling-now { background: var(--accent); }
+.ceiling-gain { background: repeating-linear-gradient(45deg, #2f6b52, #2f6b52 5px, #275844 5px, #275844 10px); }
+
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px 18px; margin: 14px 0 0; }
+.facts div { border-top: 1px solid var(--line); padding-top: 7px; }
+.facts dt { color: var(--muted); font-size: 12px; }
+.facts dd { margin: 1px 0 0; font-size: 14px; }
+
+/* Recommendations --------------------------------------------------- */
+.recs { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 10px; counter-reset: rec; }
+.rec {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--muted);
+  border-radius: 11px;
+  padding: 14px 16px;
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.rec.high { border-left-color: var(--bad); }
+.rec.medium { border-left-color: var(--warn); }
+.rec.low { border-left-color: var(--accent-2); }
+.rec.applied { opacity: .62; border-left-color: var(--accent); }
+.rec-body { flex: 1; }
+.rec h3 { margin: 0 0 4px; font-size: 15px; }
+.rec p { margin: 0 0 5px; font-size: 13.5px; color: var(--muted); }
+.rec .how { color: var(--text); }
+.rec-meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+.pill {
+  font-size: 11.5px; padding: 3px 9px; border-radius: 99px;
+  background: #1e2432; color: var(--muted); border: 1px solid var(--line);
+}
+.pill.gain { color: var(--accent); border-color: #244a3c; background: #12241d; }
+
+/* Timeline ---------------------------------------------------------- */
+.timeline { width: 100%; height: 180px; display: block; margin-top: 14px; border-radius: 10px; background: var(--panel-2); cursor: crosshair; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; color: var(--muted); font-size: 12.5px; }
+.legend span { display: flex; align-items: center; gap: 6px; }
+.sw { width: 12px; height: 4px; border-radius: 2px; display: inline-block; }
+.sw-motion { background: var(--accent); }
+.sw-audio { background: var(--accent-2); }
+.sw-cut { background: #ffffff; }
+.sw-dead { background: #4a2436; height: 10px; }
+.sw-hook { background: #2b3a5c; height: 10px; }
+
+/* Categories -------------------------------------------------------- */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-top: 14px; }
+.card { background: var(--panel-2); border: 1px solid var(--line); border-radius: 11px; padding: 14px; }
+.card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.card-head h3 { margin: 0; font-size: 14px; }
+.card-score { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+.card .bar { margin: 9px 0 10px; height: 5px; }
+.metric { display: flex; justify-content: space-between; gap: 10px; font-size: 12.5px; padding: 3px 0; border-top: 1px solid #1e2432; }
+.metric span:first-child { color: var(--muted); }
+.metric .good { color: var(--accent); }
+.metric .bad { color: var(--warn); }
+
+/* Thumbnails -------------------------------------------------------- */
+.thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 14px; }
+.thumb { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--panel-2); cursor: pointer; padding: 0; }
+.thumb img { width: 100%; display: block; }
+.thumb figcaption { padding: 7px 9px; font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
+
+/* Studio ------------------------------------------------------------ */
+.studio { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 22px; align-items: start; }
+@media (max-width: 900px) { .studio { grid-template-columns: 1fr; } }
+
+.stage { min-width: 0; }
+#preview {
+  width: 100%;
+  max-height: 62vh;
+  object-fit: contain;
+  background: #000;
+  border-radius: 11px;
+  display: block;
+  margin: 0 auto;
+}
+.transport { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.transport input[type="range"] { flex: 1; }
+
+.controls { background: var(--panel-2); border: 1px solid var(--line); border-radius: 11px; padding: 14px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+.tab {
+  background: transparent; border: 1px solid var(--line); color: var(--muted);
+  border-radius: 8px; padding: 6px 10px; font-size: 12.5px; cursor: pointer;
+}
+.tab.active { color: #06110c; background: var(--accent); border-color: var(--accent); font-weight: 600; }
+.tab-body label { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; color: var(--muted); margin: 12px 0 5px; }
+.tab-body label.check { justify-content: flex-start; align-items: center; gap: 8px; color: var(--text); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+.chip {
+  background: #1b2130; border: 1px solid var(--line); color: var(--text);
+  border-radius: 8px; padding: 5px 10px; font-size: 12.5px; cursor: pointer; text-align: left;
+}
+.chip.active { background: var(--accent); color: #06110c; border-color: var(--accent); font-weight: 600; }
+.chip:hover { border-color: var(--accent-2); }
+
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+.cap-head { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
+.captions { display: grid; gap: 8px; margin-top: 8px; }
+.caption-row { display: grid; grid-template-columns: 1fr auto; gap: 6px; align-items: center; background: #1b2130; border: 1px solid var(--line); border-radius: 9px; padding: 8px; }
+.caption-row .times { grid-column: 1 / -1; display: flex; gap: 8px; color: var(--muted); font-size: 12px; }
+.caption-row input[type="text"] { font-size: 13px; padding: 6px 8px; }
+
+.export { margin-top: 20px; border-top: 1px solid var(--line); padding-top: 16px; }
+.export-row { display: flex; gap: 8px; margin-top: 8px; }
+.export-row button { flex: 1; }
+
+/* Buttons ----------------------------------------------------------- */
+button, .primary { font: inherit; cursor: pointer; }
+.primary {
+  background: var(--accent); color: #06110c; border: none;
+  border-radius: 9px; padding: 11px 16px; font-weight: 700; font-size: 14px;
+  width: 100%; text-align: center; text-decoration: none; display: block;
+}
+.primary.small { width: auto; padding: 7px 12px; font-size: 13px; }
+.primary:hover { filter: brightness(1.08); }
+.ghost {
+  background: transparent; color: var(--text); border: 1px solid var(--line);
+  border-radius: 9px; padding: 8px 12px; font-size: 13px;
+}
+.ghost:hover { border-color: var(--accent); color: var(--accent); }
+.ghost.small { padding: 6px 10px; font-size: 12.5px; }
+.block { display: block; width: 100%; margin-top: 8px; }
+button:disabled { opacity: .5; cursor: default; }
+
+.error {
+  background: #2a1620; border: 1px solid #5c2b3a; color: #ffc2c2;
+  padding: 13px 15px; border-radius: 11px; font-size: 14px;
+}
+
+footer { text-align: center; color: var(--muted); font-size: 12.5px; padding: 0 20px 40px; }
+</style>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">▲</span>
+    <div>
+      <h1>Video Lab</h1>
+      <p>Score a video, find what is holding it back, and export the fixed cut.</p>
+    </div>
+  </div>
+  <button id="restart" class="ghost" hidden>New video</button>
+</header>
+
+<main>
+
+  <!-- 1. Upload -->
+  <section id="upload-section" class="panel">
+    <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Choose a video file">
+      <div class="drop-icon">＋</div>
+      <h2>Drop a video here</h2>
+      <p>or click to choose a file — MP4, MOV, WebM. Nothing is uploaded; it all runs in this browser.</p>
+      <input type="file" id="file-input" accept="video/*" hidden>
+    </div>
+
+    <div class="preset-row">
+      <label for="preset">Score it for</label>
+      <select id="preset">
+        <option value="shorts" selected>TikTok / Reels / Shorts (9:16)</option>
+        <option value="feed">Instagram feed / LinkedIn (4:5)</option>
+        <option value="youtube">YouTube long-form (16:9)</option>
+      </select>
+    </div>
+
+    <ul class="claims">
+      <li><strong>Measured, not guessed.</strong> Every frame is decoded and scored on movement, cuts, focus, exposure and colour; the audio track is decoded for loudness, silence and clipping.</li>
+      <li><strong>Ranked fixes.</strong> Each problem is scored by how many points it is costing you, so you know what to change first.</li>
+      <li><strong>One-click edits.</strong> Reframe, recolour, trim, punch in, caption and re-level — then export the new cut.</li>
+    </ul>
+  </section>
+
+  <!-- 2. Analysing -->
+  <section id="progress-section" class="panel" hidden>
+    <h2 id="progress-title">Analysing…</h2>
+    <div class="bar"><div id="progress-bar" class="bar-fill"></div></div>
+    <p id="progress-note" class="muted">Decoding frames.</p>
+  </section>
+
+  <!-- 3. Report -->
+  <section id="report-section" hidden>
+    <div class="panel hero">
+      <div class="ring-wrap">
+        <svg viewBox="0 0 200 200" class="ring" aria-hidden="true">
+          <circle cx="100" cy="100" r="86" class="ring-track"></circle>
+          <circle cx="100" cy="100" r="86" class="ring-value" id="ring-value"></circle>
+        </svg>
+        <div class="ring-label">
+          <span id="score-number">0</span>
+          <small>/ 100</small>
+        </div>
+      </div>
+      <div class="hero-body">
+        <h2 id="verdict">—</h2>
+        <p id="verdict-note" class="muted"></p>
+        <div class="ceiling">
+          <div class="ceiling-bar">
+            <div class="ceiling-now" id="ceiling-now"></div>
+            <div class="ceiling-gain" id="ceiling-gain"></div>
+          </div>
+          <p class="muted" id="ceiling-text"></p>
+        </div>
+        <dl class="facts" id="facts"></dl>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>What is holding it back</h2>
+        <button id="apply-all" class="primary small">Apply every fix</button>
+      </div>
+      <p class="muted">Ranked by the points each one is costing. “Apply” loads the fix into the studio below.</p>
+      <ol id="recs" class="recs"></ol>
+    </div>
+
+    <div class="panel">
+      <h2>The video, measured</h2>
+      <p class="muted">Movement, audio level, cuts and dead zones across the runtime. Click to jump there.</p>
+      <canvas id="timeline" class="timeline" height="180"></canvas>
+      <div class="legend">
+        <span><i class="sw sw-motion"></i>movement</span>
+        <span><i class="sw sw-audio"></i>audio level</span>
+        <span><i class="sw sw-cut"></i>cut</span>
+        <span><i class="sw sw-dead"></i>dead zone</span>
+        <span><i class="sw sw-hook"></i>hook window</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Category scores</h2>
+      <div id="categories" class="cards"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Strongest frames</h2>
+      <p class="muted">Ranked on focus, colour, exposure and whether a face is in shot — the best candidates for a cover or an opening frame.</p>
+      <div id="thumbs" class="thumbs"></div>
+    </div>
+  </section>
+
+  <!-- 4. Studio -->
+  <section id="studio-section" hidden>
+    <div class="panel studio">
+      <div class="stage">
+        <canvas id="preview"></canvas>
+        <div class="transport">
+          <button id="play" class="ghost" aria-label="Play or pause">▶</button>
+          <input type="range" id="scrub" min="0" max="1000" value="0" aria-label="Scrub">
+          <span id="time-label" class="mono">0:00 / 0:00</span>
+        </div>
+        <p class="muted small" id="output-note"></p>
+      </div>
+
+      <div class="controls">
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-tab="trim">Trim</button>
+          <button class="tab" data-tab="frame">Framing</button>
+          <button class="tab" data-tab="look">Look</button>
+          <button class="tab" data-tab="pace">Pace</button>
+          <button class="tab" data-tab="text">Text</button>
+          <button class="tab" data-tab="audio">Audio</button>
+        </div>
+
+        <div class="tab-body" data-panel="trim">
+          <label>Start <output id="trim-in-val" class="mono">0:00</output></label>
+          <input type="range" id="trim-in" min="0" max="1000" value="0">
+          <label>End <output id="trim-out-val" class="mono">0:00</output></label>
+          <input type="range" id="trim-out" min="0" max="1000" value="1000">
+          <button class="ghost small" id="trim-suggest">Start on the strongest opening frame</button>
+        </div>
+
+        <div class="tab-body" data-panel="frame" hidden>
+          <label>Aspect ratio</label>
+          <div class="chips" id="aspect-chips">
+            <button class="chip active" data-aspect="source">Source</button>
+            <button class="chip" data-aspect="0.5625">9:16</button>
+            <button class="chip" data-aspect="0.8">4:5</button>
+            <button class="chip" data-aspect="1">1:1</button>
+            <button class="chip" data-aspect="1.7778">16:9</button>
+          </div>
+          <label>Zoom <output id="zoom-val" class="mono">1.00×</output></label>
+          <input type="range" id="zoom" min="100" max="250" value="100">
+          <label>Pan horizontally <output id="panx-val" class="mono">0</output></label>
+          <input type="range" id="panx" min="-100" max="100" value="0">
+          <label>Pan vertically <output id="pany-val" class="mono">0</output></label>
+          <input type="range" id="pany" min="-100" max="100" value="0">
+        </div>
+
+        <div class="tab-body" data-panel="look" hidden>
+          <label>Brightness <output id="brightness-val" class="mono">1.00</output></label>
+          <input type="range" id="brightness" min="60" max="180" value="100">
+          <label>Contrast <output id="contrast-val" class="mono">1.00</output></label>
+          <input type="range" id="contrast" min="60" max="180" value="100">
+          <label>Saturation <output id="saturate-val" class="mono">1.00</output></label>
+          <input type="range" id="saturate" min="0" max="220" value="100">
+          <label>Warm / cool <output id="warmth-val" class="mono">0</output></label>
+          <input type="range" id="warmth" min="-50" max="50" value="0">
+          <label>Vignette <output id="vignette-val" class="mono">0</output></label>
+          <input type="range" id="vignette" min="0" max="80" value="0">
+          <button class="ghost small" id="look-auto">Auto-grade from the analysis</button>
+        </div>
+
+        <div class="tab-body" data-panel="pace" hidden>
+          <label class="check"><input type="checkbox" id="punch"> Punch in on every cut</label>
+          <label>Punch strength <output id="punch-val" class="mono">14%</output></label>
+          <input type="range" id="punch-strength" min="4" max="35" value="14">
+          <label class="check"><input type="checkbox" id="speedup"> Speed through dead zones</label>
+          <label>Dead-zone speed <output id="speed-val" class="mono">1.8×</output></label>
+          <input type="range" id="speed" min="120" max="400" value="180">
+          <label class="check"><input type="checkbox" id="progressbar"> Burn in a progress bar</label>
+          <p class="muted small" id="pace-note"></p>
+        </div>
+
+        <div class="tab-body" data-panel="text" hidden>
+          <label for="hook-text">Hook text (shown for the first 2.6s)</label>
+          <input type="text" id="hook-text" placeholder="Type the line that stops the scroll">
+          <div class="chips" id="hook-templates"></div>
+          <div class="cap-head">
+            <label>Captions</label>
+            <button class="ghost small" id="add-caption">Add at playhead</button>
+          </div>
+          <div id="captions" class="captions"></div>
+        </div>
+
+        <div class="tab-body" data-panel="audio" hidden>
+          <p class="muted small" id="audio-note"></p>
+          <label>Gain <output id="gain-val" class="mono">0.0 dB</output></label>
+          <input type="range" id="gain" min="-120" max="180" value="0">
+          <button class="ghost small" id="normalize">Normalise to platform target</button>
+        </div>
+
+        <div class="export">
+          <button id="export-video" class="primary">Export the edited video</button>
+          <div class="export-row">
+            <button id="export-cover" class="ghost small">Cover image (.png)</button>
+            <button id="export-report" class="ghost small">Report (.md)</button>
+          </div>
+          <div class="bar" id="export-bar-wrap" hidden><div id="export-bar" class="bar-fill"></div></div>
+          <p class="muted small" id="export-note">Export records in real time, so a 30s clip takes about 30s. Output is WebM.</p>
+          <div id="export-result" hidden>
+            <button id="download-link" class="primary block" type="button">Download the new cut</button>
+            <button id="rescore" class="ghost small block">Score this new version</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p id="error" class="error" hidden></p>
+</main>
+
+<footer>
+  <p>Everything runs locally in your browser — the video never leaves this machine.</p>
+</footer>
+
+
+<script>
+/* Shared helpers. Loaded as a classic script so the site works over file:// too. */
+window.VL = window.VL || {};
+
+VL.util = (function () {
+  function clamp(v, lo, hi) {
+    return v < lo ? lo : v > hi ? hi : v;
+  }
+
+  function lerp(a, b, t) {
+    return a + (b - a) * t;
+  }
+
+  function mean(arr) {
+    if (!arr.length) return 0;
+    var s = 0;
+    for (var i = 0; i < arr.length; i++) s += arr[i];
+    return s / arr.length;
+  }
+
+  function std(arr) {
+    if (arr.length < 2) return 0;
+    var m = mean(arr), s = 0;
+    for (var i = 0; i < arr.length; i++) s += (arr[i] - m) * (arr[i] - m);
+    return Math.sqrt(s / (arr.length - 1));
+  }
+
+  function percentile(arr, p) {
+    if (!arr.length) return 0;
+    var a = arr.slice().sort(function (x, y) { return x - y; });
+    var idx = clamp((a.length - 1) * p, 0, a.length - 1);
+    var lo = Math.floor(idx), hi = Math.ceil(idx);
+    return lerp(a[lo], a[hi], idx - lo);
+  }
+
+  /* Maps a value onto 0..100 with a plateau: full marks between `good` and `great`,
+     tapering to 0 at `floor` and (optionally) at `ceiling`. */
+  function band(value, floor, good, great, ceiling) {
+    if (value <= floor) return 0;
+    if (value < good) return 100 * ((value - floor) / (good - floor));
+    if (value <= great) return 100;
+    if (ceiling === undefined || ceiling === null) return 100;
+    if (value >= ceiling) return 0;
+    return 100 * (1 - (value - great) / (ceiling - great));
+  }
+
+  function fmtTime(t) {
+    if (!isFinite(t)) return '0:00';
+    var neg = t < 0;
+    t = Math.abs(t);
+    var m = Math.floor(t / 60);
+    var s = t - m * 60;
+    var str = m + ':' + (s < 10 ? '0' : '') + s.toFixed(s < 10 ? 1 : 1);
+    return (neg ? '-' : '') + str;
+  }
+
+  function fmtBytes(b) {
+    if (!b) return '—';
+    var units = ['B', 'KB', 'MB', 'GB'], i = 0;
+    while (b >= 1024 && i < units.length - 1) { b /= 1024; i++; }
+    return b.toFixed(b < 10 && i > 0 ? 1 : 0) + ' ' + units[i];
+  }
+
+  function gcd(a, b) { return b ? gcd(b, a % b) : a; }
+
+  function aspectLabel(w, h) {
+    if (!w || !h) return '—';
+    var g = gcd(w, h);
+    var rw = w / g, rh = h / g;
+    if (rw > 40 || rh > 40) return (w / h).toFixed(2) + ':1';
+    return rw + ':' + rh;
+  }
+
+  function dbfs(rms) {
+    if (rms <= 1e-7) return -100;
+    return 20 * Math.log10(rms);
+  }
+
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) {
+    return Array.prototype.slice.call((root || document).querySelectorAll(sel));
+  }
+
+  function el(tag, attrs, children) {
+    var node = document.createElement(tag);
+    if (attrs) {
+      Object.keys(attrs).forEach(function (k) {
+        if (k === 'class') node.className = attrs[k];
+        else if (k === 'text') node.textContent = attrs[k];
+        else if (k === 'html') node.innerHTML = attrs[k];
+        else if (k.indexOf('on') === 0 && typeof attrs[k] === 'function') {
+          node.addEventListener(k.slice(2), attrs[k]);
+        } else if (attrs[k] !== null && attrs[k] !== undefined) {
+          node.setAttribute(k, attrs[k]);
+        }
+      });
+    }
+    (children || []).forEach(function (c) {
+      if (c === null || c === undefined) return;
+      node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+    });
+    return node;
+  }
+
+  function anchorDownload(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+
+  /* Anchor downloads are inert inside the Artifact sandbox, where the host's
+     save dialog is the only route to the viewer's disk. */
+  function download(blob, filename) {
+    if (!window.claude || typeof window.claude.use !== 'function') {
+      return Promise.resolve(anchorDownload(blob, filename));
+    }
+    return window.claude.use('downloads').then(function (downloads) {
+      if (!downloads) return anchorDownload(blob, filename);
+      return downloads.save({ filename: filename, data: blob }).catch(function (err) {
+        // The viewer said no — never re-offer the same file.
+        if (err && err.code === 'declined') return;
+        return anchorDownload(blob, filename);
+      });
+    }).catch(function () {
+      return anchorDownload(blob, filename);
+    });
+  }
+
+  function once(target, event) {
+    return new Promise(function (resolve, reject) {
+      function ok(e) { cleanup(); resolve(e); }
+      function bad(e) { cleanup(); reject(e); }
+      function cleanup() {
+        target.removeEventListener(event, ok);
+        target.removeEventListener('error', bad);
+      }
+      target.addEventListener(event, ok);
+      target.addEventListener('error', bad);
+    });
+  }
+
+  function raf() {
+    return new Promise(function (r) { requestAnimationFrame(r); });
+  }
+
+  function sleep(ms) {
+    return new Promise(function (r) { setTimeout(r, ms); });
+  }
+
+  return {
+    clamp: clamp, lerp: lerp, mean: mean, std: std, percentile: percentile,
+    band: band, fmtTime: fmtTime, fmtBytes: fmtBytes, aspectLabel: aspectLabel,
+    dbfs: dbfs, $: $, $$: $$, el: el, download: download, once: once,
+    raf: raf, sleep: sleep
+  };
+})();
+</script>
+<script>
+/* Frame-level analysis: samples the video, measures each frame, and derives
+   motion, cuts, dead zones and thumbnail candidates. Everything here runs on
+   real decoded pixels — nothing is estimated from metadata alone. */
+window.VL = window.VL || {};
+
+VL.analyze = (function () {
+  var U = VL.util;
+
+  var MAX_SAMPLES = 420;        // hard cap so long videos stay responsive
+  var MIN_INTERVAL = 0.18;      // seconds between samples
+  var ANALYSIS_WIDTH = 256;     // downscaled size used for pixel metrics
+  var THUMB_WIDTH = 360;        // stored candidate frames
+  var MAX_THUMBS = 56;
+
+  function loadVideo(file) {
+    var url = URL.createObjectURL(file);
+    var v = document.createElement('video');
+    v.preload = 'auto';
+    v.muted = true;
+    v.playsInline = true;
+    v.crossOrigin = 'anonymous';
+    v.src = url;
+    return U.once(v, 'loadedmetadata').then(function () {
+      // Some containers report Infinity until a seek forces a duration read.
+      if (!isFinite(v.duration) || v.duration === 0) {
+        v.currentTime = 1e6;
+        return U.once(v, 'seeked').then(function () {
+          v.currentTime = 0;
+          return U.once(v, 'seeked');
+        }).then(function () { return { video: v, url: url }; });
+      }
+      return { video: v, url: url };
+    });
+  }
+
+  function seekTo(video, t) {
+    return new Promise(function (resolve, reject) {
+      var done = false;
+      function ok() {
+        if (done) return;
+        done = true;
+        video.removeEventListener('seeked', ok);
+        resolve();
+      }
+      video.addEventListener('seeked', ok);
+      // Guard against browsers that swallow the seeked event near the tail.
+      setTimeout(ok, 1200);
+      try { video.currentTime = t; } catch (e) { reject(e); }
+    });
+  }
+
+  /* Per-frame pixel measurements from one downscaled RGBA buffer. */
+  function measureFrame(data, w, h) {
+    var n = w * h;
+    var luma = new Float32Array(n);
+    var sumL = 0, sumSat = 0, sumRG = 0, sumYB = 0, sumRG2 = 0, sumYB2 = 0;
+    var skin = 0, dark = 0, blown = 0;
+    var hist = new Float32Array(32);
+    var colorBins = {};
+
+    for (var i = 0, p = 0; i < n; i++, p += 4) {
+      var r = data[p], g = data[p + 1], b = data[p + 2];
+      var l = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+      luma[i] = l;
+      sumL += l;
+      hist[Math.min(31, (l * 32) | 0)] += 1;
+      if (l < 0.04) dark++;
+      if (l > 0.97) blown++;
+
+      var mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+      sumSat += mx === 0 ? 0 : (mx - mn) / mx;
+
+      var rg = r - g;
+      var yb = 0.5 * (r + g) - b;
+      sumRG += rg; sumYB += yb;
+      sumRG2 += rg * rg; sumYB2 += yb * yb;
+
+      // Coarse skin-tone test — a cheap stand-in for "is there a person on screen".
+      if (r > 95 && g > 40 && b > 20 && r > g && r > b && (r - mn) > 15 && Math.abs(r - g) > 15) skin++;
+
+      var key = ((r >> 5) << 6) | ((g >> 5) << 3) | (b >> 5);
+      colorBins[key] = (colorBins[key] || 0) + 1;
+    }
+
+    var meanL = sumL / n;
+    var varL = 0;
+    for (var j = 0; j < n; j++) varL += (luma[j] - meanL) * (luma[j] - meanL);
+    var contrast = Math.sqrt(varL / n);
+
+    // Variance of the Laplacian: the standard cheap focus measure.
+    var lapSum = 0, lapSum2 = 0, lapN = 0;
+    for (var y = 1; y < h - 1; y++) {
+      for (var x = 1; x < w - 1; x++) {
+        var idx = y * w + x;
+        var lap = 4 * luma[idx] - luma[idx - 1] - luma[idx + 1] - luma[idx - w] - luma[idx + w];
+        lapSum += lap; lapSum2 += lap * lap; lapN++;
+      }
+    }
+    var lapMean = lapSum / Math.max(1, lapN);
+    var sharpness = lapSum2 / Math.max(1, lapN) - lapMean * lapMean;
+
+    // How much of the frame's detail sits in the middle — a framing proxy.
+    var cx0 = (w * 0.25) | 0, cx1 = (w * 0.75) | 0, cy0 = (h * 0.25) | 0, cy1 = (h * 0.75) | 0;
+    var centerE = 0, totalE = 0;
+    for (var y2 = 1; y2 < h - 1; y2++) {
+      for (var x2 = 1; x2 < w - 1; x2++) {
+        var i2 = y2 * w + x2;
+        var e = Math.abs(luma[i2] - luma[i2 - 1]) + Math.abs(luma[i2] - luma[i2 - w]);
+        totalE += e;
+        if (x2 >= cx0 && x2 < cx1 && y2 >= cy0 && y2 < cy1) centerE += e;
+      }
+    }
+
+    var mrg = sumRG / n, myb = sumYB / n;
+    var srg = Math.sqrt(Math.max(0, sumRG2 / n - mrg * mrg));
+    var syb = Math.sqrt(Math.max(0, sumYB2 / n - myb * myb));
+    var colorfulness = Math.sqrt(srg * srg + syb * syb) + 0.3 * Math.sqrt(mrg * mrg + myb * myb);
+
+    var bestKey = null, bestCount = -1;
+    Object.keys(colorBins).forEach(function (k) {
+      if (colorBins[k] > bestCount) { bestCount = colorBins[k]; bestKey = k; }
+    });
+    var bk = parseInt(bestKey, 10) || 0;
+    var dominant = {
+      r: ((bk >> 6) & 7) * 32 + 16,
+      g: ((bk >> 3) & 7) * 32 + 16,
+      b: (bk & 7) * 32 + 16
+    };
+
+    for (var hb = 0; hb < 32; hb++) hist[hb] /= n;
+
+    return {
+      luma: meanL,
+      contrast: contrast,
+      saturation: sumSat / n,
+      colorfulness: colorfulness,
+      sharpness: sharpness,
+      skinRatio: skin / n,
+      centerBias: totalE > 0 ? centerE / totalE : 0.25,
+      crushed: dark / n,
+      blown: blown / n,
+      dominant: dominant,
+      hist: hist,
+      lumaMap: luma
+    };
+  }
+
+  function frameDistance(a, b) {
+    var n = a.lumaMap.length, diff = 0;
+    for (var i = 0; i < n; i++) diff += Math.abs(a.lumaMap[i] - b.lumaMap[i]);
+    diff /= n;
+    var hd = 0;
+    for (var h = 0; h < 32; h++) hd += Math.abs(a.hist[h] - b.hist[h]);
+    return { pixel: diff, hist: hd / 2 };
+  }
+
+  function run(file, onProgress) {
+    onProgress = onProgress || function () {};
+    var handle, video, url;
+
+    return loadVideo(file).then(function (h) {
+      handle = h; video = h.video; url = h.url;
+
+      var duration = isFinite(video.duration) ? video.duration : 0;
+      if (!duration) throw new Error('This file has no readable video duration.');
+
+      var vw = video.videoWidth, vh = video.videoHeight;
+      if (!vw || !vh) throw new Error('This file has no readable video track.');
+
+      var aw = ANALYSIS_WIDTH;
+      var ah = Math.max(2, Math.round(aw * vh / vw));
+      var canvas = document.createElement('canvas');
+      canvas.width = aw; canvas.height = ah;
+      var ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+      var thumbCanvas = document.createElement('canvas');
+      thumbCanvas.width = THUMB_WIDTH;
+      thumbCanvas.height = Math.max(2, Math.round(THUMB_WIDTH * vh / vw));
+      var thumbCtx = thumbCanvas.getContext('2d');
+
+      var interval = Math.max(MIN_INTERVAL, duration / MAX_SAMPLES);
+      var times = [];
+      for (var t = 0; t < duration - 0.02; t += interval) times.push(t);
+      if (times.length < 2) times = [0, Math.max(0.01, duration / 2)];
+      var thumbEvery = Math.max(1, Math.ceil(times.length / MAX_THUMBS));
+
+      var frames = [];
+      var thumbs = [];
+      var prev = null;
+      var chain = Promise.resolve();
+
+      times.forEach(function (time, i) {
+        chain = chain.then(function () {
+          return seekTo(video, time);
+        }).then(function () {
+          ctx.drawImage(video, 0, 0, aw, ah);
+          var img = ctx.getImageData(0, 0, aw, ah);
+          var m = measureFrame(img.data, aw, ah);
+          m.t = video.currentTime;
+          if (prev) {
+            var d = frameDistance(prev, m);
+            m.pixelDiff = d.pixel;
+            m.histDiff = d.hist;
+          } else {
+            m.pixelDiff = 0;
+            m.histDiff = 0;
+          }
+          if (i % thumbEvery === 0) {
+            thumbCtx.drawImage(video, 0, 0, thumbCanvas.width, thumbCanvas.height);
+            thumbs.push({
+              t: m.t,
+              url: thumbCanvas.toDataURL('image/jpeg', 0.72),
+              sharpness: m.sharpness,
+              colorfulness: m.colorfulness,
+              skinRatio: m.skinRatio,
+              luma: m.luma,
+              contrast: m.contrast
+            });
+          }
+          prev = m;
+          frames.push(m);
+          onProgress(i / times.length);
+        });
+      });
+
+      return chain.then(function () {
+        frames.forEach(function (f) { delete f.lumaMap; delete f.hist; });
+        return {
+          meta: {
+            name: file.name,
+            size: file.size,
+            type: file.type || 'unknown',
+            duration: duration,
+            width: vw,
+            height: vh,
+            aspect: vw / vh,
+            aspectLabel: U.aspectLabel(vw, vh),
+            sampleInterval: interval,
+            sampleCount: frames.length
+          },
+          frames: frames,
+          thumbs: thumbs,
+          url: url,
+          video: video
+        };
+      });
+    });
+  }
+
+  /* Cuts, motion and dead zones, derived from the sampled frames. */
+  function derive(base) {
+    var frames = base.frames;
+    var meta = base.meta;
+    var diffs = frames.slice(1).map(function (f) { return f.pixelDiff; });
+    var medianDiff = U.percentile(diffs, 0.5);
+    var spread = U.percentile(diffs, 0.9) - medianDiff;
+    var cutThreshold = Math.max(0.085, medianDiff + Math.max(0.05, spread * 1.6));
+
+    var cuts = [];
+    frames.forEach(function (f, i) {
+      if (i === 0) return;
+      var hard = f.pixelDiff > 0.26 && f.histDiff > 0.28;
+      var soft = f.pixelDiff > cutThreshold && f.histDiff > 0.2;
+      if (hard || soft) cuts.push(f.t);
+    });
+    // Collapse cuts that land in consecutive samples (one edit, not several).
+    var merged = [];
+    cuts.forEach(function (t) {
+      if (!merged.length || t - merged[merged.length - 1] > meta.sampleInterval * 1.5) merged.push(t);
+    });
+    cuts = merged;
+
+    var motion = frames.map(function (f, i) {
+      if (i === 0) return 0;
+      // Cut frames would otherwise read as huge "motion".
+      var isCut = cuts.some(function (c) { return Math.abs(c - f.t) < meta.sampleInterval * 0.6; });
+      return isCut ? null : f.pixelDiff;
+    });
+    var motionFilled = motion.map(function (m, i) {
+      if (m !== null) return m;
+      var before = null, after = null;
+      for (var a = i - 1; a >= 0; a--) if (motion[a] !== null) { before = motion[a]; break; }
+      for (var b = i + 1; b < motion.length; b++) if (motion[b] !== null) { after = motion[b]; break; }
+      if (before === null && after === null) return 0;
+      if (before === null) return after;
+      if (after === null) return before;
+      return (before + after) / 2;
+    });
+
+    var cutsPerMin = meta.duration > 0 ? cuts.length / (meta.duration / 60) : 0;
+    var gaps = [];
+    var last = 0;
+    cuts.forEach(function (c) { gaps.push(c - last); last = c; });
+    gaps.push(meta.duration - last);
+    var longestStatic = gaps.length ? Math.max.apply(null, gaps) : meta.duration;
+
+    return {
+      cuts: cuts,
+      cutsPerMin: cutsPerMin,
+      cutGaps: gaps,
+      longestStatic: longestStatic,
+      motion: motionFilled,
+      medianMotion: U.percentile(motionFilled.filter(function (m) { return m > 0; }), 0.5)
+    };
+  }
+
+  /* Slack time: audio gaps, and stretches where nothing moves at all.
+     When there is an audio track the gap in the sound is the reliable signal —
+     a locked-off talking head has low pixel motion but is not dead air. */
+  function findDeadZones(base, derived, audio) {
+    var frames = base.frames;
+    var meta = base.meta;
+    var motion = derived.motion;
+    var motionRef = Math.max(0.012, derived.medianMotion);
+    var hasAudio = !!(audio && audio.available && audio.envelope.length);
+    var quietCut = hasAudio ? Math.max(-45, audio.loudnessDb - 14) : null;
+
+    function audioAt(t) {
+      if (!hasAudio) return null;
+      var idx = U.clamp(Math.round(t / audio.envelopeStep), 0, audio.envelope.length - 1);
+      return audio.envelope[idx];
+    }
+
+    var zones = [];
+    var run = null;
+
+    for (var i = 0; i < frames.length; i++) {
+      var t = frames[i].t;
+      var lowMotion = motion[i] < motionRef * 0.45;
+      var db = audioAt(t);
+      var lowAudio = db === null ? true : db < quietCut;
+      // The cut guard exists because motion reads high around an edit; it has
+      // no bearing on whether the audio has gone quiet.
+      var nearCut = derived.cuts.some(function (c) { return Math.abs(c - t) < 0.5; });
+      var slack = hasAudio ? lowAudio : (lowMotion && !nearCut);
+
+      if (slack) {
+        if (!run) run = { start: t, end: t, still: 0, n: 0 };
+        run.end = t;
+        run.n++;
+        if (lowMotion) run.still++;
+      }
+      if ((!slack || i === frames.length - 1) && run) {
+        var mostlyStill = run.still / Math.max(1, run.n) > 0.6;
+        var minLength = mostlyStill ? 1.5 : 1.2;
+        if (run.end - run.start >= minLength) {
+          zones.push({
+            start: run.start,
+            end: Math.min(meta.duration, run.end + meta.sampleInterval),
+            kind: mostlyStill ? 'dead' : 'silence',
+            reason: !hasAudio ? 'no movement on screen'
+              : mostlyStill ? 'no movement and no sound' : 'a gap in the audio'
+          });
+        }
+        run = null;
+      }
+    }
+    return zones;
+  }
+
+  function pickThumbnails(base) {
+    var thumbs = base.thumbs.filter(function (t) { return t.t > 0.25; });
+    if (!thumbs.length) thumbs = base.thumbs.slice();
+    var sharpMax = Math.max.apply(null, thumbs.map(function (t) { return t.sharpness; })) || 1;
+    var colorMax = Math.max.apply(null, thumbs.map(function (t) { return t.colorfulness; })) || 1;
+    var scored = thumbs.map(function (t) {
+      var exposure = 1 - Math.min(1, Math.abs(t.luma - 0.5) / 0.5);
+      var score = 0.34 * (t.sharpness / sharpMax) +
+                  0.24 * (t.colorfulness / colorMax) +
+                  0.24 * Math.min(1, t.skinRatio / 0.12) +
+                  0.18 * exposure;
+      return { t: t.t, url: t.url, score: score };
+    });
+    scored.sort(function (a, b) { return b.score - a.score; });
+    return scored.slice(0, 6);
+  }
+
+  return {
+    run: run,
+    derive: derive,
+    findDeadZones: findDeadZones,
+    pickThumbnails: pickThumbnails
+  };
+})();
+</script>
+<script>
+/* Audio analysis. Decodes the file's audio track and measures loudness,
+   silence, clipping, dynamics and speech-band energy. Falls back to a
+   sped-up realtime scan when the browser refuses to decode the container. */
+window.VL = window.VL || {};
+
+VL.audio = (function () {
+  var U = VL.util;
+  var WINDOW = 0.05;              // envelope resolution, seconds
+  var MAX_DECODE_BYTES = 320 * 1024 * 1024;
+
+  function ctxClass() {
+    return window.AudioContext || window.webkitAudioContext;
+  }
+
+  function toMono(buffer) {
+    var n = buffer.length;
+    var out = new Float32Array(n);
+    var ch = buffer.numberOfChannels;
+    for (var c = 0; c < ch; c++) {
+      var data = buffer.getChannelData(c);
+      for (var i = 0; i < n; i++) out[i] += data[i] / ch;
+    }
+    return out;
+  }
+
+  function envelopeOf(mono, sampleRate) {
+    var win = Math.max(1, Math.round(WINDOW * sampleRate));
+    var count = Math.max(1, Math.floor(mono.length / win));
+    var env = new Array(count);
+    var peak = 0, clipped = 0;
+    for (var w = 0; w < count; w++) {
+      var s = 0;
+      var start = w * win;
+      for (var i = 0; i < win; i++) {
+        var v = mono[start + i] || 0;
+        s += v * v;
+        var a = Math.abs(v);
+        if (a > peak) peak = a;
+        if (a > 0.988) clipped++;
+      }
+      env[w] = U.dbfs(Math.sqrt(s / win));
+    }
+    return { env: env, peak: peak, clipRatio: clipped / Math.max(1, mono.length) };
+  }
+
+  function speechBandRatio(mono, sampleRate) {
+    // Decimate to 16 kHz mono so the offline render stays cheap.
+    var target = 16000;
+    if (sampleRate <= target) target = sampleRate;
+    var ratio = sampleRate / target;
+    var n = Math.floor(mono.length / ratio);
+    if (n < target) return Promise.resolve(null);
+
+    var OfflineCtx = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+    if (!OfflineCtx) return Promise.resolve(null);
+
+    var small = new Float32Array(n);
+    var rawSum = 0;
+    for (var i = 0; i < n; i++) {
+      var v = mono[Math.floor(i * ratio)] || 0;
+      small[i] = v;
+      rawSum += v * v;
+    }
+    var rawRms = Math.sqrt(rawSum / n);
+    if (rawRms < 1e-5) return Promise.resolve(null);
+
+    var offline = new OfflineCtx(1, n, target);
+    var buf = offline.createBuffer(1, n, target);
+    buf.getChannelData(0).set(small);
+    var src = offline.createBufferSource();
+    src.buffer = buf;
+    var hp = offline.createBiquadFilter();
+    hp.type = 'highpass'; hp.frequency.value = 300;
+    var lp = offline.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 3400;
+    src.connect(hp); hp.connect(lp); lp.connect(offline.destination);
+    src.start(0);
+
+    return offline.startRendering().then(function (rendered) {
+      var out = rendered.getChannelData(0);
+      var s = 0;
+      for (var j = 0; j < out.length; j++) s += out[j] * out[j];
+      var bandRms = Math.sqrt(s / out.length);
+      return U.clamp(bandRms / rawRms, 0, 1);
+    }).catch(function () { return null; });
+  }
+
+  function summarize(env, peak, clipRatio, duration, speechRatio, partial) {
+    var voiced = env.filter(function (d) { return d > -48; });
+    var loudness = voiced.length ? U.dbfs(Math.sqrt(U.mean(voiced.map(function (d) {
+      var lin = Math.pow(10, d / 20);
+      return lin * lin;
+    })))) : -100;
+
+    var silence = env.filter(function (d) { return d <= -48; }).length / Math.max(1, env.length);
+    var dynamic = voiced.length > 4 ? U.percentile(voiced, 0.95) - U.percentile(voiced, 0.15) : 0;
+
+    // Rough onset count: a jump of 6 dB or more between neighbouring windows.
+    var onsets = 0;
+    for (var i = 1; i < env.length; i++) {
+      if (env[i] - env[i - 1] > 6 && env[i] > -42) onsets++;
+    }
+
+    return {
+      available: true,
+      partial: !!partial,
+      envelope: env,
+      envelopeStep: WINDOW,
+      loudnessDb: loudness,
+      peakDb: U.dbfs(peak),
+      clipRatio: clipRatio,
+      silenceRatio: silence,
+      dynamicRange: dynamic,
+      speechRatio: speechRatio,
+      onsetsPerMin: duration > 0 ? onsets / (duration / 60) : 0
+    };
+  }
+
+  function unavailable(reason) {
+    return {
+      available: false,
+      reason: reason,
+      envelope: [],
+      envelopeStep: WINDOW,
+      loudnessDb: -100,
+      peakDb: -100,
+      clipRatio: 0,
+      silenceRatio: 1,
+      dynamicRange: 0,
+      speechRatio: null,
+      onsetsPerMin: 0
+    };
+  }
+
+  function decodeFile(file) {
+    var Ctx = ctxClass();
+    if (!Ctx) return Promise.resolve(unavailable('This browser has no Web Audio support.'));
+    if (file.size > MAX_DECODE_BYTES) {
+      return Promise.resolve(unavailable('File is too large to decode audio in the browser.'));
+    }
+    var ctx = new Ctx();
+    return file.arrayBuffer().then(function (buf) {
+      return new Promise(function (resolve, reject) {
+        // Callback form for Safari, which still lacks the promise overload.
+        var p = ctx.decodeAudioData(buf, resolve, reject);
+        if (p && typeof p.then === 'function') p.then(resolve, reject);
+      });
+    }).then(function (audioBuffer) {
+      var mono = toMono(audioBuffer);
+      var e = envelopeOf(mono, audioBuffer.sampleRate);
+      return speechBandRatio(mono, audioBuffer.sampleRate).then(function (sr) {
+        try { ctx.close(); } catch (err) {}
+        return summarize(e.env, e.peak, e.clipRatio, audioBuffer.duration, sr, false);
+      });
+    }).catch(function () {
+      try { ctx.close(); } catch (err) {}
+      return null; // signals "try the fallback"
+    });
+  }
+
+  /* Plays the video silently at up to 6x through an analyser to sample loudness
+     when decodeAudioData can't handle the container. */
+  function scanElement(video, duration) {
+    var Ctx = ctxClass();
+    if (!Ctx) return Promise.resolve(unavailable('This browser has no Web Audio support.'));
+    var ctx = new Ctx();
+    var source;
+    try {
+      source = ctx.createMediaElementSource(video);
+    } catch (e) {
+      try { ctx.close(); } catch (err) {}
+      return Promise.resolve(unavailable('The audio track could not be read.'));
+    }
+    var analyser = ctx.createAnalyser();
+    analyser.fftSize = 2048;
+    var mute = ctx.createGain();
+    mute.gain.value = 0;
+    source.connect(analyser);
+    analyser.connect(mute);
+    mute.connect(ctx.destination);
+
+    var rate = duration > 90 ? 6 : 4;
+    var budgetMs = 45000;
+    var data = new Float32Array(analyser.fftSize);
+    var env = [];
+    var peak = 0, clipped = 0, total = 0;
+    var covered = 0;
+
+    video.muted = false;
+    video.volume = 1;
+    video.playbackRate = rate;
+    video.currentTime = 0;
+
+    return ctx.resume().catch(function () {}).then(function () {
+      return video.play();
+    }).then(function () {
+      var startWall = performance.now();
+      return new Promise(function (resolve) {
+        function tick() {
+          analyser.getFloatTimeDomainData(data);
+          var s = 0;
+          for (var i = 0; i < data.length; i++) {
+            var v = data[i];
+            s += v * v;
+            var a = Math.abs(v);
+            if (a > peak) peak = a;
+            if (a > 0.988) clipped++;
+            total++;
+          }
+          env.push(U.dbfs(Math.sqrt(s / data.length)));
+          covered = video.currentTime;
+          var timedOut = performance.now() - startWall > budgetMs;
+          if (video.ended || video.currentTime >= duration - 0.1 || timedOut) {
+            video.pause();
+            video.playbackRate = 1;
+            video.muted = true;
+            resolve(timedOut && covered < duration - 0.5);
+          } else {
+            requestAnimationFrame(tick);
+          }
+        }
+        requestAnimationFrame(tick);
+      });
+    }).then(function (partial) {
+      try { ctx.close(); } catch (e) {}
+      if (!env.length) return unavailable('No audio samples could be read.');
+      var result = summarize(env, peak, clipped / Math.max(1, total), covered, null, partial);
+      // Windows here are frame-paced at N× speed, so map them onto real time.
+      result.envelopeStep = covered / Math.max(1, env.length);
+      return result;
+    }).catch(function () {
+      try { ctx.close(); } catch (e) {}
+      video.muted = true;
+      video.playbackRate = 1;
+      return unavailable('The audio track could not be played back for analysis.');
+    });
+  }
+
+  function analyze(file, video, duration) {
+    return decodeFile(file).then(function (result) {
+      if (result) return result;
+      return scanElement(video, duration);
+    });
+  }
+
+  return { analyze: analyze };
+})();
+</script>
+<script>
+/* Scoring model. Every subscore comes from a measured quantity compared with a
+   stated target, and every issue carries the fix that would recover the points. */
+window.VL = window.VL || {};
+
+VL.score = (function () {
+  var U = VL.util;
+
+  var PRESETS = {
+    shorts: {
+      key: 'shorts',
+      label: 'TikTok / Reels / Shorts',
+      aspect: 9 / 16,
+      aspectName: '9:16',
+      hookWindow: 2.0,
+      sweetMin: 15,
+      sweetMax: 45,
+      hardMax: 90,
+      cutsMin: 20,
+      cutsGood: 30,
+      cutsMax: 90,
+      loudness: -14,
+      minShortSide: 1080,
+      centerSafe: 0.42
+    },
+    feed: {
+      key: 'feed',
+      label: 'Instagram feed / LinkedIn (4:5)',
+      aspect: 4 / 5,
+      aspectName: '4:5',
+      hookWindow: 3.0,
+      sweetMin: 15,
+      sweetMax: 60,
+      hardMax: 120,
+      cutsMin: 14,
+      cutsGood: 24,
+      cutsMax: 70,
+      loudness: -14,
+      minShortSide: 1080,
+      centerSafe: 0.38
+    },
+    youtube: {
+      key: 'youtube',
+      label: 'YouTube (16:9 long-form)',
+      aspect: 16 / 9,
+      aspectName: '16:9',
+      hookWindow: 8.0,
+      sweetMin: 120,
+      sweetMax: 1200,
+      hardMax: 3600,
+      cutsMin: 8,
+      cutsGood: 16,
+      cutsMax: 50,
+      loudness: -14,
+      minShortSide: 720,
+      centerSafe: 0.3
+    }
+  };
+
+  function framesIn(frames, t0, t1) {
+    return frames.filter(function (f) { return f.t >= t0 && f.t <= t1; });
+  }
+
+  function audioEnergyBetween(audio, t0, t1) {
+    if (!audio || !audio.available || !audio.envelope.length) return null;
+    var step = audio.envelopeStep || 0.05;
+    var a = U.clamp(Math.floor(t0 / step), 0, audio.envelope.length - 1);
+    var b = U.clamp(Math.ceil(t1 / step), 0, audio.envelope.length - 1);
+    if (b <= a) b = a + 1;
+    var slice = audio.envelope.slice(a, b).filter(function (d) { return d > -90; });
+    return slice.length ? U.mean(slice) : null;
+  }
+
+  function scoreHook(a, preset) {
+    var frames = a.base.frames;
+    var d = a.derived;
+    var win = Math.min(preset.hookWindow, a.base.meta.duration * 0.5);
+    var hookFrames = framesIn(frames, 0, win);
+    if (!hookFrames.length) hookFrames = frames.slice(0, 3);
+
+    var idxEnd = hookFrames.length;
+    var hookMotion = U.mean(d.motion.slice(1, Math.max(2, idxEnd)));
+    var refMotion = Math.max(0.008, d.medianMotion);
+    var motionScore = U.band(hookMotion / refMotion, 0.15, 0.9, 2.4, 6);
+
+    var hookCuts = d.cuts.filter(function (c) { return c <= win; }).length;
+    var cutScore = U.band(hookCuts, -0.4, 1, 4, 14);
+
+    var sharpRef = U.percentile(frames.map(function (f) { return f.sharpness; }), 0.75) || 1;
+    var hookSharp = U.mean(hookFrames.map(function (f) { return f.sharpness; }));
+    var sharpScore = U.band(hookSharp / sharpRef, 0.15, 0.7, 3, null);
+
+    var hookLuma = U.mean(hookFrames.map(function (f) { return f.luma; }));
+    var exposureScore = U.band(hookLuma, 0.06, 0.32, 0.66, 0.95);
+
+    var hookColor = U.mean(hookFrames.map(function (f) { return f.colorfulness; }));
+    var colorScore = U.band(hookColor, 4, 26, 80, 150);
+
+    var subs = [
+      { w: 0.3, s: motionScore },
+      { w: 0.24, s: cutScore },
+      { w: 0.18, s: sharpScore },
+      { w: 0.16, s: exposureScore },
+      { w: 0.12, s: colorScore }
+    ];
+
+    var early = audioEnergyBetween(a.audio, 0, Math.min(1.0, win));
+    var rest = audioEnergyBetween(a.audio, win, a.base.meta.duration);
+    var audioHookScore = null;
+    if (early !== null && rest !== null) {
+      audioHookScore = U.band(early - rest, -22, -4, 6, null);
+      subs.push({ w: 0.2, s: audioHookScore });
+    }
+
+    var totalW = subs.reduce(function (acc, x) { return acc + x.w; }, 0);
+    var score = subs.reduce(function (acc, x) { return acc + x.w * x.s; }, 0) / totalW;
+
+    var issues = [];
+    if (motionScore < 60) {
+      issues.push({
+        id: 'hook-static',
+        title: 'The first ' + win.toFixed(1) + 's barely moves',
+        why: 'Movement in the opening is only ' + (hookMotion / refMotion).toFixed(2) +
+             '× what the rest of the video does. A still opening is where most viewers leave.',
+        how: 'Start on the most active frame instead of the first one, and let the motion begin before the first word.',
+        gain: 0, severity: 'high',
+        action: { type: 'hookFix' }
+      });
+    }
+    if (cutScore < 60) {
+      issues.push({
+        id: 'hook-nocut',
+        title: hookCuts === 0
+          ? 'Nothing changes on screen in the first ' + win.toFixed(1) + 's'
+          : 'The opening is cut too frantically to read',
+        why: hookCuts === 0
+          ? 'There are no cuts inside the hook window, so the opening shot is one unbroken frame — the viewer gets no reason to keep watching.'
+          : 'There are ' + hookCuts + ' cuts inside the first ' + win.toFixed(1) + 's, which reads as noise before the idea lands.',
+        how: hookCuts === 0
+          ? 'Add a punch-in or a second angle inside the first second.'
+          : 'Hold the opening shot long enough to register before the first cut.',
+        gain: 0, severity: 'high',
+        action: hookCuts === 0 ? { type: 'punchIns' } : null
+      });
+    }
+    if (exposureScore < 55) {
+      issues.push({
+        id: 'hook-dark',
+        title: 'The opening frame is ' + (hookLuma < 0.32 ? 'too dark' : 'blown out'),
+        why: 'Average brightness in the hook is ' + Math.round(hookLuma * 100) + '% (a readable opening sits between 32% and 66%).',
+        how: 'Lift exposure on the opening so the subject reads instantly at thumbnail size.',
+        gain: 0, severity: 'medium',
+        action: { type: 'exposure' }
+      });
+    }
+    if (audioHookScore !== null && audioHookScore < 50) {
+      issues.push({
+        id: 'hook-quiet',
+        title: 'The audio does not start with any punch',
+        why: 'The first second is ' + (rest - early).toFixed(1) + ' dB quieter than the rest of the video.',
+        how: 'Open on the loudest line or a sound effect. Trim any lead-in silence before the first word.',
+        gain: 0, severity: 'medium',
+        action: { type: 'trimSilentStart' }
+      });
+    }
+
+    return {
+      key: 'hook',
+      label: 'Hook (first ' + win.toFixed(1) + 's)',
+      score: score,
+      metrics: [
+        { label: 'Movement vs rest of video', value: (hookMotion / refMotion).toFixed(2) + '×', good: motionScore >= 60 },
+        { label: 'Cuts in the hook', value: String(hookCuts), good: cutScore >= 60 },
+        { label: 'Opening brightness', value: Math.round(hookLuma * 100) + '%', good: exposureScore >= 55 },
+        { label: 'Opening sharpness vs best', value: Math.round((hookSharp / sharpRef) * 100) + '%', good: sharpScore >= 55 }
+      ],
+      issues: issues
+    };
+  }
+
+  function scorePacing(a, preset) {
+    var d = a.derived;
+    var meta = a.base.meta;
+    var cpm = d.cutsPerMin;
+    var cutScore = U.band(cpm, 0, preset.cutsMin, preset.cutsGood * 2, preset.cutsMax * 1.6);
+    var staticScore = U.band(-d.longestStatic, -Math.max(6, meta.duration * 0.5), -3.5, -0.5, null);
+    var deadTotal = a.deadZones.reduce(function (acc, z) { return acc + (z.end - z.start); }, 0);
+    var deadRatio = meta.duration > 0 ? deadTotal / meta.duration : 0;
+    var deadScore = U.band(-deadRatio, -0.45, -0.08, 0, null);
+
+    var score = 0.45 * cutScore + 0.3 * staticScore + 0.25 * deadScore;
+
+    var issues = [];
+    if (cutScore < 65) {
+      issues.push({
+        id: 'pacing-cuts',
+        title: cpm < preset.cutsMin ? 'Not enough cuts to hold attention' : 'Cutting so fast it is hard to follow',
+        why: 'This video changes shot ' + cpm.toFixed(1) + ' times per minute. For ' + preset.label +
+             ', ' + preset.cutsMin + '–' + preset.cutsGood * 2 + ' per minute is the range that holds attention.',
+        how: cpm < preset.cutsMin
+          ? 'Add a visual change roughly every ' + (60 / preset.cutsGood).toFixed(1) + 's — a punch-in, a b-roll insert, or a reframe.'
+          : 'Let the strongest shots breathe for a beat longer.',
+        gain: 0, severity: cpm < preset.cutsMin ? 'high' : 'medium',
+        action: cpm < preset.cutsMin ? { type: 'punchIns' } : null
+      });
+    }
+    if (a.deadZones.length) {
+      var stillCount = a.deadZones.filter(function (z) { return z.kind === 'dead'; }).length;
+      var longest = a.deadZones.slice().sort(function (x, y) {
+        return (y.end - y.start) - (x.end - x.start);
+      })[0];
+      issues.push({
+        id: 'pacing-dead',
+        title: a.deadZones.length + ' dead zone' + (a.deadZones.length === 1 ? '' : 's') +
+               ' totalling ' + deadTotal.toFixed(1) + 's',
+        why: 'That is ' + Math.round(deadRatio * 100) + '% of the runtime with ' +
+             (stillCount === a.deadZones.length ? 'no movement and no sound'
+               : stillCount ? 'nothing happening or no sound' : 'gaps in the audio') +
+             '. The longest runs ' + (longest.end - longest.start).toFixed(1) + 's from ' +
+             U.fmtTime(longest.start) + '.',
+        how: 'Cut these stretches out, or speed through them so the video never sits still.',
+        gain: 0, severity: deadRatio > 0.12 ? 'high' : 'medium',
+        action: { type: 'speedDeadZones' }
+      });
+    }
+
+    return {
+      key: 'pacing',
+      label: 'Pacing',
+      score: score,
+      metrics: [
+        { label: 'Cuts per minute', value: cpm.toFixed(1), good: cutScore >= 65 },
+        { label: 'Longest shot without a change', value: d.longestStatic.toFixed(1) + 's', good: staticScore >= 60 },
+        { label: 'Dead air', value: Math.round(deadRatio * 100) + '% of runtime', good: deadScore >= 70 }
+      ],
+      issues: issues
+    };
+  }
+
+  function scoreRetention(a, preset) {
+    var meta = a.base.meta;
+    var dur = meta.duration;
+    var durScore;
+    if (dur < preset.sweetMin) durScore = U.band(dur, 0, preset.sweetMin * 0.6, preset.sweetMax, preset.hardMax * 1.5);
+    else durScore = U.band(-dur, -preset.hardMax, -preset.sweetMax, -preset.sweetMin, null);
+
+    var frames = a.base.frames;
+    var third = Math.max(1, Math.floor(frames.length / 3));
+    var motion = a.derived.motion;
+    var firstEnergy = U.mean(motion.slice(0, third)) || 0.0001;
+    var lastEnergy = U.mean(motion.slice(-third)) || 0;
+    var trend = lastEnergy / firstEnergy;
+    var trendScore = U.band(trend, 0.15, 0.75, 2.2, 6);
+
+    var payoffFrames = frames.slice(-third);
+    var payoffColor = U.mean(payoffFrames.map(function (f) { return f.colorfulness; }));
+    var overallColor = U.mean(frames.map(function (f) { return f.colorfulness; })) || 1;
+    var payoffScore = U.band(payoffColor / overallColor, 0.5, 0.9, 1.6, null);
+
+    var score = 0.45 * durScore + 0.35 * trendScore + 0.2 * payoffScore;
+
+    var issues = [];
+    if (durScore < 65) {
+      issues.push({
+        id: 'retention-length',
+        title: dur > preset.sweetMax ? 'Longer than the format rewards' : 'Too short to land',
+        why: 'Runtime is ' + U.fmtTime(dur) + '. For ' + preset.label + ' the range that holds completion rate is ' +
+             U.fmtTime(preset.sweetMin) + '–' + U.fmtTime(preset.sweetMax) + '.',
+        how: dur > preset.sweetMax
+          ? 'Cut to the strongest ' + U.fmtTime(preset.sweetMax) + ' — start later and end on the payoff.'
+          : 'Add a beat of context before the payoff so the idea has room to land.',
+        gain: 0, severity: 'medium',
+        action: dur > preset.sweetMax ? { type: 'trimLength' } : null
+      });
+    }
+    if (trendScore < 55) {
+      issues.push({
+        id: 'retention-fade',
+        title: 'Energy drops off toward the end',
+        why: 'The final third has ' + Math.round(trend * 100) + '% of the movement of the opening third. Videos that fade lose the rewatch and the follow.',
+        how: 'Save a visual escalation — the best shot, the reveal, or a caption payoff — for the last quarter.',
+        gain: 0, severity: 'medium',
+        action: null
+      });
+    }
+
+    return {
+      key: 'retention',
+      label: 'Retention shape',
+      score: score,
+      metrics: [
+        { label: 'Runtime', value: U.fmtTime(dur), good: durScore >= 65 },
+        { label: 'End vs start energy', value: Math.round(trend * 100) + '%', good: trendScore >= 55 }
+      ],
+      issues: issues
+    };
+  }
+
+  function scoreVisual(a) {
+    var frames = a.base.frames;
+    var sharp = U.percentile(frames.map(function (f) { return f.sharpness; }), 0.75);
+    var sharpScore = U.band(sharp, 0.0004, 0.0035, 0.05, null);
+    var meanLuma = U.mean(frames.map(function (f) { return f.luma; }));
+    var expScore = U.band(meanLuma, 0.08, 0.34, 0.62, 0.92);
+    var contrast = U.percentile(frames.map(function (f) { return f.contrast; }), 0.5);
+    var contrastScore = U.band(contrast, 0.03, 0.15, 0.32, 0.5);
+    var crushed = U.mean(frames.map(function (f) { return f.crushed; }));
+    var blown = U.mean(frames.map(function (f) { return f.blown; }));
+    var clipScore = U.band(-(crushed + blown), -0.22, -0.05, 0, null);
+
+    var score = 0.34 * sharpScore + 0.26 * expScore + 0.24 * contrastScore + 0.16 * clipScore;
+
+    var issues = [];
+    if (sharpScore < 55) {
+      issues.push({
+        id: 'visual-soft',
+        title: 'The footage reads soft',
+        why: 'Measured focus energy is well below what a crisp frame produces. Soft footage looks cheap in the feed even when the idea is good.',
+        how: 'Shoot at 1080p or higher with the subject locked in focus, clean the lens, and avoid digital zoom while recording.',
+        gain: 0, severity: 'medium', action: null
+      });
+    }
+    if (expScore < 60) {
+      issues.push({
+        id: 'visual-exposure',
+        title: meanLuma < 0.34 ? 'Underexposed throughout' : 'Overexposed throughout',
+        why: 'Average brightness is ' + Math.round(meanLuma * 100) + '%; the readable band is 34–62%.',
+        how: 'Lift exposure and let the highlights carry — bright, clean footage outperforms moody footage on small screens.',
+        gain: 0, severity: 'high', action: { type: 'exposure' }
+      });
+    }
+    if (contrastScore < 60) {
+      issues.push({
+        id: 'visual-flat',
+        title: 'The image is flat',
+        why: 'Tonal spread measures ' + contrast.toFixed(3) + ' (0.15+ reads as punchy).',
+        how: 'Add contrast so the subject separates from the background.',
+        gain: 0, severity: 'medium', action: { type: 'contrast' }
+      });
+    }
+
+    return {
+      key: 'visual',
+      label: 'Image quality',
+      score: score,
+      metrics: [
+        { label: 'Focus / sharpness', value: sharpScore >= 55 ? 'crisp' : 'soft', good: sharpScore >= 55 },
+        { label: 'Average brightness', value: Math.round(meanLuma * 100) + '%', good: expScore >= 60 },
+        { label: 'Contrast', value: contrast.toFixed(3), good: contrastScore >= 60 },
+        { label: 'Crushed / blown pixels', value: Math.round((crushed + blown) * 100) + '%', good: clipScore >= 70 }
+      ],
+      issues: issues
+    };
+  }
+
+  function scoreColor(a) {
+    var frames = a.base.frames;
+    var colorfulness = U.percentile(frames.map(function (f) { return f.colorfulness; }), 0.5);
+    var colorScore = U.band(colorfulness, 4, 30, 85, 160);
+    var sat = U.mean(frames.map(function (f) { return f.saturation; }));
+    var satScore = U.band(sat, 0.04, 0.24, 0.6, 0.9);
+    var variety = U.std(frames.map(function (f) {
+      return f.dominant.r * 0.6 + f.dominant.g * 0.3 + f.dominant.b * 0.1;
+    }));
+    var varietyScore = U.band(variety, 2, 18, 90, null);
+
+    var score = 0.45 * colorScore + 0.35 * satScore + 0.2 * varietyScore;
+
+    var issues = [];
+    var oversaturated = sat > 0.62 || colorfulness > 92;
+    if (colorScore < 60 || satScore < 60) {
+      issues.push(oversaturated ? {
+        id: 'color-loud',
+        title: 'Colour is pushed past natural',
+        why: 'Saturation measures ' + Math.round(sat * 100) + '% and colourfulness ' + colorfulness.toFixed(0) +
+             '. Over-cooked colour clips skin tones and reads as a filter rather than as production value.',
+        how: 'Pull saturation back toward natural and let contrast carry the punch instead.',
+        gain: 0, severity: 'medium', action: { type: 'colorBoost' }
+      } : {
+        id: 'color-dull',
+        title: 'Colour is muted',
+        why: 'Colourfulness measures ' + colorfulness.toFixed(0) + ' (30+ pops in a feed) and saturation is ' +
+             Math.round(sat * 100) + '%.',
+        how: 'Push saturation and warmth. Colour is the cheapest way to stop a scrolling thumb.',
+        gain: 0, severity: 'medium', action: { type: 'colorBoost' }
+      });
+    }
+    if (varietyScore < 45) {
+      issues.push({
+        id: 'color-same',
+        title: 'Every shot looks the same',
+        why: 'The dominant colour barely changes across the video, so there is no visual reset for the eye.',
+        how: 'Change location, background, or framing at least once so the video does not read as one long take.',
+        gain: 0, severity: 'low', action: null
+      });
+    }
+
+    return {
+      key: 'color',
+      label: 'Colour & vibrance',
+      score: score,
+      metrics: [
+        { label: 'Colourfulness', value: colorfulness.toFixed(0), good: colorScore >= 60 },
+        { label: 'Saturation', value: Math.round(sat * 100) + '%', good: satScore >= 60 },
+        { label: 'Visual variety', value: varietyScore >= 45 ? 'varied' : 'repetitive', good: varietyScore >= 45 }
+      ],
+      issues: issues
+    };
+  }
+
+  function scoreAudio(a, preset) {
+    var au = a.audio;
+    if (!au || !au.available) {
+      return {
+        key: 'audio',
+        label: 'Audio',
+        score: null,
+        unavailable: true,
+        metrics: [{ label: 'Status', value: au && au.reason ? au.reason : 'No audio track found', good: false }],
+        issues: [{
+          id: 'audio-none',
+          title: 'No usable audio track',
+          why: au && au.reason ? au.reason : 'This file has no audio the browser could read.',
+          how: 'Silent video is capped on every platform. Add a voiceover, or at minimum a music bed with the beat cut to your edits.',
+          gain: 0, severity: 'high', action: null
+        }]
+      };
+    }
+
+    var loudGap = au.loudnessDb - preset.loudness;
+    var loudScore = U.band(-Math.abs(loudGap), -14, -3, 0, null);
+    var silenceScore = U.band(-au.silenceRatio, -0.5, -0.12, 0, null);
+    var clipScore = U.band(-au.clipRatio, -0.01, -0.0005, 0, null);
+    var dynScore = U.band(au.dynamicRange, 1, 8, 24, 45);
+    var subs = [
+      { w: 0.34, s: loudScore },
+      { w: 0.26, s: silenceScore },
+      { w: 0.2, s: clipScore },
+      { w: 0.2, s: dynScore }
+    ];
+    if (au.speechRatio !== null && au.speechRatio !== undefined) {
+      subs.push({ w: 0.18, s: U.band(au.speechRatio, 0.1, 0.35, 0.85, null) });
+    }
+    var totalW = subs.reduce(function (acc, s) { return acc + s.w; }, 0);
+    var score = subs.reduce(function (acc, s) { return acc + s.w * s.s; }, 0) / totalW;
+
+    var issues = [];
+    if (loudScore < 70) {
+      issues.push({
+        id: 'audio-loudness',
+        title: au.loudnessDb < preset.loudness ? 'Audio is too quiet' : 'Audio is hotter than platform target',
+        why: 'Average level is ' + au.loudnessDb.toFixed(1) + ' dBFS against a ' + preset.loudness + ' dBFS target — a ' +
+             Math.abs(loudGap).toFixed(1) + ' dB gap. Quiet audio gets scrolled past on phone speakers.',
+        how: 'Normalise the mix toward the platform target before you upload.',
+        gain: 0, severity: 'high', action: { type: 'normalizeAudio' }
+      });
+    }
+    if (silenceScore < 65) {
+      issues.push({
+        id: 'audio-silence',
+        title: Math.round(au.silenceRatio * 100) + '% of the audio is silence',
+        why: 'Gaps between words are dead time, and dead time is where viewers swipe.',
+        how: 'Cut the pauses tight, or run the dead stretches faster.',
+        gain: 0, severity: 'medium', action: { type: 'speedDeadZones' }
+      });
+    }
+    if (clipScore < 60) {
+      issues.push({
+        id: 'audio-clip',
+        title: 'Audio is clipping',
+        why: Math.round(au.clipRatio * 10000) / 100 + '% of samples hit the ceiling (peak ' + au.peakDb.toFixed(1) + ' dBFS). Clipped audio sounds harsh and cheap.',
+        how: 'Pull the recording level down and re-normalise instead of pushing into the limit.',
+        gain: 0, severity: 'medium', action: { type: 'reduceGain' }
+      });
+    }
+
+    return {
+      key: 'audio',
+      label: 'Audio',
+      score: score,
+      metrics: [
+        { label: 'Average level', value: au.loudnessDb.toFixed(1) + ' dBFS', good: loudScore >= 70 },
+        { label: 'Peak', value: au.peakDb.toFixed(1) + ' dBFS', good: clipScore >= 60 },
+        { label: 'Silence', value: Math.round(au.silenceRatio * 100) + '%', good: silenceScore >= 65 },
+        { label: 'Dynamic range', value: au.dynamicRange.toFixed(1) + ' dB', good: dynScore >= 60 },
+        au.speechRatio !== null && au.speechRatio !== undefined
+          ? { label: 'Voice-band energy', value: Math.round(au.speechRatio * 100) + '%', good: au.speechRatio > 0.3 }
+          : null
+      ].filter(Boolean),
+      issues: issues
+    };
+  }
+
+  function scoreFormat(a, preset) {
+    var meta = a.base.meta;
+    var ratioGap = Math.abs(Math.log(meta.aspect / preset.aspect));
+    var aspectScore = U.band(-ratioGap, -0.85, -0.08, 0, null);
+    var shortSide = Math.min(meta.width, meta.height);
+    var resScore = U.band(shortSide, preset.minShortSide * 0.35, preset.minShortSide, preset.minShortSide * 2.2, null);
+    var centerBias = U.mean(a.base.frames.map(function (f) { return f.centerBias; }));
+    var safeScore = U.band(centerBias, preset.centerSafe * 0.4, preset.centerSafe, 0.85, null);
+
+    var score = 0.5 * aspectScore + 0.3 * resScore + 0.2 * safeScore;
+
+    var issues = [];
+    if (aspectScore < 75) {
+      issues.push({
+        id: 'format-aspect',
+        title: 'Wrong shape for ' + preset.label,
+        why: 'This video is ' + meta.aspectLabel + '; the format wants ' + preset.aspectName +
+             '. Off-format video gets letterboxed and loses screen area against everything else in the feed.',
+        how: 'Reframe to ' + preset.aspectName + ' and keep the subject inside the crop.',
+        gain: 0, severity: 'high', action: { type: 'reframe' }
+      });
+    }
+    if (resScore < 60) {
+      issues.push({
+        id: 'format-res',
+        title: 'Resolution is below what the platform re-encodes well',
+        why: 'Short side is ' + shortSide + 'px; ' + preset.minShortSide + 'px or more survives compression.',
+        how: 'Export at ' + preset.minShortSide + 'p or higher — platform re-encoding punishes low-resolution uploads twice.',
+        gain: 0, severity: 'medium', action: null
+      });
+    }
+    if (safeScore < 55) {
+      issues.push({
+        id: 'format-safe',
+        title: 'The subject sits outside the safe area',
+        why: 'Only ' + Math.round(centerBias * 100) + '% of the detail is in the middle of the frame, where platform UI does not cover it.',
+        how: 'Recentre the subject — captions, buttons and usernames eat the top and bottom of the screen.',
+        gain: 0, severity: 'medium', action: { type: 'reframe' }
+      });
+    }
+
+    return {
+      key: 'format',
+      label: 'Format fit',
+      score: score,
+      metrics: [
+        { label: 'Aspect ratio', value: meta.aspectLabel + ' (want ' + preset.aspectName + ')', good: aspectScore >= 75 },
+        { label: 'Resolution', value: meta.width + '×' + meta.height, good: resScore >= 60 },
+        { label: 'Subject in safe area', value: Math.round(centerBias * 100) + '%', good: safeScore >= 55 }
+      ],
+      issues: issues
+    };
+  }
+
+  var WEIGHTS = {
+    shorts: { hook: 0.28, pacing: 0.18, retention: 0.11, visual: 0.13, color: 0.08, audio: 0.14, format: 0.08 },
+    feed: { hook: 0.25, pacing: 0.17, retention: 0.12, visual: 0.15, color: 0.09, audio: 0.14, format: 0.08 },
+    youtube: { hook: 0.24, pacing: 0.16, retention: 0.14, visual: 0.15, color: 0.07, audio: 0.17, format: 0.07 }
+  };
+
+  /* Concrete parameters for the one-click fixes, computed from the measurements. */
+  function buildFixes(a, preset) {
+    var frames = a.base.frames;
+    var meta = a.base.meta;
+    var meanLuma = U.mean(frames.map(function (f) { return f.luma; }));
+    var contrast = U.percentile(frames.map(function (f) { return f.contrast; }), 0.5);
+    var colorfulness = U.percentile(frames.map(function (f) { return f.colorfulness; }), 0.5);
+
+    var meanSat = U.mean(frames.map(function (f) { return f.saturation; }));
+    var brightness = U.clamp(0.48 / Math.max(0.06, meanLuma), 0.7, 1.55);
+    var contrastF = U.clamp(0.19 / Math.max(0.03, contrast), 0.95, 1.45);
+    // Whichever signal is closer to target wins, so already-vivid footage is
+    // never pushed further and over-cooked footage gets pulled back.
+    var saturate = U.clamp(
+      Math.min(38 / Math.max(6, colorfulness), 0.4 / Math.max(0.05, meanSat)),
+      0.7, 1.75
+    );
+
+    // Best point to start: the earliest strong, moving frame inside the opening.
+    var limit = Math.min(2.5, meta.duration * 0.15);
+    var sharpRef = U.percentile(frames.map(function (f) { return f.sharpness; }), 0.6);
+    var motionRef = Math.max(0.006, a.derived.medianMotion);
+    var suggestedStart = 0;
+    for (var i = 1; i < frames.length; i++) {
+      if (frames[i].t > limit) break;
+      if (frames[i].sharpness >= sharpRef && a.derived.motion[i] >= motionRef) {
+        suggestedStart = frames[i].t;
+        break;
+      }
+    }
+    if (suggestedStart < meta.sampleInterval * 1.5) suggestedStart = 0;
+
+    var audioGain = 0;
+    if (a.audio && a.audio.available) {
+      var wanted = preset.loudness - a.audio.loudnessDb;
+      var headroom = -1 - a.audio.peakDb;
+      audioGain = U.clamp(Math.min(wanted, Math.max(headroom, -3)), -12, 18);
+    }
+
+    var trimOut = meta.duration;
+    if (meta.duration > preset.sweetMax) trimOut = suggestedStart + preset.sweetMax;
+
+    return {
+      brightness: brightness,
+      contrast: contrastF,
+      saturate: saturate,
+      suggestedStart: suggestedStart,
+      suggestedEnd: Math.min(meta.duration, trimOut),
+      audioGain: audioGain,
+      aspect: preset.aspect,
+      aspectName: preset.aspectName
+    };
+  }
+
+  var HOOK_TEMPLATES = [
+    'Stop scrolling if you {outcome}.',
+    'Nobody tells you this about {topic}.',
+    'I tried {topic} for 30 days. Here is what happened.',
+    'This is the {topic} mistake costing you {cost}.',
+    'Watch this before you {action}.'
+  ];
+
+  function evaluate(a, presetKey) {
+    var preset = PRESETS[presetKey] || PRESETS.shorts;
+    var categories = [
+      scoreHook(a, preset),
+      scorePacing(a, preset),
+      scoreRetention(a, preset),
+      scoreVisual(a),
+      scoreColor(a),
+      scoreAudio(a, preset),
+      scoreFormat(a, preset)
+    ];
+
+    var weights = WEIGHTS[preset.key];
+    var available = categories.filter(function (c) { return c.score !== null; });
+    var totalW = available.reduce(function (acc, c) { return acc + weights[c.key]; }, 0);
+    var overall = available.reduce(function (acc, c) {
+      return acc + weights[c.key] * c.score;
+    }, 0) / (totalW || 1);
+
+    // A missing audio track is a real cap, not a neutral omission.
+    var audioCat = categories.filter(function (c) { return c.key === 'audio'; })[0];
+    if (audioCat && audioCat.unavailable) overall = Math.min(overall, 62);
+
+    categories.forEach(function (c) {
+      c.weight = weights[c.key];
+      var deficit = (100 - (c.score === null ? 40 : c.score)) * c.weight;
+      var n = c.issues.length || 1;
+      c.issues.forEach(function (issue) {
+        var share = issue.severity === 'high' ? 0.55 : issue.severity === 'medium' ? 0.32 : 0.16;
+        issue.gain = Math.max(0.5, deficit * share * (2 / (n + 1)));
+        issue.category = c.label;
+      });
+    });
+
+    var recs = categories.reduce(function (acc, c) { return acc.concat(c.issues); }, []);
+    recs.sort(function (x, y) { return y.gain - x.gain; });
+
+    return {
+      preset: preset,
+      overall: U.clamp(overall, 0, 100),
+      categories: categories,
+      recs: recs,
+      fixes: buildFixes(a, preset),
+      hookTemplates: HOOK_TEMPLATES,
+      ceiling: U.clamp(overall + recs.reduce(function (acc, r) { return acc + r.gain; }, 0), 0, 99)
+    };
+  }
+
+  return { evaluate: evaluate, PRESETS: PRESETS };
+})();
+</script>
+<script>
+/* The render pipeline. One draw function is used by both the live preview and
+   the exporter, so what you see in the preview is what gets written to the file. */
+window.VL = window.VL || {};
+
+VL.editor = (function () {
+  var U = VL.util;
+
+  function defaultState(analysis, evaluation) {
+    var f = evaluation.fixes;
+    return {
+      trimIn: 0,
+      trimOut: analysis.base.meta.duration,
+      aspect: 'source',
+      zoom: 1,
+      panX: 0,
+      panY: 0,
+      brightness: 1,
+      contrast: 1,
+      saturate: 1,
+      warmth: 0,
+      vignette: 0,
+      punchIns: false,
+      punchStrength: 0.14,
+      speedDeadZones: false,
+      deadSpeed: 1.8,
+      progressBar: false,
+      hookText: '',
+      captions: [],
+      audioGain: 0,
+      suggested: f
+    };
+  }
+
+  function even(n) {
+    n = Math.max(2, Math.round(n));
+    return n % 2 === 0 ? n : n + 1;
+  }
+
+  function targetAspect(meta, state) {
+    return state.aspect === 'source' ? meta.aspect : state.aspect;
+  }
+
+  /* The region of the source frame that ends up on screen. */
+  function cropRect(meta, state, zoomExtra) {
+    var r = targetAspect(meta, state);
+    var w = meta.width, h = meta.height;
+    var cw, ch;
+    if (w / h > r) { ch = h; cw = h * r; }
+    else { cw = w; ch = w / r; }
+
+    var z = Math.max(1, state.zoom * (zoomExtra || 1));
+    cw /= z; ch /= z;
+
+    var freeX = w - cw, freeY = h - ch;
+    var x = freeX / 2 + (state.panX || 0) * freeX / 2;
+    var y = freeY / 2 + (state.panY || 0) * freeY / 2;
+    return {
+      x: U.clamp(x, 0, Math.max(0, freeX)),
+      y: U.clamp(y, 0, Math.max(0, freeY)),
+      w: cw,
+      h: ch
+    };
+  }
+
+  function outputSize(meta, state) {
+    // Deliberately measured at zoom 1 so the canvas does not resize while the
+    // zoom slider moves — zoom crops within a fixed output frame.
+    var base = cropRect(meta, { aspect: state.aspect, zoom: 1, panX: 0, panY: 0 }, 1);
+    var w = base.w, h = base.h;
+    var shortSide = Math.min(w, h);
+    var scale = 1;
+    // Scale up toward delivery size, but only mildly — past about 1.35× an
+    // upscale just softens the image instead of adding anything.
+    if (shortSide < 1080) scale = Math.min(1080 / shortSide, 1.35);
+    var longSide = Math.max(w, h) * scale;
+    if (longSide > 1920) scale *= 1920 / longSide;
+    return { w: even(w * scale), h: even(h * scale) };
+  }
+
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+  /* Punch-ins ride on top of the base zoom and settle within ~0.8s of each cut. */
+  function punchZoom(state, cuts, t) {
+    if (!state.punchIns || !cuts || !cuts.length) return 1;
+    var idx = -1;
+    for (var i = 0; i < cuts.length; i++) {
+      if (cuts[i] <= t) idx = i; else break;
+    }
+    if (idx < 0) return 1;
+    var since = t - cuts[idx];
+    var dur = 0.8;
+    if (since > dur) return 1;
+    var p = easeOutCubic(U.clamp(since / dur, 0, 1));
+    var s = state.punchStrength;
+    // Alternate between settling out of a push-in and easing into one.
+    if (idx % 2 === 0) return 1 + s * (1 - p);
+    return 1 + s * p * 0.6;
+  }
+
+  function filterString(state) {
+    var parts = [];
+    if (state.brightness !== 1) parts.push('brightness(' + state.brightness.toFixed(3) + ')');
+    if (state.contrast !== 1) parts.push('contrast(' + state.contrast.toFixed(3) + ')');
+    if (state.saturate !== 1) parts.push('saturate(' + state.saturate.toFixed(3) + ')');
+    return parts.length ? parts.join(' ') : 'none';
+  }
+
+  function wrapText(ctx, text, maxWidth) {
+    var words = String(text).split(/\s+/).filter(Boolean);
+    var lines = [], line = '';
+    words.forEach(function (word) {
+      var test = line ? line + ' ' + word : word;
+      if (ctx.measureText(test).width > maxWidth && line) {
+        lines.push(line);
+        line = word;
+      } else {
+        line = test;
+      }
+    });
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  function drawTextBlock(ctx, text, out, opts) {
+    var size = Math.round(out.h * opts.size);
+    ctx.save();
+    ctx.font = '800 ' + size + 'px "Inter", "Helvetica Neue", Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    var maxWidth = out.w * 0.86;
+    var lines = wrapText(ctx, text.toUpperCase(), maxWidth);
+    var lineHeight = size * 1.16;
+    var blockHeight = lines.length * lineHeight;
+    var startY = out.h * opts.y - blockHeight / 2 + lineHeight / 2;
+
+    lines.forEach(function (line, i) {
+      var y = startY + i * lineHeight;
+      if (opts.box) {
+        var wpx = ctx.measureText(line).width;
+        ctx.fillStyle = opts.box;
+        var padX = size * 0.34, padY = size * 0.22;
+        var rx = out.w / 2 - wpx / 2 - padX;
+        var ry = y - size / 2 - padY;
+        var rw = wpx + padX * 2, rh = size + padY * 2;
+        var rad = size * 0.22;
+        ctx.beginPath();
+        ctx.moveTo(rx + rad, ry);
+        ctx.arcTo(rx + rw, ry, rx + rw, ry + rh, rad);
+        ctx.arcTo(rx + rw, ry + rh, rx, ry + rh, rad);
+        ctx.arcTo(rx, ry + rh, rx, ry, rad);
+        ctx.arcTo(rx, ry, rx + rw, ry, rad);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.lineJoin = 'round';
+      ctx.lineWidth = size * 0.16;
+      ctx.strokeStyle = 'rgba(0,0,0,0.85)';
+      ctx.strokeText(line, out.w / 2, y);
+      ctx.fillStyle = opts.color || '#ffffff';
+      ctx.fillText(line, out.w / 2, y);
+    });
+    ctx.restore();
+  }
+
+  function activeCaption(state, t) {
+    for (var i = 0; i < state.captions.length; i++) {
+      var c = state.captions[i];
+      if (t >= c.t0 && t <= c.t1 && c.text) return c;
+    }
+    return null;
+  }
+
+  /* Draws one composited frame. `t` is a source timestamp. */
+  function drawFrame(ctx, video, meta, state, cuts, t, out) {
+    var zoomExtra = punchZoom(state, cuts, t);
+    var crop = cropRect(meta, state, zoomExtra);
+
+    ctx.save();
+    ctx.clearRect(0, 0, out.w, out.h);
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, out.w, out.h);
+
+    var filter = filterString(state);
+    if (filter !== 'none' && 'filter' in ctx) ctx.filter = filter;
+    try {
+      ctx.drawImage(video, crop.x, crop.y, crop.w, crop.h, 0, 0, out.w, out.h);
+    } catch (e) { /* frame not ready yet */ }
+    if ('filter' in ctx) ctx.filter = 'none';
+
+    if (state.warmth) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'soft-light';
+      ctx.globalAlpha = Math.min(0.85, Math.abs(state.warmth));
+      ctx.fillStyle = state.warmth > 0 ? '#ff9c3d' : '#4da6ff';
+      ctx.fillRect(0, 0, out.w, out.h);
+      ctx.restore();
+    }
+
+    if (state.vignette) {
+      var g = ctx.createRadialGradient(
+        out.w / 2, out.h / 2, Math.min(out.w, out.h) * 0.32,
+        out.w / 2, out.h / 2, Math.max(out.w, out.h) * 0.72
+      );
+      g.addColorStop(0, 'rgba(0,0,0,0)');
+      g.addColorStop(1, 'rgba(0,0,0,' + Math.min(0.8, state.vignette) + ')');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, out.w, out.h);
+    }
+
+    var rel = t - state.trimIn;
+    if (state.hookText && rel >= 0 && rel <= 2.6) {
+      drawTextBlock(ctx, state.hookText, out, {
+        size: 0.062, y: 0.26, color: '#ffffff', box: 'rgba(10,10,14,0.55)'
+      });
+    }
+
+    var cap = activeCaption(state, t);
+    if (cap) {
+      drawTextBlock(ctx, cap.text, out, {
+        size: 0.05, y: 0.76, color: '#ffffff', box: 'rgba(10,10,14,0.5)'
+      });
+    }
+
+    if (state.progressBar) {
+      var span = Math.max(0.001, state.trimOut - state.trimIn);
+      var p = U.clamp((t - state.trimIn) / span, 0, 1);
+      var barH = Math.max(4, out.h * 0.006);
+      ctx.fillStyle = 'rgba(255,255,255,0.22)';
+      ctx.fillRect(0, out.h - barH, out.w, barH);
+      ctx.fillStyle = '#5cf2b0';
+      ctx.fillRect(0, out.h - barH, out.w * p, barH);
+    }
+
+    ctx.restore();
+  }
+
+  function inDeadZone(zones, t) {
+    for (var i = 0; i < zones.length; i++) {
+      if (t >= zones[i].start && t <= zones[i].end) return true;
+    }
+    return false;
+  }
+
+  /* Runtime after trimming and any dead-zone speed-up. */
+  function outputDuration(state, zones) {
+    var span = Math.max(0, state.trimOut - state.trimIn);
+    if (!state.speedDeadZones || !zones.length) return span;
+    var saved = 0;
+    zones.forEach(function (z) {
+      var s = Math.max(z.start, state.trimIn);
+      var e = Math.min(z.end, state.trimOut);
+      if (e > s) saved += (e - s) * (1 - 1 / state.deadSpeed);
+    });
+    return Math.max(0.1, span - saved);
+  }
+
+  return {
+    defaultState: defaultState,
+    cropRect: cropRect,
+    outputSize: outputSize,
+    drawFrame: drawFrame,
+    inDeadZone: inDeadZone,
+    outputDuration: outputDuration,
+    targetAspect: targetAspect
+  };
+})();
+</script>
+<script>
+/* Export. Records the same draw pipeline the preview uses, in real time, with
+   the audio routed through a gain stage so loudness fixes land in the file. */
+window.VL = window.VL || {};
+
+VL.exporter = (function () {
+  var U = VL.util;
+
+  function pickMime() {
+    var candidates = [
+      'video/webm;codecs=vp9,opus',
+      'video/webm;codecs=vp8,opus',
+      'video/webm',
+      'video/mp4'
+    ];
+    if (typeof MediaRecorder === 'undefined') return null;
+    for (var i = 0; i < candidates.length; i++) {
+      if (MediaRecorder.isTypeSupported(candidates[i])) return candidates[i];
+    }
+    return '';
+  }
+
+  /* One AudioContext per media element — the browser will not let us make a
+     second MediaElementSource for the same element. */
+  function audioChain(video) {
+    if (video._vlAudio) return video._vlAudio;
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return null;
+    try {
+      var ctx = new Ctx();
+      var source = ctx.createMediaElementSource(video);
+      var gain = ctx.createGain();
+      var dest = ctx.createMediaStreamDestination();
+      source.connect(gain);
+      gain.connect(dest);
+      gain.connect(ctx.destination);
+      video._vlAudio = { ctx: ctx, source: source, gain: gain, dest: dest };
+      return video._vlAudio;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function render(opts) {
+    var video = opts.video;
+    var meta = opts.meta;
+    var state = opts.state;
+    var cuts = opts.cuts || [];
+    var zones = opts.deadZones || [];
+    var onProgress = opts.onProgress || function () {};
+
+    var mime = pickMime();
+    if (mime === null) {
+      return Promise.reject(new Error('This browser cannot record video. Chrome, Edge or Firefox will work.'));
+    }
+
+    var out = VL.editor.outputSize(meta, state);
+    var canvas = document.createElement('canvas');
+    canvas.width = out.w;
+    canvas.height = out.h;
+    var ctx = canvas.getContext('2d');
+    if (!canvas.captureStream) {
+      return Promise.reject(new Error('This browser cannot capture a canvas stream.'));
+    }
+
+    var stream = canvas.captureStream(30);
+    var chain = audioChain(video);
+    if (chain) {
+      chain.gain.gain.value = Math.pow(10, (state.audioGain || 0) / 20);
+      chain.dest.stream.getAudioTracks().forEach(function (track) {
+        stream.addTrack(track);
+      });
+    }
+
+    var chunks = [];
+    var recorder;
+    try {
+      recorder = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 8000000 } : undefined);
+    } catch (e) {
+      return Promise.reject(new Error('Recording failed to start: ' + e.message));
+    }
+    recorder.ondataavailable = function (e) {
+      if (e.data && e.data.size) chunks.push(e.data);
+    };
+
+    var span = Math.max(0.05, state.trimOut - state.trimIn);
+    var finished = false;
+
+    return (chain ? chain.ctx.resume().catch(function () {}) : Promise.resolve())
+      .then(function () {
+        video.pause();
+        video.currentTime = state.trimIn;
+        return U.once(video, 'seeked');
+      })
+      .then(function () {
+        video.playbackRate = 1;
+        video.muted = false;
+        return video.play();
+      })
+      .then(function () {
+        recorder.start(250);
+        return new Promise(function (resolve, reject) {
+          recorder.onerror = function (e) { reject(e.error || new Error('Recording error')); };
+
+          function stop() {
+            if (finished) return;
+            finished = true;
+            video.pause();
+            video.playbackRate = 1;
+            try { recorder.stop(); } catch (e) {}
+          }
+
+          recorder.onstop = function () {
+            resolve(new Blob(chunks, { type: mime || 'video/webm' }));
+          };
+
+          function tick() {
+            if (finished) return;
+            var t = video.currentTime;
+            if (t >= state.trimOut - 0.02 || video.ended) {
+              // Hold the last frame briefly so the final frame is not dropped.
+              VL.editor.drawFrame(ctx, video, meta, state, cuts, Math.min(t, state.trimOut), out);
+              setTimeout(stop, 180);
+              return;
+            }
+            var wanted = (state.speedDeadZones && VL.editor.inDeadZone(zones, t)) ? state.deadSpeed : 1;
+            if (Math.abs(video.playbackRate - wanted) > 0.01) video.playbackRate = wanted;
+
+            VL.editor.drawFrame(ctx, video, meta, state, cuts, t, out);
+            onProgress(U.clamp((t - state.trimIn) / span, 0, 1));
+            requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        });
+      })
+      .then(function (blob) {
+        video.muted = true;
+        return { blob: blob, mime: mime || 'video/webm', width: out.w, height: out.h };
+      });
+  }
+
+  function stillFrame(opts) {
+    var video = opts.video;
+    var meta = opts.meta;
+    var state = opts.state;
+    var out = VL.editor.outputSize(meta, state);
+    var canvas = document.createElement('canvas');
+    canvas.width = out.w;
+    canvas.height = out.h;
+    var ctx = canvas.getContext('2d');
+
+    var wasPaused = video.paused;
+    video.pause();
+    return new Promise(function (resolve) {
+      function draw() {
+        // Punch-ins and captions are skipped so the still is a clean cover frame.
+        var stillState = Object.assign({}, state, {
+          punchIns: false, progressBar: false, captions: [], hookText: opts.text || ''
+        });
+        VL.editor.drawFrame(ctx, video, meta, stillState, [], video.currentTime, out);
+        canvas.toBlob(function (blob) {
+          if (!wasPaused) video.play();
+          resolve(blob);
+        }, 'image/png');
+      }
+      if (Math.abs(video.currentTime - opts.time) < 0.05) {
+        requestAnimationFrame(draw);
+      } else {
+        U.once(video, 'seeked').then(function () { requestAnimationFrame(draw); });
+        video.currentTime = opts.time;
+      }
+    });
+  }
+
+  function reportMarkdown(analysis, evaluation, state) {
+    var meta = analysis.base.meta;
+    var lines = [];
+    lines.push('# Video Lab report — ' + meta.name);
+    lines.push('');
+    lines.push('- Preset: ' + evaluation.preset.label);
+    lines.push('- Score: **' + Math.round(evaluation.overall) + '/100** (ceiling with the fixes below: ~' +
+               Math.round(evaluation.ceiling) + ')');
+    lines.push('- Source: ' + meta.width + '×' + meta.height + ' (' + meta.aspectLabel + '), ' +
+               U.fmtTime(meta.duration) + ', ' + U.fmtBytes(meta.size));
+    lines.push('- Measured from ' + meta.sampleCount + ' sampled frames and ' +
+               (analysis.audio && analysis.audio.available ? 'the decoded audio track' : 'no readable audio'));
+    lines.push('');
+    lines.push('## Scores');
+    lines.push('');
+    lines.push('| Category | Score | Weight |');
+    lines.push('| --- | --- | --- |');
+    evaluation.categories.forEach(function (c) {
+      lines.push('| ' + c.label + ' | ' + (c.score === null ? 'n/a' : Math.round(c.score)) + ' | ' +
+                 Math.round(c.weight * 100) + '% |');
+    });
+    lines.push('');
+    lines.push('## What to change, in order of impact');
+    lines.push('');
+    evaluation.recs.forEach(function (r, i) {
+      lines.push((i + 1) + '. **' + r.title + '** (+' + r.gain.toFixed(1) + ' pts)');
+      lines.push('   - Why: ' + r.why);
+      lines.push('   - Fix: ' + r.how);
+    });
+    if (analysis.deadZones.length) {
+      lines.push('');
+      lines.push('## Dead zones');
+      lines.push('');
+      analysis.deadZones.forEach(function (z) {
+        lines.push('- ' + U.fmtTime(z.start) + ' → ' + U.fmtTime(z.end) +
+                   ' (' + (z.end - z.start).toFixed(1) + 's, ' + z.reason + ')');
+      });
+    }
+    if (state) {
+      lines.push('');
+      lines.push('## Edit applied');
+      lines.push('');
+      lines.push('- Trim: ' + U.fmtTime(state.trimIn) + ' → ' + U.fmtTime(state.trimOut));
+      lines.push('- Framing: ' + (state.aspect === 'source' ? 'source aspect' : evaluation.preset.aspectName) +
+                 ', zoom ' + state.zoom.toFixed(2) + '×');
+      lines.push('- Colour: brightness ' + state.brightness.toFixed(2) + ', contrast ' + state.contrast.toFixed(2) +
+                 ', saturation ' + state.saturate.toFixed(2));
+      lines.push('- Audio gain: ' + (state.audioGain >= 0 ? '+' : '') + state.audioGain.toFixed(1) + ' dB');
+      lines.push('- Punch-ins: ' + (state.punchIns ? 'on' : 'off') +
+                 ', dead-zone speed-up: ' + (state.speedDeadZones ? state.deadSpeed + '×' : 'off'));
+    }
+    lines.push('');
+    return lines.join('\n');
+  }
+
+  return { render: render, stillFrame: stillFrame, reportMarkdown: reportMarkdown, audioChain: audioChain };
+})();
+</script>
+<script>
+/* Controller: wires the upload, the analysis run, the report, and the studio. */
+(function () {
+  var U = VL.util;
+  var $ = U.$;
+
+  var app = {
+    file: null,
+    analysis: null,
+    evaluation: null,
+    state: null,
+    stage: null,
+    stageReady: false,
+    playing: false,
+    lastBlob: null
+  };
+
+  /* ---------------------------------------------------------------- flow */
+
+  function show(id, visible) {
+    var node = $(id);
+    if (node) node.hidden = !visible;
+  }
+
+  function fail(message) {
+    var box = $('#error');
+    box.textContent = message;
+    box.hidden = false;
+    show('#progress-section', false);
+  }
+
+  function setProgress(pct, note) {
+    $('#progress-bar').style.width = Math.round(pct * 100) + '%';
+    if (note) $('#progress-note').textContent = note;
+  }
+
+  function handleFile(file) {
+    if (!file) return;
+    if (file.type && file.type.indexOf('video') !== 0 && !/\.(mp4|mov|webm|m4v|avi|mkv)$/i.test(file.name)) {
+      fail('That does not look like a video file.');
+      return;
+    }
+    app.file = file;
+    $('#error').hidden = true;
+    show('#upload-section', false);
+    show('#report-section', false);
+    show('#studio-section', false);
+    show('#progress-section', true);
+    $('#restart').hidden = false;
+    $('#progress-title').textContent = 'Analysing ' + file.name;
+    setProgress(0.02, 'Decoding frames…');
+
+    var presetKey = $('#preset').value;
+    var base;
+
+    VL.analyze.run(file, function (p) {
+      setProgress(0.05 + p * 0.6, 'Measuring frames…');
+    }).then(function (result) {
+      base = result;
+      setProgress(0.7, 'Reading the audio track…');
+      return VL.audio.analyze(file, base.video, base.meta.duration);
+    }).then(function (audio) {
+      setProgress(0.9, 'Scoring…');
+      var derived = VL.analyze.derive(base);
+      var analysis = {
+        base: base,
+        derived: derived,
+        audio: audio,
+        deadZones: VL.analyze.findDeadZones(base, derived, audio),
+        thumbnails: VL.analyze.pickThumbnails(base)
+      };
+      app.analysis = analysis;
+      // Exposed so the raw measurements can be inspected from the console.
+      window.videoLabAnalysis = analysis;
+      app.evaluation = VL.score.evaluate(analysis, presetKey);
+      app.state = VL.editor.defaultState(analysis, app.evaluation);
+      setProgress(1, 'Done.');
+      return U.sleep(120);
+    }).then(function () {
+      show('#progress-section', false);
+      renderReport();
+      setupStudio();
+      show('#report-section', true);
+      show('#studio-section', true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }).catch(function (err) {
+      console.error(err);
+      fail(err && err.message ? err.message : 'Something went wrong reading that file.');
+    });
+  }
+
+  /* -------------------------------------------------------------- report */
+
+  function scoreColor(score) {
+    if (score >= 75) return 'var(--accent)';
+    if (score >= 50) return 'var(--warn)';
+    return 'var(--bad)';
+  }
+
+  function verdictFor(score) {
+    if (score >= 85) return 'This is already strong.';
+    if (score >= 70) return 'Solid — a few fixes away from standing out.';
+    if (score >= 55) return 'Watchable, but it will get scrolled past.';
+    if (score >= 40) return 'The idea may be fine; the execution is losing people.';
+    return 'This is fighting itself. Start with the fixes below.';
+  }
+
+  function renderReport() {
+    var ev = app.evaluation;
+    var a = app.analysis;
+    var meta = a.base.meta;
+    var score = Math.round(ev.overall);
+
+    var circumference = 2 * Math.PI * 86;
+    var ring = $('#ring-value');
+    ring.style.strokeDasharray = circumference;
+    ring.style.strokeDashoffset = circumference * (1 - score / 100);
+    ring.style.stroke = scoreColor(score);
+    $('#score-number').textContent = score;
+    $('#verdict').textContent = verdictFor(score);
+    $('#verdict-note').textContent = 'Scored for ' + ev.preset.label + ' from ' + meta.sampleCount +
+      ' sampled frames' + (a.audio.available ? ' and the decoded audio track' : ' (no readable audio track)') + '.';
+
+    var ceilingGain = Math.max(0, Math.round(ev.ceiling) - score);
+    $('#ceiling-now').style.width = score + '%';
+    $('#ceiling-gain').style.width = ceilingGain + '%';
+    $('#ceiling-text').textContent = ceilingGain > 0
+      ? 'Applying everything below puts this at roughly ' + Math.round(ev.ceiling) + '/100 (+' + ceilingGain + ').'
+      : 'There is little left on the table for this format.';
+
+    var facts = [
+      ['Runtime', U.fmtTime(meta.duration)],
+      ['Resolution', meta.width + '×' + meta.height],
+      ['Aspect', meta.aspectLabel],
+      ['Cuts', a.derived.cuts.length + ' (' + a.derived.cutsPerMin.toFixed(1) + '/min)'],
+      ['Dead zones', a.deadZones.length ? a.deadZones.length + ' · ' +
+        a.deadZones.reduce(function (s, z) { return s + (z.end - z.start); }, 0).toFixed(1) + 's' : 'none'],
+      ['Audio level', a.audio.available ? a.audio.loudnessDb.toFixed(1) + ' dBFS' : '—'],
+      ['File size', U.fmtBytes(meta.size)]
+    ];
+    var dl = $('#facts');
+    dl.innerHTML = '';
+    facts.forEach(function (f) {
+      dl.appendChild(U.el('div', null, [
+        U.el('dt', { text: f[0] }),
+        U.el('dd', { text: f[1] })
+      ]));
+    });
+
+    renderRecs();
+    renderCategories();
+    renderThumbs();
+    drawTimeline();
+  }
+
+  function renderRecs() {
+    var list = $('#recs');
+    list.innerHTML = '';
+    var ev = app.evaluation;
+    if (!ev.recs.length) {
+      list.appendChild(U.el('li', { class: 'rec low' }, [
+        U.el('div', { class: 'rec-body' }, [
+          U.el('h3', { text: 'Nothing measurable is holding this back.' }),
+          U.el('p', { text: 'Every category scored inside its target band for this format.' })
+        ])
+      ]));
+      return;
+    }
+    ev.recs.forEach(function (rec) {
+      var body = U.el('div', { class: 'rec-body' }, [
+        U.el('h3', { text: rec.title }),
+        U.el('p', { text: rec.why }),
+        U.el('p', { class: 'how', text: rec.how }),
+        U.el('div', { class: 'rec-meta' }, [
+          U.el('span', { class: 'pill gain', text: '+' + rec.gain.toFixed(1) + ' pts' }),
+          U.el('span', { class: 'pill', text: rec.category })
+        ])
+      ]);
+      var item = U.el('li', { class: 'rec ' + rec.severity, 'data-rec': rec.id }, [body]);
+      if (rec.action) {
+        var btn = U.el('button', {
+          class: 'ghost small',
+          text: 'Apply',
+          onclick: function () {
+            applyAction(rec.action);
+            item.classList.add('applied');
+            btn.textContent = 'Applied';
+            btn.disabled = true;
+            $('#studio-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+        item.appendChild(btn);
+      }
+      list.appendChild(item);
+    });
+  }
+
+  function renderCategories() {
+    var wrap = $('#categories');
+    wrap.innerHTML = '';
+    app.evaluation.categories.forEach(function (c) {
+      var value = c.score === null ? '—' : Math.round(c.score);
+      var card = U.el('div', { class: 'card' }, [
+        U.el('div', { class: 'card-head' }, [
+          U.el('h3', { text: c.label }),
+          U.el('span', { class: 'card-score', text: String(value) })
+        ]),
+        (function () {
+          var bar = U.el('div', { class: 'bar' }, [U.el('div', { class: 'bar-fill' })]);
+          var fill = bar.firstChild;
+          fill.style.width = (c.score === null ? 0 : c.score) + '%';
+          fill.style.background = scoreColor(c.score === null ? 0 : c.score);
+          return bar;
+        })()
+      ]);
+      card.querySelector('.card-score').style.color = scoreColor(c.score === null ? 0 : c.score);
+      c.metrics.forEach(function (m) {
+        card.appendChild(U.el('div', { class: 'metric' }, [
+          U.el('span', { text: m.label }),
+          U.el('span', { class: m.good ? 'good' : 'bad', text: String(m.value) })
+        ]));
+      });
+      card.appendChild(U.el('div', { class: 'metric' }, [
+        U.el('span', { text: 'Weight in the score' }),
+        U.el('span', { text: Math.round(c.weight * 100) + '%' })
+      ]));
+      wrap.appendChild(card);
+    });
+  }
+
+  function renderThumbs() {
+    var wrap = $('#thumbs');
+    wrap.innerHTML = '';
+    app.analysis.thumbnails.forEach(function (t, i) {
+      var fig = U.el('figure', { class: 'thumb' }, [
+        U.el('img', { src: t.url, alt: 'Frame at ' + U.fmtTime(t.t) }),
+        U.el('figcaption', null, [
+          U.el('span', { text: U.fmtTime(t.t) }),
+          U.el('span', { text: i === 0 ? 'best' : '#' + (i + 1) })
+        ])
+      ]);
+      fig.addEventListener('click', function () {
+        seekStage(t.t);
+        $('#studio-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      wrap.appendChild(fig);
+    });
+  }
+
+  function drawTimeline() {
+    var canvas = $('#timeline');
+    var a = app.analysis;
+    var dpr = window.devicePixelRatio || 1;
+    var cssW = canvas.clientWidth || 900;
+    var cssH = 180;
+    canvas.width = cssW * dpr;
+    canvas.height = cssH * dpr;
+    var ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, cssW, cssH);
+
+    var duration = a.base.meta.duration;
+    var x = function (t) { return (t / duration) * cssW; };
+    var padTop = 22, padBottom = 22;
+    var h = cssH - padTop - padBottom;
+
+    // Hook window
+    var hookEnd = Math.min(app.evaluation.preset.hookWindow, duration);
+    ctx.fillStyle = 'rgba(43,58,92,0.55)';
+    ctx.fillRect(0, padTop, x(hookEnd), h);
+
+    // Dead zones
+    ctx.fillStyle = 'rgba(122,36,70,0.42)';
+    a.deadZones.forEach(function (z) {
+      ctx.fillRect(x(z.start), padTop, Math.max(1.5, x(z.end) - x(z.start)), h);
+    });
+
+    // Audio envelope
+    if (a.audio.available && a.audio.envelope.length) {
+      var step = a.audio.envelopeStep || 0.05;
+      ctx.beginPath();
+      ctx.moveTo(0, padTop + h);
+      for (var i = 0; i < a.audio.envelope.length; i++) {
+        var t = i * step;
+        if (t > duration) break;
+        var db = Math.max(-60, Math.min(0, a.audio.envelope[i]));
+        var v = (db + 60) / 60;
+        ctx.lineTo(x(t), padTop + h - v * h * 0.92);
+      }
+      ctx.strokeStyle = 'rgba(122,162,255,0.85)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    }
+
+    // Movement
+    var motion = a.derived.motion;
+    var maxMotion = Math.max.apply(null, motion) || 1;
+    ctx.beginPath();
+    ctx.moveTo(0, padTop + h);
+    a.base.frames.forEach(function (f, i) {
+      var v = motion[i] / maxMotion;
+      ctx.lineTo(x(f.t), padTop + h - v * h * 0.9);
+    });
+    ctx.lineTo(cssW, padTop + h);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(92,242,176,0.20)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(92,242,176,0.9)';
+    ctx.lineWidth = 1.4;
+    ctx.stroke();
+
+    // Cuts
+    ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+    ctx.lineWidth = 1;
+    a.derived.cuts.forEach(function (c) {
+      ctx.beginPath();
+      ctx.moveTo(x(c), padTop - 6);
+      ctx.lineTo(x(c), padTop + 8);
+      ctx.stroke();
+    });
+
+    // Time labels
+    ctx.fillStyle = 'rgba(153,161,181,0.9)';
+    ctx.font = '11px ui-monospace, Menlo, monospace';
+    ctx.textBaseline = 'top';
+    var marks = 6;
+    for (var m = 0; m <= marks; m++) {
+      var tt = (duration / marks) * m;
+      var tx = Math.min(cssW - 26, Math.max(2, x(tt) - 12));
+      ctx.fillText(U.fmtTime(tt), tx, cssH - 16);
+    }
+
+    canvas.onclick = function (e) {
+      var rect = canvas.getBoundingClientRect();
+      var t = ((e.clientX - rect.left) / rect.width) * duration;
+      seekStage(t);
+      $('#studio-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+  }
+
+  /* -------------------------------------------------------------- studio */
+
+  function setupStudio() {
+    var meta = app.analysis.base.meta;
+
+    if (app.stage && app.stage.parentNode) app.stage.parentNode.removeChild(app.stage);
+    var v = document.createElement('video');
+    v.src = app.analysis.base.url;
+    v.playsInline = true;
+    v.muted = true;
+    v.preload = 'auto';
+    v.setAttribute('style', 'position:fixed;left:-10000px;top:0;width:2px;height:2px;opacity:0.01;pointer-events:none');
+    document.body.appendChild(v);
+    app.stage = v;
+    app.stageReady = false;
+
+    U.once(v, 'loadeddata').then(function () {
+      app.stageReady = true;
+      v.currentTime = app.state.trimIn;
+      resizePreview();
+      requestAnimationFrame(previewLoop);
+    }).catch(function () {});
+
+    bindControls();
+    syncControls();
+    updateOutputNote();
+  }
+
+  function resizePreview() {
+    var meta = app.analysis.base.meta;
+    var out = VL.editor.outputSize(meta, app.state);
+    var canvas = $('#preview');
+    if (canvas.width !== out.w || canvas.height !== out.h) {
+      canvas.width = out.w;
+      canvas.height = out.h;
+    }
+    return out;
+  }
+
+  function previewLoop() {
+    if (!app.stage) return;
+    var v = app.stage;
+    var meta = app.analysis.base.meta;
+    var state = app.state;
+    var out = { w: $('#preview').width, h: $('#preview').height };
+    var ctx = $('#preview').getContext('2d');
+
+    if (app.playing) {
+      if (v.currentTime >= state.trimOut - 0.03) {
+        v.pause();
+        app.playing = false;
+        $('#play').textContent = '▶';
+        v.currentTime = state.trimIn;
+      } else {
+        var wanted = (state.speedDeadZones && VL.editor.inDeadZone(app.analysis.deadZones, v.currentTime))
+          ? state.deadSpeed : 1;
+        if (Math.abs(v.playbackRate - wanted) > 0.01) v.playbackRate = wanted;
+      }
+    }
+
+    VL.editor.drawFrame(ctx, v, meta, state, app.analysis.derived.cuts, v.currentTime, out);
+
+    var span = Math.max(0.001, state.trimOut - state.trimIn);
+    var p = U.clamp((v.currentTime - state.trimIn) / span, 0, 1);
+    var scrub = $('#scrub');
+    if (document.activeElement !== scrub) scrub.value = Math.round(p * 1000);
+    $('#time-label').textContent = U.fmtTime(v.currentTime) + ' / ' + U.fmtTime(meta.duration);
+
+    requestAnimationFrame(previewLoop);
+  }
+
+  function seekStage(t) {
+    if (!app.stage) return;
+    app.stage.currentTime = U.clamp(t, 0, app.analysis.base.meta.duration - 0.03);
+  }
+
+  var ASPECT_NAMES = [
+    [0.5625, '9:16'], [0.8, '4:5'], [1, '1:1'], [1.7778, '16:9']
+  ];
+
+  function aspectName(state, meta) {
+    if (state.aspect === 'source') return meta.aspectLabel;
+    for (var i = 0; i < ASPECT_NAMES.length; i++) {
+      if (Math.abs(ASPECT_NAMES[i][0] - state.aspect) < 0.02) return ASPECT_NAMES[i][1];
+    }
+    return state.aspect.toFixed(2) + ':1';
+  }
+
+  function updateOutputNote() {
+    var meta = app.analysis.base.meta;
+    var out = VL.editor.outputSize(meta, app.state);
+    var dur = VL.editor.outputDuration(app.state, app.analysis.deadZones);
+    $('#output-note').textContent = 'Output: ' + out.w + '×' + out.h + ' · ' + U.fmtTime(dur) +
+      ' · ' + aspectName(app.state, meta);
+  }
+
+  function onStateChange() {
+    resizePreview();
+    updateOutputNote();
+  }
+
+  /* Slider plumbing: raw slider value -> state value -> label. */
+  function bindRange(id, key, toState, format, after) {
+    var input = $('#' + id);
+    var out = $('#' + id + '-val');
+    input.addEventListener('input', function () {
+      app.state[key] = toState(Number(input.value));
+      if (out) out.textContent = format(app.state[key]);
+      if (after) after();
+      onStateChange();
+    });
+  }
+
+  function bindControls() {
+    var meta = app.analysis.base.meta;
+    var d = meta.duration;
+
+    U.$$('.tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        U.$$('.tab').forEach(function (t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        U.$$('.tab-body').forEach(function (body) {
+          body.hidden = body.getAttribute('data-panel') !== tab.getAttribute('data-tab');
+        });
+      });
+    });
+
+    $('#play').onclick = function () {
+      var v = app.stage;
+      if (!v) return;
+      if (app.playing) {
+        v.pause();
+        app.playing = false;
+        this.textContent = '▶';
+      } else {
+        if (v.currentTime < app.state.trimIn || v.currentTime >= app.state.trimOut - 0.05) {
+          v.currentTime = app.state.trimIn;
+        }
+        v.muted = false;
+        VL.exporter.audioChain(v);
+        if (v._vlAudio) {
+          v._vlAudio.ctx.resume().catch(function () {});
+          v._vlAudio.gain.gain.value = Math.pow(10, (app.state.audioGain || 0) / 20);
+        }
+        var self = this;
+        v.play().then(function () {
+          app.playing = true;
+          self.textContent = '❚❚';
+        }).catch(function () {});
+      }
+    };
+
+    $('#scrub').addEventListener('input', function () {
+      var p = Number(this.value) / 1000;
+      seekStage(app.state.trimIn + p * (app.state.trimOut - app.state.trimIn));
+    });
+
+    $('#trim-in').addEventListener('input', function () {
+      var t = (Number(this.value) / 1000) * d;
+      app.state.trimIn = Math.min(t, app.state.trimOut - 0.4);
+      $('#trim-in-val').textContent = U.fmtTime(app.state.trimIn);
+      seekStage(app.state.trimIn);
+      onStateChange();
+    });
+    $('#trim-out').addEventListener('input', function () {
+      var t = (Number(this.value) / 1000) * d;
+      app.state.trimOut = Math.max(t, app.state.trimIn + 0.4);
+      $('#trim-out-val').textContent = U.fmtTime(app.state.trimOut);
+      onStateChange();
+    });
+    $('#trim-suggest').onclick = function () {
+      applyAction({ type: 'hookFix' });
+    };
+
+    U.$$('#aspect-chips .chip').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        U.$$('#aspect-chips .chip').forEach(function (c) { c.classList.remove('active'); });
+        chip.classList.add('active');
+        var val = chip.getAttribute('data-aspect');
+        app.state.aspect = val === 'source' ? 'source' : Number(val);
+        onStateChange();
+      });
+    });
+
+    bindRange('zoom', 'zoom', function (v) { return v / 100; }, function (v) { return v.toFixed(2) + '×'; });
+    bindRange('panx', 'panX', function (v) { return v / 100; }, function (v) { return v.toFixed(2); });
+    bindRange('pany', 'panY', function (v) { return v / 100; }, function (v) { return v.toFixed(2); });
+    bindRange('brightness', 'brightness', function (v) { return v / 100; }, function (v) { return v.toFixed(2); });
+    bindRange('contrast', 'contrast', function (v) { return v / 100; }, function (v) { return v.toFixed(2); });
+    bindRange('saturate', 'saturate', function (v) { return v / 100; }, function (v) { return v.toFixed(2); });
+    bindRange('warmth', 'warmth', function (v) { return v / 100; }, function (v) { return v.toFixed(2); });
+    bindRange('vignette', 'vignette', function (v) { return v / 100; }, function (v) { return v.toFixed(2); });
+    bindRange('punch-strength', 'punchStrength', function (v) { return v / 100; },
+      function (v) { return Math.round(v * 100) + '%'; });
+    bindRange('speed', 'deadSpeed', function (v) { return v / 100; }, function (v) { return v.toFixed(1) + '×'; });
+    bindRange('gain', 'audioGain', function (v) { return v / 10; }, function (v) {
+      return (v >= 0 ? '+' : '') + v.toFixed(1) + ' dB';
+    }, function () {
+      var v = app.stage;
+      if (v && v._vlAudio) v._vlAudio.gain.gain.value = Math.pow(10, app.state.audioGain / 20);
+    });
+
+    $('#look-auto').onclick = function () {
+      applyAction({ type: 'exposure' });
+      applyAction({ type: 'contrast' });
+      applyAction({ type: 'colorBoost' });
+    };
+
+    $('#punch').addEventListener('change', function () {
+      app.state.punchIns = this.checked;
+      onStateChange();
+    });
+    $('#speedup').addEventListener('change', function () {
+      app.state.speedDeadZones = this.checked;
+      onStateChange();
+    });
+    $('#progressbar').addEventListener('change', function () {
+      app.state.progressBar = this.checked;
+      onStateChange();
+    });
+
+    $('#hook-text').addEventListener('input', function () {
+      app.state.hookText = this.value;
+    });
+
+    $('#add-caption').onclick = function () {
+      var t = app.stage ? app.stage.currentTime : app.state.trimIn;
+      app.state.captions.push({
+        t0: t,
+        t1: Math.min(app.state.trimOut, t + 2.5),
+        text: ''
+      });
+      renderCaptions();
+    };
+
+    $('#apply-all').onclick = function () {
+      var seen = {};
+      app.evaluation.recs.forEach(function (r) {
+        if (r.action && !seen[r.action.type]) {
+          seen[r.action.type] = true;
+          applyAction(r.action);
+        }
+      });
+      U.$$('.rec').forEach(function (el) { el.classList.add('applied'); });
+      U.$$('.rec button').forEach(function (b) { b.textContent = 'Applied'; b.disabled = true; });
+      $('#studio-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    $('#normalize').onclick = function () { applyAction({ type: 'normalizeAudio' }); };
+
+    $('#export-video').onclick = runExport;
+    $('#export-cover').onclick = exportCover;
+    $('#export-report').onclick = exportReport;
+    $('#restart').onclick = function () { window.location.reload(); };
+
+    renderHookTemplates();
+    renderCaptions();
+
+    var au = app.analysis.audio;
+    $('#audio-note').textContent = au.available
+      ? 'Measured at ' + au.loudnessDb.toFixed(1) + ' dBFS with peaks at ' + au.peakDb.toFixed(1) +
+        ' dBFS. Target for ' + app.evaluation.preset.label + ' is ' + app.evaluation.preset.loudness + ' dBFS.'
+      : 'No audio track could be read' + (au.reason ? ': ' + au.reason : '.') + ' Gain will have no effect.';
+
+    $('#pace-note').textContent = app.analysis.deadZones.length
+      ? app.analysis.deadZones.length + ' dead zone(s) detected. Speeding through them cuts ' +
+        (app.state.trimOut - app.state.trimIn - VL.editor.outputDuration(
+          Object.assign({}, app.state, { speedDeadZones: true }), app.analysis.deadZones)).toFixed(1) + 's.'
+      : 'No dead zones detected — nothing to speed through.';
+  }
+
+  function renderHookTemplates() {
+    var wrap = $('#hook-templates');
+    wrap.innerHTML = '';
+    app.evaluation.hookTemplates.forEach(function (tpl) {
+      wrap.appendChild(U.el('button', {
+        class: 'chip',
+        text: tpl,
+        onclick: function () {
+          $('#hook-text').value = tpl;
+          app.state.hookText = tpl;
+        }
+      }));
+    });
+  }
+
+  function renderCaptions() {
+    var wrap = $('#captions');
+    wrap.innerHTML = '';
+    app.state.captions.forEach(function (cap, i) {
+      var text = U.el('input', { type: 'text', value: cap.text, placeholder: 'Caption text' });
+      text.addEventListener('input', function () { cap.text = text.value; });
+      var del = U.el('button', {
+        class: 'ghost small', text: '✕', onclick: function () {
+          app.state.captions.splice(i, 1);
+          renderCaptions();
+        }
+      });
+      var times = U.el('div', { class: 'times' }, [
+        U.el('span', { text: U.fmtTime(cap.t0) + ' → ' + U.fmtTime(cap.t1) })
+      ]);
+      wrap.appendChild(U.el('div', { class: 'caption-row' }, [text, del, times]));
+    });
+  }
+
+  /* One-click fixes. Every branch writes real numbers derived from the analysis. */
+  function applyAction(action) {
+    if (!action) return;
+    var f = app.evaluation.fixes;
+    var s = app.state;
+    var a = app.analysis;
+
+    switch (action.type) {
+      case 'hookFix':
+        s.trimIn = Math.min(f.suggestedStart, s.trimOut - 0.5);
+        s.punchIns = true;
+        break;
+      case 'exposure':
+        s.brightness = f.brightness;
+        break;
+      case 'contrast':
+        s.contrast = f.contrast;
+        break;
+      case 'colorBoost':
+        s.saturate = f.saturate;
+        if (f.saturate > 1) s.warmth = Math.max(s.warmth, 0.1);
+        break;
+      case 'reframe':
+        s.aspect = f.aspect;
+        break;
+      case 'punchIns':
+        s.punchIns = true;
+        break;
+      case 'speedDeadZones':
+        s.speedDeadZones = true;
+        break;
+      case 'trimLength':
+        s.trimIn = Math.min(f.suggestedStart, s.trimOut - 0.5);
+        s.trimOut = Math.min(a.base.meta.duration, s.trimIn + (f.suggestedEnd - f.suggestedStart));
+        break;
+      case 'trimSilentStart':
+        s.trimIn = firstLoudMoment();
+        break;
+      case 'normalizeAudio':
+        s.audioGain = f.audioGain;
+        break;
+      case 'reduceGain':
+        s.audioGain = Math.min(0, -1 - (a.audio.peakDb || 0));
+        break;
+    }
+    syncControls();
+    onStateChange();
+    if (app.stage && (action.type === 'hookFix' || action.type === 'trimLength' || action.type === 'trimSilentStart')) {
+      seekStage(s.trimIn);
+    }
+  }
+
+  function firstLoudMoment() {
+    var au = app.analysis.audio;
+    if (!au.available || !au.envelope.length) return 0;
+    var threshold = au.loudnessDb - 10;
+    var step = au.envelopeStep || 0.05;
+    for (var i = 0; i < au.envelope.length; i++) {
+      if (au.envelope[i] > threshold) return Math.max(0, i * step - 0.15);
+    }
+    return 0;
+  }
+
+  /* Pushes state back into every control so applied fixes are visible. */
+  function syncControls() {
+    var s = app.state;
+    var d = app.analysis.base.meta.duration;
+
+    $('#trim-in').value = Math.round((s.trimIn / d) * 1000);
+    $('#trim-out').value = Math.round((s.trimOut / d) * 1000);
+    $('#trim-in-val').textContent = U.fmtTime(s.trimIn);
+    $('#trim-out-val').textContent = U.fmtTime(s.trimOut);
+
+    U.$$('#aspect-chips .chip').forEach(function (chip) {
+      var val = chip.getAttribute('data-aspect');
+      var match = (val === 'source' && s.aspect === 'source') ||
+        (val !== 'source' && s.aspect !== 'source' && Math.abs(Number(val) - s.aspect) < 0.02);
+      chip.classList.toggle('active', match);
+    });
+
+    function set(id, value, label, fmt) {
+      $('#' + id).value = value;
+      if ($('#' + label)) $('#' + label).textContent = fmt;
+    }
+    set('zoom', Math.round(s.zoom * 100), 'zoom-val', s.zoom.toFixed(2) + '×');
+    set('panx', Math.round(s.panX * 100), 'panx-val', s.panX.toFixed(2));
+    set('pany', Math.round(s.panY * 100), 'pany-val', s.panY.toFixed(2));
+    set('brightness', Math.round(s.brightness * 100), 'brightness-val', s.brightness.toFixed(2));
+    set('contrast', Math.round(s.contrast * 100), 'contrast-val', s.contrast.toFixed(2));
+    set('saturate', Math.round(s.saturate * 100), 'saturate-val', s.saturate.toFixed(2));
+    set('warmth', Math.round(s.warmth * 100), 'warmth-val', s.warmth.toFixed(2));
+    set('vignette', Math.round(s.vignette * 100), 'vignette-val', s.vignette.toFixed(2));
+    set('punch-strength', Math.round(s.punchStrength * 100), 'punch-val', Math.round(s.punchStrength * 100) + '%');
+    set('speed', Math.round(s.deadSpeed * 100), 'speed-val', s.deadSpeed.toFixed(1) + '×');
+    set('gain', Math.round(s.audioGain * 10), 'gain-val', (s.audioGain >= 0 ? '+' : '') + s.audioGain.toFixed(1) + ' dB');
+
+    $('#punch').checked = s.punchIns;
+    $('#speedup').checked = s.speedDeadZones;
+    $('#progressbar').checked = s.progressBar;
+    $('#hook-text').value = s.hookText;
+
+    var v = app.stage;
+    if (v && v._vlAudio) v._vlAudio.gain.gain.value = Math.pow(10, s.audioGain / 20);
+  }
+
+  /* -------------------------------------------------------------- export */
+
+  function setExporting(busy) {
+    ['export-video', 'export-cover', 'export-report'].forEach(function (id) {
+      $('#' + id).disabled = busy;
+    });
+    $('#export-bar-wrap').hidden = !busy;
+  }
+
+  function runExport() {
+    if (!app.stage) return;
+    if (app.playing) {
+      app.stage.pause();
+      app.playing = false;
+      $('#play').textContent = '▶';
+    }
+    setExporting(true);
+    $('#export-result').hidden = true;
+    var dur = VL.editor.outputDuration(app.state, app.analysis.deadZones);
+    $('#export-note').textContent = 'Recording in real time — about ' + Math.ceil(dur) + 's. Leave this tab in front.';
+
+    VL.exporter.render({
+      video: app.stage,
+      meta: app.analysis.base.meta,
+      state: app.state,
+      cuts: app.analysis.derived.cuts,
+      deadZones: app.analysis.deadZones,
+      onProgress: function (p) { $('#export-bar').style.width = Math.round(p * 100) + '%'; }
+    }).then(function (result) {
+      setExporting(false);
+      app.lastBlob = result.blob;
+      var name = app.analysis.base.meta.name.replace(/\.[^.]+$/, '') + '-videolab.webm';
+      var link = $('#download-link');
+      link.textContent = 'Download the new cut (' + U.fmtBytes(result.blob.size) + ')';
+      link.onclick = function () { U.download(result.blob, name); };
+      $('#export-result').hidden = false;
+      $('#export-note').textContent = 'Exported at ' + result.width + '×' + result.height + '. WebM plays on every ' +
+        'platform upload form; convert to MP4 if you need it for offline editing.';
+      $('#rescore').onclick = function () {
+        var f = new File([result.blob], name, { type: result.blob.type });
+        handleFile(f);
+      };
+    }).catch(function (err) {
+      console.error(err);
+      setExporting(false);
+      fail(err && err.message ? err.message : 'Export failed.');
+    });
+  }
+
+  function exportCover() {
+    if (!app.stage) return;
+    var best = app.analysis.thumbnails[0];
+    var t = app.stage.currentTime > app.state.trimIn ? app.stage.currentTime : (best ? best.t : 0);
+    setExporting(true);
+    VL.exporter.stillFrame({
+      video: app.stage,
+      meta: app.analysis.base.meta,
+      state: app.state,
+      time: t,
+      text: app.state.hookText
+    }).then(function (blob) {
+      setExporting(false);
+      if (blob) U.download(blob, app.analysis.base.meta.name.replace(/\.[^.]+$/, '') + '-cover.png');
+    }).catch(function () { setExporting(false); });
+  }
+
+  function exportReport() {
+    var md = VL.exporter.reportMarkdown(app.analysis, app.evaluation, app.state);
+    U.download(new Blob([md], { type: 'text/markdown' }),
+      app.analysis.base.meta.name.replace(/\.[^.]+$/, '') + '-report.md');
+  }
+
+  /* --------------------------------------------------------------- init */
+
+  function init() {
+    var drop = $('#dropzone');
+    var input = $('#file-input');
+
+    drop.addEventListener('click', function () { input.click(); });
+    drop.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); }
+    });
+    input.addEventListener('change', function () {
+      if (input.files && input.files[0]) handleFile(input.files[0]);
+    });
+
+    ['dragenter', 'dragover'].forEach(function (evt) {
+      drop.addEventListener(evt, function (e) {
+        e.preventDefault();
+        drop.classList.add('over');
+      });
+    });
+    ['dragleave', 'drop'].forEach(function (evt) {
+      drop.addEventListener(evt, function (e) {
+        e.preventDefault();
+        drop.classList.remove('over');
+      });
+    });
+    drop.addEventListener('drop', function (e) {
+      var files = e.dataTransfer && e.dataTransfer.files;
+      if (files && files[0]) handleFile(files[0]);
+    });
+    window.addEventListener('dragover', function (e) { e.preventDefault(); });
+    window.addEventListener('drop', function (e) { e.preventDefault(); });
+
+    $('#preset').addEventListener('change', function () {
+      if (!app.analysis) return;
+      app.evaluation = VL.score.evaluate(app.analysis, this.value);
+      renderReport();
+      renderHookTemplates();
+    });
+
+    window.addEventListener('resize', function () {
+      if (app.analysis) drawTimeline();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
