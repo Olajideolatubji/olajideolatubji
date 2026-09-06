@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Video Lab — score any video and rebuild it</title>
+<meta name="description" content="Drop in a video, get a measured score, see exactly what is holding it back, and export the fixed cut.">
+<link rel="stylesheet" href="css/app.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">▲</span>
+    <div>
+      <h1>Video Lab</h1>
+      <p>Score a video, find what is holding it back, and export the fixed cut.</p>
+    </div>
+  </div>
+  <button id="restart" class="ghost" hidden>New video</button>
+</header>
+
+<main>
+
+  <!-- 1. Upload -->
+  <section id="upload-section" class="panel">
+    <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Choose a video file">
+      <div class="drop-icon">＋</div>
+      <h2>Drop a video here</h2>
+      <p>or click to choose a file — MP4, MOV, WebM. Nothing is uploaded; it all runs in this browser.</p>
+      <input type="file" id="file-input" accept="video/*" hidden>
+    </div>
+
+    <div class="preset-row">
+      <label for="preset">Score it for</label>
+      <select id="preset">
+        <option value="shorts" selected>TikTok / Reels / Shorts (9:16)</option>
+        <option value="feed">Instagram feed / LinkedIn (4:5)</option>
+        <option value="youtube">YouTube long-form (16:9)</option>
+      </select>
+    </div>
+
+    <ul class="claims">
+      <li><strong>Measured, not guessed.</strong> Every frame is decoded and scored on movement, cuts, focus, exposure and colour; the audio track is decoded for loudness, silence and clipping.</li>
+      <li><strong>Ranked fixes.</strong> Each problem is scored by how many points it is costing you, so you know what to change first.</li>
+      <li><strong>One-click edits.</strong> Reframe, recolour, trim, punch in, caption and re-level — then export the new cut.</li>
+    </ul>
+  </section>
+
+  <!-- 2. Analysing -->
+  <section id="progress-section" class="panel" hidden>
+    <h2 id="progress-title">Analysing…</h2>
+    <div class="bar"><div id="progress-bar" class="bar-fill"></div></div>
+    <p id="progress-note" class="muted">Decoding frames.</p>
+  </section>
+
+  <!-- 3. Report -->
+  <section id="report-section" hidden>
+    <div class="panel hero">
+      <div class="ring-wrap">
+        <svg viewBox="0 0 200 200" class="ring" aria-hidden="true">
+          <circle cx="100" cy="100" r="86" class="ring-track"></circle>
+          <circle cx="100" cy="100" r="86" class="ring-value" id="ring-value"></circle>
+        </svg>
+        <div class="ring-label">
+          <span id="score-number">0</span>
+          <small>/ 100</small>
+        </div>
+      </div>
+      <div class="hero-body">
+        <h2 id="verdict">—</h2>
+        <p id="verdict-note" class="muted"></p>
+        <div class="ceiling">
+          <div class="ceiling-bar">
+            <div class="ceiling-now" id="ceiling-now"></div>
+            <div class="ceiling-gain" id="ceiling-gain"></div>
+          </div>
+          <p class="muted" id="ceiling-text"></p>
+        </div>
+        <dl class="facts" id="facts"></dl>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>What is holding it back</h2>
+        <button id="apply-all" class="primary small">Apply every fix</button>
+      </div>
+      <p class="muted">Ranked by the points each one is costing. “Apply” loads the fix into the studio below.</p>
+      <ol id="recs" class="recs"></ol>
+    </div>
+
+    <div class="panel">
+      <h2>The video, measured</h2>
+      <p class="muted">Movement, audio level, cuts and dead zones across the runtime. Click to jump there.</p>
+      <canvas id="timeline" class="timeline" height="180"></canvas>
+      <div class="legend">
+        <span><i class="sw sw-motion"></i>movement</span>
+        <span><i class="sw sw-audio"></i>audio level</span>
+        <span><i class="sw sw-cut"></i>cut</span>
+        <span><i class="sw sw-dead"></i>dead zone</span>
+        <span><i class="sw sw-hook"></i>hook window</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Category scores</h2>
+      <div id="categories" class="cards"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Strongest frames</h2>
+      <p class="muted">Ranked on focus, colour, exposure and whether a face is in shot — the best candidates for a cover or an opening frame.</p>
+      <div id="thumbs" class="thumbs"></div>
+    </div>
+  </section>
+
+  <!-- 4. Studio -->
+  <section id="studio-section" hidden>
+    <div class="panel studio">
+      <div class="stage">
+        <canvas id="preview"></canvas>
+        <div class="transport">
+          <button id="play" class="ghost" aria-label="Play or pause">▶</button>
+          <input type="range" id="scrub" min="0" max="1000" value="0" aria-label="Scrub">
+          <span id="time-label" class="mono">0:00 / 0:00</span>
+        </div>
+        <p class="muted small" id="output-note"></p>
+      </div>
+
+      <div class="controls">
+        <div class="tabs" role="tablist">
+          <button class="tab active" data-tab="trim">Trim</button>
+          <button class="tab" data-tab="frame">Framing</button>
+          <button class="tab" data-tab="look">Look</button>
+          <button class="tab" data-tab="pace">Pace</button>
+          <button class="tab" data-tab="text">Text</button>
+          <button class="tab" data-tab="audio">Audio</button>
+        </div>
+
+        <div class="tab-body" data-panel="trim">
+          <label>Start <output id="trim-in-val" class="mono">0:00</output></label>
+          <input type="range" id="trim-in" min="0" max="1000" value="0">
+          <label>End <output id="trim-out-val" class="mono">0:00</output></label>
+          <input type="range" id="trim-out" min="0" max="1000" value="1000">
+          <button class="ghost small" id="trim-suggest">Start on the strongest opening frame</button>
+        </div>
+
+        <div class="tab-body" data-panel="frame" hidden>
+          <label>Aspect ratio</label>
+          <div class="chips" id="aspect-chips">
+            <button class="chip active" data-aspect="source">Source</button>
+            <button class="chip" data-aspect="0.5625">9:16</button>
+            <button class="chip" data-aspect="0.8">4:5</button>
+            <button class="chip" data-aspect="1">1:1</button>
+            <button class="chip" data-aspect="1.7778">16:9</button>
+          </div>
+          <label>Zoom <output id="zoom-val" class="mono">1.00×</output></label>
+          <input type="range" id="zoom" min="100" max="250" value="100">
+          <label>Pan horizontally <output id="panx-val" class="mono">0</output></label>
+          <input type="range" id="panx" min="-100" max="100" value="0">
+          <label>Pan vertically <output id="pany-val" class="mono">0</output></label>
+          <input type="range" id="pany" min="-100" max="100" value="0">
+        </div>
+
+        <div class="tab-body" data-panel="look" hidden>
+          <label>Brightness <output id="brightness-val" class="mono">1.00</output></label>
+          <input type="range" id="brightness" min="60" max="180" value="100">
+          <label>Contrast <output id="contrast-val" class="mono">1.00</output></label>
+          <input type="range" id="contrast" min="60" max="180" value="100">
+          <label>Saturation <output id="saturate-val" class="mono">1.00</output></label>
+          <input type="range" id="saturate" min="0" max="220" value="100">
+          <label>Warm / cool <output id="warmth-val" class="mono">0</output></label>
+          <input type="range" id="warmth" min="-50" max="50" value="0">
+          <label>Vignette <output id="vignette-val" class="mono">0</output></label>
+          <input type="range" id="vignette" min="0" max="80" value="0">
+          <button class="ghost small" id="look-auto">Auto-grade from the analysis</button>
+        </div>
+
+        <div class="tab-body" data-panel="pace" hidden>
+          <label class="check"><input type="checkbox" id="punch"> Punch in on every cut</label>
+          <label>Punch strength <output id="punch-val" class="mono">14%</output></label>
+          <input type="range" id="punch-strength" min="4" max="35" value="14">
+          <label class="check"><input type="checkbox" id="speedup"> Speed through dead zones</label>
+          <label>Dead-zone speed <output id="speed-val" class="mono">1.8×</output></label>
+          <input type="range" id="speed" min="120" max="400" value="180">
+          <label class="check"><input type="checkbox" id="progressbar"> Burn in a progress bar</label>
+          <p class="muted small" id="pace-note"></p>
+        </div>
+
+        <div class="tab-body" data-panel="text" hidden>
+          <label for="hook-text">Hook text (shown for the first 2.6s)</label>
+          <input type="text" id="hook-text" placeholder="Type the line that stops the scroll">
+          <div class="chips" id="hook-templates"></div>
+          <div class="cap-head">
+            <label>Captions</label>
+            <button class="ghost small" id="add-caption">Add at playhead</button>
+          </div>
+          <div id="captions" class="captions"></div>
+        </div>
+
+        <div class="tab-body" data-panel="audio" hidden>
+          <p class="muted small" id="audio-note"></p>
+          <label>Gain <output id="gain-val" class="mono">0.0 dB</output></label>
+          <input type="range" id="gain" min="-120" max="180" value="0">
+          <button class="ghost small" id="normalize">Normalise to platform target</button>
+        </div>
+
+        <div class="export">
+          <button id="export-video" class="primary">Export the edited video</button>
+          <div class="export-row">
+            <button id="export-cover" class="ghost small">Cover image (.png)</button>
+            <button id="export-report" class="ghost small">Report (.md)</button>
+          </div>
+          <div class="bar" id="export-bar-wrap" hidden><div id="export-bar" class="bar-fill"></div></div>
+          <p class="muted small" id="export-note">Export records in real time, so a 30s clip takes about 30s. Output is WebM.</p>
+          <div id="export-result" hidden>
+            <a id="download-link" class="primary block" download>Download the new cut</a>
+            <button id="rescore" class="ghost small block">Score this new version</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p id="error" class="error" hidden></p>
+</main>
+
+<footer>
+  <p>Everything runs locally in your browser — the video never leaves this machine.</p>
+</footer>
+
+<script src="js/util.js"></script>
+<script src="js/analyze.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/score.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/export.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
