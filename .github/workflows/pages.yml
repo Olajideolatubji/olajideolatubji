@@ -1,6 +1,8 @@
 name: Deploy Video Lab to Pages
 
-# Inert until Settings -> Pages -> Source is set to "GitHub Actions".
+# Optional alternative to Firebase Hosting. Inert until Settings -> Pages ->
+# Source is set to "GitHub Actions". Publishes the app at the site root, so on
+# this profile repository that is https://olajideolatubji.github.io/.
 on:
   push:
     branches: [main]
@@ -26,15 +28,16 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Stage the site
-        run: |
-          mkdir -p _site
-          cp -r video-lab _site/video-lab
-          # Land visitors on the app rather than an empty index.
-          printf '<!DOCTYPE html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=./video-lab/">\n' > _site/index.html
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build the site
+        env:
+          SITE_URL: https://${{ github.repository_owner }}.github.io
+        run: node video-lab/build-site.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: video-lab/_site
       - id: deployment
         uses: actions/deploy-pages@v4

@@ -11,7 +11,9 @@ const SCRIPTS = ['util', 'analyze', 'audio', 'score', 'editor', 'export', 'main'
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css', 'app.css'), 'utf8');
 
-const title = (html.match(/<title>([\s\S]*?)<\/title>/) || [, 'Video Lab'])[1].trim();
+// Fixed rather than taken from index.html: the page's <title> is written for
+// Google, but the gallery wants the product name on its own.
+const title = 'Video Lab';
 const body = (html.match(/<body[^>]*>([\s\S]*?)<\/body>/) || [, ''])[1];
 if (!body.trim()) throw new Error('Could not find the body of index.html');
 

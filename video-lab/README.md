@@ -91,10 +91,50 @@ per-frame metrics, detected cuts, the audio envelope, and the dead zones.
 Chrome, Edge and Firefox are fully supported. Safari analyses and previews fine, but its
 `MediaRecorder` support for WebM is limited, so export may be unavailable there.
 
-## Publishing it
+## Publishing it on Firebase Hosting
 
-`.github/workflows/pages.yml` deploys this directory to GitHub Pages on pushes to `main`.
-It stays inert until two deliberate steps: merging to `main`, and setting
-**Settings → Pages → Source** to **GitHub Actions**. Note that this repository is the
-profile repository, so enabling Pages publishes at `https://olajideolatubji.github.io/`,
-with the app at `/video-lab/`.
+Firebase is Google's static hosting. The free Spark plan covers this site.
+
+Deploying needs a Google account login, so these commands have to be run by you —
+they cannot be run from a CI job or an agent session without your credentials.
+
+**One time:**
+
+1. Create a project at https://console.firebase.google.com — the project ID you pick
+   becomes the URL, so `video-lab` gives you `https://video-lab.web.app`.
+2. Log the CLI in: `npx firebase-tools login`
+
+**Every deploy:**
+
+```bash
+# SITE_URL must match the live origin — it writes the canonical tag and sitemap
+SITE_URL=https://video-lab.web.app node video-lab/build-site.js
+npx firebase-tools deploy --only hosting --project video-lab
+```
+
+`firebase.json` at the repository root points hosting at `video-lab/_site`, which
+`build-site.js` generates. Deploying without running the build first would ship a stale
+directory, so keep the two commands together.
+
+### Getting it into Google search
+
+Hosting makes the page reachable; it does not make it appear in Google. After the first
+deploy:
+
+1. Add the site at https://search.google.com/search-console and verify ownership —
+   the easiest method is the DNS or HTML-file option it offers.
+2. Submit `https://your-site.web.app/sitemap.xml` under **Sitemaps**.
+3. Use **URL inspection → Request indexing** on the homepage to skip the queue.
+
+Indexing usually takes a few days to a couple of weeks. `build-site.js` already emits
+the parts Google looks for: a descriptive title and meta description, a canonical URL,
+`WebApplication` structured data, Open Graph and Twitter card tags, `robots.txt` and
+`sitemap.xml`. Ranking for anything competitive then depends on people linking to it,
+which no amount of markup substitutes for.
+
+## Publishing it on GitHub Pages instead
+
+`.github/workflows/pages.yml` is an alternative that needs no Google account. It stays
+inert until two deliberate steps: merging to `main`, and setting **Settings → Pages →
+Source** to **GitHub Actions**. This repository is the profile repository, so enabling
+Pages publishes the app at `https://olajideolatubji.github.io/`.

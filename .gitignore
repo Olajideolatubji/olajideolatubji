@@ -1,0 +1,4 @@
+video-lab/_site/
+node_modules/
+.firebase/
+.firebaserc
