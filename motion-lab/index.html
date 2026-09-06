@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motion Lab — Paste a Script, Get an Animated Video</title>
+<meta name="description" content="Paste a script and get a finished animated video, 30 seconds to 3 hours. Eight animation styles built around the retention mechanics YouTube rewards, a preflight that blocks the render on any defect it can measure, and chapters, titles and a description generated to match. Runs entirely in your browser.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Motion Lab">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Motion Lab">
+<meta property="og:title" content="Motion Lab — Paste a Script, Get an Animated Video">
+<meta property="og:description" content="Script in, animated video out. Eight styles built around what actually holds retention, and a preflight that will not let a broken frame reach the render.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Motion Lab — Paste a Script, Get an Animated Video">
+<meta name="twitter:description" content="Script in, animated video out. Eight styles built around what actually holds retention.">
+
+<link rel="stylesheet" href="css/app.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◐</text></svg>">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">◐</span>
+    <div>
+      <h1>Motion Lab</h1>
+      <p>Paste a script. Get the animated video, the chapters and the packaging.</p>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <button id="load-sample" class="ghost small">Load a sample script</button>
+    <button id="restart" class="ghost small" hidden>Start over</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- 1. Script ------------------------------------------------------- -->
+  <section id="script-section" class="panel">
+    <div class="panel-head">
+      <h2>The script</h2>
+      <span id="script-stats" class="muted small mono">0 words</span>
+    </div>
+    <p class="muted small">Plain text is fine. <code>#</code> makes the title, <code>##</code> makes a chapter — chapters become on-screen markers and YouTube timestamps. Bullets become build-on lists. <code>[NOTE: …]</code> lines are treated as direction and never spoken.</p>
+    <textarea id="script" rows="12" spellcheck="false" placeholder="# The title of the video
+
+## Where it starts
+Open on the question the whole video answers. Keep it to one line.
+
+Then the first real point. Numbers land harder than adjectives — 73% of viewers leave in the first thirty seconds, and that is the only statistic that matters here.
+
+## What changes
+- The first thing
+- The second thing
+- The third thing
+
+Close on the question you opened with, answered."></textarea>
+
+    <div class="grid-2">
+      <div>
+        <label for="wpm">Narration pace <output id="wpm-val" class="mono">150 wpm</output></label>
+        <input type="range" id="wpm" min="100" max="200" value="150">
+        <p class="muted small">Every duration in the build is measured from this. 150 is a normal read; 170 is fast; documentary narration runs nearer 130.</p>
+      </div>
+      <div>
+        <label for="fit">Runtime</label>
+        <select id="fit">
+          <option value="natural" selected>As long as the script takes to read</option>
+          <option value="target">Stretch or compress to a target</option>
+        </select>
+        <div id="target-wrap" hidden>
+          <label for="target">Target length <output id="target-val" class="mono">10m</output></label>
+          <input type="range" id="target" min="30" max="10800" step="30" value="600">
+          <p class="muted small">Holding scenes longer than the read is how a short script becomes a three-hour ambient piece. Past about 2× the preflight will say so.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Style -------------------------------------------------------- -->
+  <section id="style-section" class="panel">
+    <h2>The animation style</h2>
+    <p class="muted small">Each one is built around a different retention mechanic. The note under the name is what it is actually doing to hold the viewer — pick the one that matches how your script works, not the one that looks nicest.</p>
+    <div id="styles" class="styles"></div>
+
+    <div class="grid-3">
+      <div>
+        <label for="aspect">Frame</label>
+        <select id="aspect"></select>
+      </div>
+      <div>
+        <label for="quality">Resolution</label>
+        <select id="quality">
+          <option value="720">720p</option>
+          <option value="1080" selected>1080p</option>
+          <option value="1440">1440p</option>
+        </select>
+      </div>
+      <div>
+        <label for="fps">Frame rate</label>
+        <select id="fps">
+          <option value="24">24 fps</option>
+          <option value="30" selected>30 fps</option>
+          <option value="60">60 fps</option>
+        </select>
+      </div>
+    </div>
+
+    <label class="check"><input type="checkbox" id="retention-devices" checked> Place the retention devices — hook window, open loop, pattern interrupts, loop-back ending</label>
+
+    <button id="build" class="primary block">Build the video</button>
+  </section>
+
+  <!-- 3. Preview ------------------------------------------------------ -->
+  <section id="preview-section" hidden>
+    <div class="panel studio">
+      <div class="stage">
+        <canvas id="preview"></canvas>
+        <div class="transport">
+          <button id="play" class="ghost" aria-label="Play or pause">▶</button>
+          <input type="range" id="scrub" min="0" max="10000" value="0" aria-label="Scrub the timeline">
+          <span id="time-label" class="mono">0:00 / 0:00</span>
+        </div>
+        <p id="build-note" class="muted small"></p>
+      </div>
+      <div class="controls">
+        <h3>Scenes</h3>
+        <p class="muted small">Every card the video will show, in order. Click one to jump to it.</p>
+        <div id="scene-list" class="scene-list"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Storyboard</h2>
+        <span id="board-note" class="muted small"></span>
+      </div>
+      <div id="board" class="board"></div>
+    </div>
+
+    <!-- 4. Preflight -------------------------------------------------- -->
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Preflight</h2>
+        <button id="autofix" class="primary small">Fix everything fixable</button>
+      </div>
+      <p class="muted small">Thirteen checks run against the real timeline at the real output size — actual font metrics, actual contrast, actual geometry. Anything marked as an error blocks the render, because it would land as a visible defect in the file.</p>
+      <div id="preflight-summary" class="verdict"></div>
+      <ul id="findings" class="findings"></ul>
+      <details class="checks-details">
+        <summary>All checks</summary>
+        <ul id="checks" class="checks"></ul>
+      </details>
+    </div>
+
+    <!-- 5. Retention -------------------------------------------------- -->
+    <div class="panel hero">
+      <div class="ring-wrap">
+        <svg viewBox="0 0 200 200" class="ring" aria-hidden="true">
+          <circle cx="100" cy="100" r="86" class="ring-track"></circle>
+          <circle cx="100" cy="100" r="86" class="ring-value" id="ring-value"></circle>
+        </svg>
+        <div class="ring-label"><span id="score-number">0</span><small>/ 100</small></div>
+      </div>
+      <div class="hero-body">
+        <h2 id="verdict">—</h2>
+        <p class="muted small">Scored on the structure of the timeline, not on taste. Every line below cites the measurement it came from.</p>
+        <div id="score-parts" class="score-parts"></div>
+      </div>
+    </div>
+
+    <!-- 6. Packaging -------------------------------------------------- -->
+    <div class="panel">
+      <h2>The upload page</h2>
+      <p class="muted small">Timestamps come from the same numbers the video was rendered with, so they land on the frame.</p>
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="chapters">Chapters</button>
+        <button class="tab" data-tab="titles">Titles</button>
+        <button class="tab" data-tab="desc">Description</button>
+        <button class="tab" data-tab="tags">Tags</button>
+      </div>
+      <div class="tab-body" data-panel="chapters">
+        <p id="chapters-note" class="muted small"></p>
+        <pre id="chapters-out" class="out mono"></pre>
+        <button class="ghost small copy" data-copy="chapters-out">Copy</button>
+      </div>
+      <div class="tab-body" data-panel="titles" hidden>
+        <ol id="titles-out" class="titles"></ol>
+      </div>
+      <div class="tab-body" data-panel="desc" hidden>
+        <pre id="desc-out" class="out"></pre>
+        <button class="ghost small copy" data-copy="desc-out">Copy</button>
+      </div>
+      <div class="tab-body" data-panel="tags" hidden>
+        <pre id="tags-out" class="out mono"></pre>
+        <button class="ghost small copy" data-copy="tags-out">Copy</button>
+      </div>
+    </div>
+
+    <!-- 7. Export ------------------------------------------------------ -->
+    <div class="panel">
+      <h2>Render</h2>
+      <p id="render-note" class="muted small"></p>
+
+      <div class="grid-2">
+        <div>
+          <label for="segment">Split into parts of <output id="segment-val" class="mono">5m</output></label>
+          <input type="range" id="segment" min="60" max="900" step="30" value="300">
+          <p class="muted small">Long renders are written as separate files so the tab never has to hold the whole video in memory at once. The ffmpeg line below joins them without re-encoding.</p>
+        </div>
+        <div>
+          <label class="check"><input type="checkbox" id="want-music" checked> Render a music bed to sit under the narration</label>
+          <p class="muted small">Generated to match the style, with a lift on each chapter. Exported as a separate WAV so you can drop it, duck it or replace it.</p>
+        </div>
+      </div>
+
+      <button id="render" class="primary block">Render the video</button>
+      <button id="cancel" class="ghost block" hidden>Stop the render</button>
+      <div class="bar" id="render-bar-wrap" hidden><div id="render-bar" class="bar-fill"></div></div>
+      <p id="render-progress" class="muted small mono"></p>
+
+      <div id="downloads" class="downloads" hidden></div>
+
+      <details id="ffmpeg-details" hidden>
+        <summary>Joining the parts and adding the audio</summary>
+        <pre id="ffmpeg-out" class="out mono"></pre>
+        <button class="ghost small copy" data-copy="ffmpeg-out">Copy</button>
+      </details>
+    </div>
+
+    <!-- 8. Generative bridge ------------------------------------------ -->
+    <div class="panel">
+      <h2>Hand it to a generative model instead</h2>
+      <p class="muted small">Motion Lab draws type, charts, diagrams and generative fields, and it draws them deterministically — that is why the render is predictable. It does not draw people or places. When the script needs footage, take the plan built here and give it to a model that does: same beats, same durations, same chapters, with a visual prompt per shot and a cast block that stops a character drifting between shots.</p>
+      <div class="export-row">
+        <button id="dl-storyboard" class="ghost small">Shot list (.md)</button>
+        <button id="dl-json" class="ghost small">Full plan (.json)</button>
+        <button id="dl-narration" class="ghost small">Narration sheet (.md)</button>
+      </div>
+      <details>
+        <summary>What a generation call would be handed</summary>
+        <pre id="spec-out" class="out mono"></pre>
+        <button class="ghost small copy" data-copy="spec-out">Copy</button>
+      </details>
+    </div>
+  </section>
+
+  <p id="error" class="error" hidden></p>
+</main>
+
+<footer>
+  <p>Everything runs locally in your browser. The script never leaves this machine, and no account, key or credit is involved.</p>
+</footer>
+
+<script src="js/util.js"></script>
+<script src="js/script.js"></script>
+<script src="js/styles.js"></script>
+<script src="js/timeline.js"></script>
+<script src="js/render.js"></script>
+<script src="js/preflight.js"></script>
+<script src="js/youtube.js"></script>
+<script src="js/webm.js"></script>
+<script src="js/export.js"></script>
+<script src="js/aibridge.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

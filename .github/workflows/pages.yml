@@ -1,13 +1,16 @@
-name: Deploy Video Lab to Pages
+name: Deploy the labs to Pages
 
 # Optional alternative to Firebase Hosting. Inert until Settings -> Pages ->
-# Source is set to "GitHub Actions". Publishes the app at the site root, so on
-# this profile repository that is https://olajideolatubji.github.io/.
+# Source is set to "GitHub Actions". Publishes Video Lab at the site root and
+# Motion Lab under /motion-lab/, so on this profile repository that is
+# https://olajideolatubji.github.io/ and
+# https://olajideolatubji.github.io/motion-lab/.
 on:
   push:
     branches: [main]
     paths:
       - 'video-lab/**'
+      - 'motion-lab/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -31,10 +34,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Build the site
+      - name: Build Video Lab (site root)
         env:
           SITE_URL: https://${{ github.repository_owner }}.github.io
         run: node video-lab/build-site.js
+      - name: Build Motion Lab (/motion-lab/)
+        env:
+          SITE_URL: https://${{ github.repository_owner }}.github.io/motion-lab
+        run: |
+          node motion-lab/build-site.js
+          cp -r motion-lab/_site video-lab/_site/motion-lab
       # enablement turns Pages on via the API using this job's token, so the
       # first run on main publishes without anyone visiting repository settings.
       - uses: actions/configure-pages@v5
