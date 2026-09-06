@@ -1,0 +1,47 @@
+name: Deploy Video Lab to Pages
+
+# Optional alternative to Firebase Hosting. Inert until Settings -> Pages ->
+# Source is set to "GitHub Actions". Publishes the app at the site root, so on
+# this profile repository that is https://olajideolatubji.github.io/.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'video-lab/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build the site
+        env:
+          SITE_URL: https://${{ github.repository_owner }}.github.io
+        run: node video-lab/build-site.js
+      # enablement turns Pages on via the API using this job's token, so the
+      # first run on main publishes without anyone visiting repository settings.
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: video-lab/_site
+      - id: deployment
+        uses: actions/deploy-pages@v4
