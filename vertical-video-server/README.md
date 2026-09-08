@@ -4,12 +4,25 @@ A self-hosted server for producing vertical video from 15 seconds to 3 hours.
 Single operator, Docker on a Linux VPS. HeyGen renders the segments; this server
 owns the structure, the queue and the assembly.
 
+There is no website to visit until you start it: the dashboard exists on the
+machine that runs it, and nowhere else. Install
+[Docker Desktop](https://www.docker.com/products/docker-desktop) (free), then
+paste this one line into a terminal — no git, no clone, nothing else to set up:
+
+```bash
+cd ~/Desktop && curl -sL -o vvs.zip https://github.com/Olajideolatubji/olajideolatubji/archive/refs/heads/claude/vertical-video-server-w1hj73.zip && unzip -oq vvs.zip && cd olajideolatubji-claude-vertical-video-server-w1hj73/vertical-video-server && bash deploy/local.sh
+```
+
+It prints your link — `http://localhost:8000` — and the password to get in.
+
+If you already have the code:
+
 ```bash
 cd vertical-video-server
 bash deploy/local.sh      # generates a password, starts it, prints your link
 ```
 
-That runs it free on your own machine at `http://localhost:8000`. Or by hand:
+Or by hand:
 
 ```bash
 cp .env.example .env      # set OPERATOR_PASSWORD, SECRET_KEY, HEYGEN_API_KEY
