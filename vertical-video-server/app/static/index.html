@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vertical Video Server</title>
+  <link rel="stylesheet" href="/static/app.css" />
+</head>
+<body>
+  <div id="login" class="login">
+    <form id="login-form" class="card">
+      <h1>Vertical Video Server</h1>
+      <p class="muted">Single operator. One password.</p>
+      <input type="password" id="password" placeholder="operator password" autocomplete="current-password" />
+      <button type="submit">Unlock</button>
+      <p id="login-error" class="error"></p>
+    </form>
+  </div>
+
+  <div id="app" hidden>
+    <header>
+      <div class="brand">Vertical Video Server</div>
+      <div id="queue-state" class="queue"></div>
+      <nav>
+        <button data-tab="projects" class="tab active">Projects</button>
+        <button data-tab="new" class="tab">New</button>
+        <button data-tab="batches" class="tab">Batches</button>
+        <button data-tab="jobs" class="tab">Jobs</button>
+        <button data-tab="exports" class="tab">Export queue</button>
+        <button data-tab="cost" class="tab">Cost</button>
+      </nav>
+      <button id="logout" class="ghost">Lock</button>
+    </header>
+    <main id="view"></main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

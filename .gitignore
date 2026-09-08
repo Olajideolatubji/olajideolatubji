@@ -2,3 +2,10 @@ video-lab/_site/
 node_modules/
 .firebase/
 .firebaserc
+
+# vertical-video-server
+vertical-video-server/.env
+vertical-video-server/data/
+__pycache__/
+*.pyc
+.pytest_cache/
