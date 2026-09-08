@@ -5,10 +5,16 @@ Single operator, Docker on a Linux VPS. HeyGen renders the segments; this server
 owns the structure, the queue and the assembly.
 
 ```bash
+cd vertical-video-server
 cp .env.example .env      # set OPERATOR_PASSWORD, SECRET_KEY, HEYGEN_API_KEY
 docker compose up -d --build
 open http://localhost:8000
 ```
+
+`.env` is optional — the stack comes up on defaults without one and logs a
+warning that it is using the shipped password — but you want it. (Needs Docker
+Compose v2.24 or newer for the optional env file; older versions require the
+`cp` above.)
 
 `HEYGEN_TEST` defaults to `true`: renders come back watermarked and consume no
 credits. Turn it off when you mean it.
