@@ -378,10 +378,13 @@ function renderChapters(prog) {
     <div class="row"><h3 style="margin:0">Chapters</h3>
       <span class="muted">hatched marks are seams — each one is an independent render joined with a
         ${state.config.video.crossfade_ms}ms crossfade</span></div>
-    ${prog.chapters.map((c) => {
+    ${prog.chapters.map((c, ci) => {
       const done = c.segments.filter((s) => s.status === "complete").length;
       const pct = c.segments.length ? Math.round((100 * done) / c.segments.length) : 0;
-      return `<details class="chapter">
+      // Chapters are independent renders as well, so every boundary is a seam.
+      return `${ci ? `<div class="chapter-seam" title="chapter seam">seam · ${
+        state.config.video.crossfade_ms}ms crossfade</div>` : ""}
+      <details class="chapter">
         <summary>
           <b>${c.index + 1}. ${esc(c.title)}</b>
           ${badge(c.status)}
@@ -443,7 +446,9 @@ function renderHooks(hooks) {
     <div class="row" style="margin:.4rem 0"><button id="hooks-save">Save hooks</button></div>
     ${hooks.length ? `<div class="videos">${hooks.map((h) => `
       <div>
-        ${h.output_path ? `<video controls src="/api/media?path=${encodeURIComponent(h.output_path)}"></video>` : ""}
+        ${h.output_path
+          ? `<video controls src="/api/media?path=${encodeURIComponent(h.output_path)}"></video>`
+          : `<div class="placeholder">${esc(h.status === "running" ? "rendering…" : "not rendered")}</div>`}
         <div class="mono ${h.valid ? "" : "error"}">${h.index + 1}. ${esc(h.text)}</div>
         <div class="muted mono">${h.word_count} words ${badge(h.status)}
           ${h.chosen ? '<span class="badge complete">chosen</span>' : ""}
@@ -525,8 +530,9 @@ async function renderBatch(id) {
     <div class="videos">
       ${data.projects.map((p) => `
         <div class="card">
-          ${p.output_path ? `<video controls src="/api/media?path=${encodeURIComponent(p.output_path)}"></video>`
-            : '<div class="muted mono" style="aspect-ratio:9/16;display:grid;place-items:center">no output yet</div>'}
+          ${p.output_path
+            ? `<video controls src="/api/media?path=${encodeURIComponent(p.output_path)}"></video>`
+            : `<div class="placeholder">${esc(p.status === "failed" ? "failed" : "no output yet")}</div>`}
           <div><b>${esc(p.name)}</b></div>
           <div class="row">${badge(p.status)}<span class="muted mono">${money(p.cost_actual)}</span>
             <div class="spacer"></div><button data-open="${p.id}">open</button></div>

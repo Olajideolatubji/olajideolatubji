@@ -392,6 +392,8 @@ def _handle_segment_error(
         segment.error = error
         attempts = segment.attempts
         project_id = segment.project_id
+        project = db.get(Project, project_id)
+        beats_mode = project is not None and project.render_mode == "beats"
         if retryable and attempts < settings.max_retries:
             segment.status = UnitStatus.PENDING
             retry_in = backoff_seconds(attempts)
@@ -402,7 +404,9 @@ def _handle_segment_error(
 
     if retry_in is not None:
         log.warning("segment %s attempt %s failed, retrying in %ss: %s", segment_id, attempts, retry_in, error)
-        submit_segment.apply_async(args=[segment_id], countdown=retry_in)
+        # Retry down the path the project actually renders on.
+        retry_task = render_segment_beats if beats_mode else submit_segment
+        retry_task.apply_async(args=[segment_id], countdown=retry_in)
         return {"segment_id": segment_id, "retry_in": retry_in, "error": error}
 
     advance_project.delay(project_id)

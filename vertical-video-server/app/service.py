@@ -214,6 +214,17 @@ def can_start(db: Session, project: Project, settings: Settings | None = None) -
         )
     if estimate.requires_confirmation and project.confirmed_at is None:
         return False, "long-tier render needs explicit confirmation of the cost estimate"
+    if project.render_mode == "beats" and s.tts_provider == "heygen":
+        narrated = db.execute(
+            select(func.count(Beat.id)).where(Beat.project_id == project.id, Beat.narration != "")
+        ).scalar_one()
+        if narrated:
+            # Fail here rather than three hours into a build with silent beats.
+            return False, (
+                f"render_mode=beats needs a real narration provider: {narrated} beat(s) have "
+                "narration but TTS_PROVIDER=heygen means the renderer speaks, and on the beats "
+                "path there is no renderer. Set TTS_PROVIDER=elevenlabs."
+            )
     return True, ""
 
 

@@ -92,10 +92,12 @@ class SilentTTS(TTSProvider):
     def synthesize(self, text: str, dest: str, voice_id: str | None = None) -> str:
         seconds = max(0.5, len(text.split()) / 2.6)
         os.makedirs(os.path.dirname(dest), exist_ok=True)
+        # aac in an .mp3 container is not a legal combination; pick by extension.
+        codec = "libmp3lame" if dest.lower().endswith(".mp3") else "aac"
         cmd = [
             self.settings.ffmpeg_bin, "-y", "-f", "lavfi",
             "-i", f"anullsrc=r=44100:cl=stereo:d={seconds:.2f}",
-            "-c:a", "aac", "-b:a", self.settings.audio_bitrate, dest,
+            "-c:a", codec, "-b:a", self.settings.audio_bitrate, dest,
         ]
         proc = subprocess.run(cmd, capture_output=True, text=True)
         if proc.returncode != 0:

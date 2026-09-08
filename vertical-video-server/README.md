@@ -300,6 +300,10 @@ the directory root for a global sheet); they are passed into every image call.
 Wire the reference `LoadImage` node into the IPAdapter or ControlNet stack you
 actually run.
 
+On this path nothing speaks the script for you, so a beats project with
+narration refuses to start while `TTS_PROVIDER=heygen` — better a refusal at the
+start than three hours of silent beats.
+
 ---
 
 ## Environment variables
@@ -424,5 +428,19 @@ The suite covers the planner (including 90 minutes splitting into segments under
 the cap), the script rules, the HeyGen request and error handling, provider
 failover, cost preflight and the real ffmpeg filter graphs. The integration
 tests drive the whole task pipeline — plan, submit, poll, stitch, grade, caption,
-resume, per-chapter re-render — against a faked renderer and real ffmpeg. Tests
-that need ffmpeg skip themselves when it is not installed.
+resume, per-chapter re-render, and the ComfyUI beats path with its per-beat
+re-roll — against faked providers and real ffmpeg. Tests that need ffmpeg skip
+themselves when it is not installed.
+
+The dashboard has its own check, which seeds a throwaway database with a
+finished short, a long build mid-flight and a batch, serves it, and drives it in
+a real browser:
+
+```bash
+pip install playwright && playwright install chromium
+python scripts/ui_smoke.py                 # asserts + screenshots, fails on console errors
+python scripts/ui_smoke.py --keep-serving  # leave it up and click around
+```
+
+Set `CHROMIUM_PATH` if the host already has a browser Playwright did not
+download itself.
