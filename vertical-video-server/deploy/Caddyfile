@@ -1,0 +1,31 @@
+# Caddy sits in front of the API and is what makes the link work.
+#
+# SITE_ADDRESS decides how it is served:
+#   app.example.com     a domain you own          -> automatic HTTPS
+#   203.0.113.10.sslip.io   your server's IP      -> automatic HTTPS, no domain to buy
+#   :80                 plain HTTP, no cert       -> http://<your-ip>
+#
+# Certificates are fetched and renewed by Caddy on its own; there is nothing to
+# run on a schedule.
+
+{
+	email {$ACME_EMAIL:admin@localhost}
+}
+
+{$SITE_ADDRESS::80} {
+	encode zstd gzip
+
+	# Renders can be large; do not let the proxy truncate a download.
+	reverse_proxy api:8000 {
+		flush_interval -1
+		transport http {
+			response_header_timeout 300s
+			read_timeout 300s
+		}
+	}
+
+	log {
+		output stdout
+		format console
+	}
+}

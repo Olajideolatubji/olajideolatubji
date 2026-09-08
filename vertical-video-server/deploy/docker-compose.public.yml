@@ -1,0 +1,47 @@
+# Puts the dashboard on a public URL.
+#
+#   docker compose -f docker-compose.yml -f deploy/docker-compose.public.yml up -d
+#
+# Two changes from the base stack:
+#   * Caddy terminates TLS on 80/443 and proxies to the API.
+#   * The API stops publishing its own port to the world — the only way in is
+#     through Caddy.
+
+services:
+  api:
+    # Trust the proxy's X-Forwarded-Proto so the session cookie knows it is
+    # being served over HTTPS.
+    command:
+      - uvicorn
+      - app.main:app
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+      - --proxy-headers
+      - --forwarded-allow-ips
+      - "*"
+    environment:
+      COOKIE_SECURE: ${COOKIE_SECURE:-true}
+    ports: !override []
+
+  caddy:
+    image: caddy:2-alpine
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:?set SITE_ADDRESS to your domain, <ip>.sslip.io, or :80}
+      ACME_EMAIL: ${ACME_EMAIL:-admin@localhost}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

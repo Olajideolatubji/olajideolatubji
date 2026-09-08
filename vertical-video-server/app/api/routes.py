@@ -90,10 +90,12 @@ def _project_view(project: Project) -> dict[str, Any]:
 
 # ------------------------------------------------------------------- session
 @router.post("/login")
-def login(body: LoginRequest, response: Response) -> dict[str, Any]:
+def login(body: LoginRequest, request: Request, response: Response) -> dict[str, Any]:
     if not check_password(body.password):
         raise HTTPException(401, "wrong password")
-    issue_session(response)
+    # Behind the deploy proxy uvicorn resolves the real scheme from
+    # X-Forwarded-Proto, so an HTTPS session gets a Secure cookie either way.
+    issue_session(response, secure=settings.cookie_secure or request.url.scheme == "https")
     return {"ok": True}
 
 

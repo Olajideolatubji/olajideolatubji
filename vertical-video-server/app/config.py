@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     operator_password: str = "change-me"
     secret_key: str = "change-me-too"
     session_hours: int = 168
+    # Set when the dashboard is served over HTTPS, so the session cookie is
+    # never sent in the clear. The public deploy turns this on.
+    cookie_secure: bool = False
     database_url: str = "postgresql+psycopg://vvs:vvs@postgres:5432/vvs"
     redis_url: str = "redis://redis:6379/0"
     storage_root: str = "/data"

@@ -16,6 +16,67 @@ warning that it is using the shipped password — but you want it. (Needs Docker
 Compose v2.24 or newer for the optional env file; older versions require the
 `cp` above.)
 
+That gets you `http://localhost:8000` on your own machine. For a link you can
+open from anywhere, see **Putting it on your own URL** below.
+
+---
+
+## Putting it on your own URL
+
+One command on a fresh Ubuntu or Debian box — a £4/month VPS is plenty to start
+— gives you `https://your-address` serving the dashboard, with a certificate
+that renews itself. SSH in as root and run:
+
+```bash
+# a domain you own: point its A record at the server first
+curl -fsSL https://raw.githubusercontent.com/Olajideolatubji/olajideolatubji/claude/vertical-video-server-w1hj73/vertical-video-server/deploy/bootstrap.sh \
+  | bash -s -- --domain video.example.com
+
+# no domain, nothing to buy: served at https://<your-ip>.sslip.io
+curl -fsSL https://raw.githubusercontent.com/Olajideolatubji/olajideolatubji/claude/vertical-video-server-w1hj73/vertical-video-server/deploy/bootstrap.sh \
+  | bash -s -- --auto
+```
+
+It installs Docker if the box does not have it, fetches the code, generates a
+real password and secret key, starts the stack behind Caddy and prints the link
+and the password. Re-run it any time to update — it never overwrites your
+`.env`, so your password and API keys survive.
+
+`--auto` uses [sslip.io](https://sslip.io), which resolves `<ip>.sslip.io` to
+that IP, so Let's Encrypt will issue a genuine certificate for a server with no
+domain of its own. `--http` skips certificates entirely and serves plain HTTP on
+the IP; your password crosses the network in the clear, so treat it as a
+stop-gap.
+
+What the deploy changes, relative to the local stack:
+
+| | Local | Deployed |
+| --- | --- | --- |
+| Reachable on | `localhost:8000` | 80/443, Caddy only |
+| API port | published | not published — the proxy is the only way in |
+| Session cookie | plain | `Secure`, and uvicorn trusts `X-Forwarded-Proto` |
+| Certificates | none | issued and renewed by Caddy |
+
+Sizing: two vCPUs and 4GB handles the ffmpeg work for one operator; the joins
+are the heavy part, not the renders, which happen on HeyGen's machines. Give it
+disk for the intermediates — roughly 20MB per finished minute, several times
+that mid-build before takes are pruned, so a 3-hour project wants ~40GB free.
+
+Day two:
+
+```bash
+cd /opt/vertical-video-server/vertical-video-server
+COMPOSE="docker compose -f docker-compose.yml -f deploy/docker-compose.public.yml"
+$COMPOSE logs -f                                  # what it is doing
+$COMPOSE ps                                       # what is running
+$COMPOSE exec postgres pg_dump -U vvs vvs > backup.sql   # the job history
+docker run --rm -v vertical-video-server_media:/data -v "$PWD:/out" \
+  alpine tar czf /out/media.tar.gz /data          # the finished videos
+```
+
+The database holds every job payload and the cost ledger; the `media` volume
+holds the video. Those two are what to back up — everything else rebuilds.
+
 `HEYGEN_TEST` defaults to `true`: renders come back watermarked and consume no
 credits. Turn it off when you mean it.
 

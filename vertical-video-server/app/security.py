@@ -18,13 +18,14 @@ def check_password(candidate: str) -> bool:
     return secrets.compare_digest(candidate or "", settings.operator_password)
 
 
-def issue_session(response: Response) -> str:
+def issue_session(response: Response, *, secure: bool | None = None) -> str:
     token = _serializer.dumps({"operator": True})
     response.set_cookie(
         COOKIE_NAME,
         token,
         httponly=True,
         samesite="lax",
+        secure=settings.cookie_secure if secure is None else secure,
         max_age=settings.session_hours * 3600,
         path="/",
     )
