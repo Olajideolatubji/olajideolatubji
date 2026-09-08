@@ -1,0 +1,79 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-vvs}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-vvs}
+      POSTGRES_DB: ${POSTGRES_DB:-vvs}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-vvs}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  api:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://vvs:vvs@postgres:5432/vvs}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      STORAGE_ROOT: /data
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+      - media:/data
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    restart: unless-stopped
+
+  worker:
+    build: .
+    command: ["celery", "-A", "app.celery_app.celery_app", "worker", "-l", "info", "--concurrency", "${WORKER_CONCURRENCY:-4}"]
+    env_file: .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://vvs:vvs@postgres:5432/vvs}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      STORAGE_ROOT: /data
+    volumes:
+      - media:/data
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    restart: unless-stopped
+
+  beat:
+    # Crash recovery: the resume sweep restarts long builds from their last
+    # completed chapter.
+    build: .
+    command: ["celery", "-A", "app.celery_app.celery_app", "beat", "-l", "info"]
+    env_file: .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://vvs:vvs@postgres:5432/vvs}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      STORAGE_ROOT: /data
+    volumes:
+      - media:/data
+    depends_on:
+      redis: {condition: service_healthy}
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  redisdata:
+  media:
