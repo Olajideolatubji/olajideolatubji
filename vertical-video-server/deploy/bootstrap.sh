@@ -134,6 +134,21 @@ if command -v ufw >/dev/null 2>&1 && ufw status 2>/dev/null | grep -q "Status: a
   ufw allow 443/tcp >/dev/null || true
 fi
 
+# Oracle Cloud's Ubuntu images ship an iptables INPUT chain that drops
+# everything except SSH, which is the usual reason a correctly-running server
+# there looks dead from outside. Open the two ports it needs.
+if command -v iptables >/dev/null 2>&1 && iptables -S INPUT 2>/dev/null | grep -qE '^-A INPUT.*(REJECT|DROP)'; then
+  say "Opening 80 and 443 in iptables"
+  for PORT in 80 443; do
+    iptables -C INPUT -p tcp --dport "$PORT" -j ACCEPT 2>/dev/null \
+      || iptables -I INPUT 1 -p tcp --dport "$PORT" -j ACCEPT || true
+  done
+  if command -v netfilter-persistent >/dev/null 2>&1; then
+    netfilter-persistent save >/dev/null 2>&1 || true
+  fi
+  warn "On Oracle Cloud you must ALSO allow 80 and 443 in the VCN security list in their web console."
+fi
+
 # ---------------------------------------------------------------------- launch
 say "Building and starting (first run pulls images and compiles, give it a few minutes)"
 docker compose -f docker-compose.yml -f deploy/docker-compose.public.yml up -d --build

@@ -79,6 +79,20 @@ services:
       redis: {condition: service_healthy}
     restart: unless-stopped
 
+  # A free public https:// link for the dashboard, with no account, no domain
+  # and no card. Only runs when asked for:
+  #   docker compose --profile tunnel up -d
+  # Cloudflare hands out a temporary trycloudflare.com address that changes
+  # every restart, so it is for reaching your own dashboard from elsewhere —
+  # not a permanent home.
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: ["tunnel", "--no-autoupdate", "--url", "http://api:8000"]
+    profiles: ["tunnel"]
+    depends_on:
+      - api
+    restart: unless-stopped
+
 volumes:
   pgdata:
   redisdata:

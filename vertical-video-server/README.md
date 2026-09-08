@@ -6,9 +6,14 @@ owns the structure, the queue and the assembly.
 
 ```bash
 cd vertical-video-server
+bash deploy/local.sh      # generates a password, starts it, prints your link
+```
+
+That runs it free on your own machine at `http://localhost:8000`. Or by hand:
+
+```bash
 cp .env.example .env      # set OPERATOR_PASSWORD, SECRET_KEY, HEYGEN_API_KEY
 docker compose up -d --build
-open http://localhost:8000
 ```
 
 `.env` is optional — the stack comes up on defaults without one and logs a
@@ -21,11 +26,61 @@ open from anywhere, see **Putting it on your own URL** below.
 
 ---
 
-## Putting it on your own URL
+## Running it for free
 
-One command on a fresh Ubuntu or Debian box — a £4/month VPS is plenty to start
-— gives you `https://your-address` serving the dashboard, with a certificate
-that renews itself. SSH in as root and run:
+You do not have to rent anything. Pick whichever of these fits.
+
+### 1. On the computer you already own — free, working in minutes
+
+Install [Docker Desktop](https://www.docker.com/products/docker-desktop) (free),
+then from this directory:
+
+```bash
+bash deploy/local.sh
+```
+
+It generates a password, starts everything and prints your link:
+`http://localhost:8000`. That is your own server — nothing is hosted by anyone
+else, no account, no card. `bash deploy/local.sh --stop` stops it; your projects
+and videos are kept.
+
+It runs while the computer is awake. If it sleeps mid-render, the build resumes
+from the last finished chapter when it wakes — that is what the checkpointing is
+for.
+
+### 2. Free public link, for your phone or to show someone
+
+```bash
+bash deploy/local.sh --tunnel
+```
+
+Same thing, plus a Cloudflare quick tunnel: you also get a
+`https://something.trycloudflare.com` address that works from anywhere, with no
+account and no domain. The address is temporary and changes every restart, so
+treat it as a way in rather than a home. Anyone with the link still needs your
+password.
+
+### 3. Free and always on — Oracle Cloud Always Free
+
+Oracle's free tier gives 4 ARM cores, 24GB RAM and 200GB of disk, permanently,
+which is more than this needs. Create an **Ampere (VM.Standard.A1.Flex)**
+instance running Ubuntu, then run the bootstrap below on it. Worth knowing
+before you start:
+
+* Signup asks for a card to verify identity. Always Free resources are not
+  charged — choose the "Always Free" shapes and stay on them.
+* Ampere capacity is often unavailable in a region; try another, or retry later.
+* You must open ports 80 and 443 in the **VCN security list** in Oracle's web
+  console. The bootstrap opens the server's own firewall, but it cannot touch
+  Oracle's — this is the usual reason a working server there looks dead.
+
+---
+
+## Putting it on a rented server
+
+If you want it always on without Oracle's hoops, one command on a fresh Ubuntu
+or Debian box — a £4/month VPS is plenty — gives you `https://your-address` with
+a certificate that renews itself. SSH in as root and run:
 
 ```bash
 # a domain you own: point its A record at the server first
