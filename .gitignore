@@ -2,3 +2,7 @@ video-lab/_site/
 node_modules/
 .firebase/
 .firebaserc
+
+# Python caches from skill scripts
+__pycache__/
+*.pyc
